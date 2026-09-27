@@ -6,6 +6,10 @@ extends Prey
 @onready var pond: Pond = get_parent()
 
 
+func _vary() -> void:
+	pass # fish stay small and pale under the water
+
+
 func _physics_process(delta: float) -> void:
 	var away := global_position - player.global_position
 	var alarmed := not player.dead and away.length() < species.fear_radius and player.velocity.length() > 10.0

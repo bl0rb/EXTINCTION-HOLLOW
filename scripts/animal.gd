@@ -14,6 +14,13 @@ var _panic_left := 0.0
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 
 
+## No two animals look quite alike: a little bigger or smaller, a slightly different colour.
+func _vary() -> void:
+	var s := randf_range(0.88, 1.14)
+	sprite.scale = Vector2(s, s)
+	sprite.self_modulate = Color(randf_range(0.86, 1.1), randf_range(0.86, 1.08), randf_range(0.86, 1.08))
+
+
 ## Size class (GAME_SPEC §8): animals only eat what is smaller than themselves.
 func get_size() -> int:
 	return species.size

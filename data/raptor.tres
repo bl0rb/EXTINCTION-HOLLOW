@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Species" format=3]
+
+[ext_resource type="Script" path="res://scripts/species.gd" id="1_species"]
+
+[resource]
+script = ExtResource("1_species")
+xp = 35
+size = 3
+food = 50.0
+stride = 7.0
+acceleration = 500.0
+speed = 40.0
+wander_radius = 200.0
+idle_time = 2.0
+chase_speed = 86.0
+vision_radius = 130.0
+attack_range = 20.0
+damage = 14
+attack_interval = 0.8

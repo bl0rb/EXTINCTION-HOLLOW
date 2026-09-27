@@ -10,6 +10,7 @@ var _threat: Node2D
 
 
 func _ready() -> void:
+	_vary()
 	anim.set_facing(-1.0 if randf() < 0.5 else 1.0)
 	_rest()
 
