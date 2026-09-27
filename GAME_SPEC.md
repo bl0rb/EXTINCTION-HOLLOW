@@ -1,11 +1,15 @@
 # EXTINCTION HOLLOW
 
 **Genre:** 2D Top-Down Prehistoric Survival / Evolution
-**Perspektive:** Top-Down
+**Perspektive:** 3/4 Top-Down
+**Engine:** Godot 4.x (GDScript)
+**Art Direction:** Atmospheric HD Pixel Art
 **Steuerung:** Primär Maus
 **Arbeitstitel:** **Extinction Hollow**
 
 > **Hunt. Grow. Return. Survive the end.**
+
+> **Plan-Update „Visual Direction & Engine“ (§149):** Engine, Perspektive, Art Direction, Weltaufbau, Beleuchtung und Rendering wurden überarbeitet. Bei Widersprüchen gilt §149 vor den älteren Abschnitten.
 
 ---
 
@@ -1223,6 +1227,8 @@ Dadurch fühlt sich das Ende umso extremer an.
 
 # 53. Artstyle
 
+> **Aktualisiert durch §149:** Die visuelle Richtung ist festgelegt (Atmospheric HD Pixel Art, 3/4 Top-Down). Art wird nicht mehr später entwickelt, sondern früh über den Visual Vertical Slice validiert (§149.33–§149.40).
+
 Für frühe Versionen:
 
 * einfache Shapes,
@@ -1556,6 +1562,8 @@ Zunächst nicht notwendig:
 ---
 
 # 63. Empfohlene Meilensteine
+
+> **Aktualisiert durch §149.40 und §149.42:** Vor Milestone 1 wird **Milestone 0 – Visual Identity** eingefügt. Neue Reihenfolge: Grundbewegung → Visual Vertical Slice → Gameplay Core → weitere Art-Produktion → Weltaufbau.
 
 ## Milestone 1 – Movement Prototype
 
@@ -2529,6 +2537,8 @@ Nicht angestrebt werden:
 
 # 100. Perspektive
 
+> **Aktualisiert durch §149.4–§149.7:** Die Perspektive ist jetzt **3/4 Top-Down**, zwischen klassischem Top-Down und starker Isometrie, ohne starres Isometric-Grid und mit sichtbaren Höhenunterschieden.
+
 Das Spiel verwendet eine klare **Top-Down-Perspektive**.
 
 Die Kamera blickt überwiegend von oben auf die Welt.
@@ -2545,6 +2555,8 @@ Wichtig ist, dass:
 ---
 
 # 101. Basisauflösung
+
+> **Aktualisiert durch §149.38:** 640 × 360 ist nur noch ein Ausgangspunkt. Die endgültige interne Renderauflösung entscheidet der Visual Vertical Slice.
 
 Die Darstellung soll auf einer festen internen Basisauflösung beruhen.
 
@@ -2638,6 +2650,8 @@ Die Bewegung darf intern fließend berechnet werden, die Darstellung soll jedoch
 ---
 
 # 105. Tile-Größe
+
+> **Aktualisiert durch §149.38:** 32 × 32 ist nur noch ein Ausgangspunkt. Die endgültige Tile-Größe entscheidet der Visual Vertical Slice (UPDATE029).
 
 Empfohlene Standardgröße:
 
@@ -3417,6 +3431,8 @@ Die Welt soll nicht wie ein UI voller Marker aussehen.
 
 # 141. Beleuchtung
 
+> **Aktualisiert durch §149.10:** Beleuchtung ist kein optionaler Effekt mehr, sondern zentraler Bestandteil des Artstyles.
+
 Beleuchtung kann stilisiert genutzt werden.
 
 Beispiele:
@@ -3496,6 +3512,8 @@ Polish
 
 # 145. Art-MVP
 
+> **Aktualisiert durch §149.34:** Der erste visuelle Prototyp ist jetzt der Visual Vertical Slice im neuen Stil. Placeholder-Grafik reicht dafür nicht mehr.
+
 Für den ersten visuellen Prototyp reichen:
 
 - ein Spieler-Dino,
@@ -3515,6 +3533,8 @@ Alle übrigen Grafiken können zunächst Placeholder sein.
 ---
 
 # 146. Art-Tasks
+
+> **Aktualisiert durch §149.41 (UPDATE030):** Diese Tasks werden an die neue visuelle Richtung angepasst.
 
 | ID | Bereich | Task | Priorität | Abhängigkeit | Status |
 |---|---|---|---|---|---|
@@ -3615,3 +3635,1140 @@ Aussterben
 ```
 
 Gerade weil die Welt zu Beginn farbenfroh und schön ist, soll ihre spätere Zerstörung emotional stärker wirken.
+
+---
+
+# 149. Plan-Update – Visual Direction & Engine
+
+### Ziel dieses Updates
+
+Die bestehende Planung für **Extinction Hollow** soll an eine neue visuelle Zielrichtung angepasst werden.
+
+Die Kernmechaniken des Spiels bleiben unverändert:
+
+- kleiner Dinosaurier als Spieler
+- Click-to-Move per Maus
+- Nahrungskette
+- Jagd und Flucht
+- Carried XP / Banked XP
+- Rückkehr zur eigenen Höhle
+- Dino- und Höhlen-Upgrades
+- dynamisches Ökosystem
+- Regen
+- Schnee
+- Erdbeben
+- Vulkanaktivität
+- Feuer
+- Meteorit als finales Ereignis
+- spätere Multiplayer-Option mit mehreren Spielern und Höhlen
+
+Geändert werden hauptsächlich:
+
+1. Engine
+2. Perspektive
+3. Art Direction
+4. Weltaufbau
+5. Beleuchtung
+6. Rendering
+7. Art- und Environment-Tasks
+
+---
+
+## 149.1 Engine ändern
+
+Die bisher geplante Hauptengine **Defold** wird durch **Godot 4.x** ersetzt.
+
+Programmiersprache:
+
+```text
+GDScript
+```
+
+Godot wird gewählt, weil das Spiel starken Fokus auf folgende 2D-Systeme bekommt:
+
+- hochwertige 2D-Beleuchtung
+- Schatten
+- Tilemaps
+- mehrere Environment-Layer
+- Partikelsysteme
+- Shader
+- Wettereffekte
+- Post-Processing
+- atmosphärische Szenen
+- dynamische Farb- und Lichtstimmungen
+
+Die Engine-Entscheidung darf die Gameplay-Architektur nicht unnötig verändern.
+
+Das Spiel bleibt weiterhin ein 2D-Spiel.
+
+---
+
+## 149.2 Neue visuelle Zielrichtung
+
+Die bisherige einfache Top-Down-Pixel-Art wird durch eine hochwertigere visuelle Richtung ersetzt.
+
+Neue Zielrichtung:
+
+> **Atmospheric HD Pixel Art in a 3/4 top-down perspective with strong lighting, environmental depth and detailed prehistoric environments.**
+
+Das Spiel soll weiterhin eindeutig wie Pixel Art aussehen.
+
+Es soll jedoch NICHT wie klassische grobe Retro-Pixelgrafik wirken.
+
+Gewünscht sind:
+
+- hohe Detaildichte
+- moderne Pixel Art
+- aufwendige Lichtstimmung
+- klare Formen
+- starke Farbkomposition
+- atmosphärische Partikeleffekte
+- mehrere Tiefenebenen
+- hochwertige Umgebungen
+
+---
+
+## 149.3 Referenzbild als Mood Target
+
+Das vorhandene Referenzbild dient als **visuelles Mood Target**.
+
+Es soll NICHT direkt kopiert werden.
+
+Übernommen werden sollen insbesondere folgende Eigenschaften:
+
+- hochwertige moderne Pixel Art
+- starke Licht-/Schatten-Kontraste
+- warme lokale Lichtquellen
+- kaltes Umgebungslicht
+- starke Tiefenwirkung
+- detaillierte Vegetation
+- Klippen und Höhenunterschiede
+- atmosphärischer Hintergrund
+- kleine Glow-Effekte
+- Environmental Storytelling
+- klar komponierte Szenen
+
+Nicht übernommen werden müssen:
+
+- Fantasy-Thematik
+- schwebende Inseln
+- Architektur des Referenzbildes
+- konkrete Objekte
+- konkrete Farbpalette
+
+Die visuelle Sprache soll stattdessen auf eine prähistorische Welt übertragen werden.
+
+---
+
+## 149.4 Perspektive ändern
+
+Die bisherige streng senkrechte Top-Down-Perspektive wird geändert.
+
+Neue Perspektive:
+
+### 3/4 Top-Down
+
+Die Kamera blickt leicht schräg auf die Welt.
+
+Die Perspektive soll zwischen:
+
+```text
+klassischem Top-Down
+```
+
+und
+
+```text
+starker Isometrie
+```
+
+liegen.
+
+Die Welt soll dadurch räumlicher und hochwertiger wirken.
+
+Wichtig:
+
+Die Perspektive darf das Gameplay nicht unnötig komplizieren.
+
+Click-to-Move und Navigation müssen weiterhin klar funktionieren.
+
+---
+
+## 149.5 Keine starre klassische Isometrie
+
+Das Spiel muss kein mathematisch korrektes Isometric-Grid verwenden.
+
+Bevorzugt wird eine flexible 3/4-Darstellung.
+
+Dadurch bleiben möglich:
+
+- organische Wege
+- runde Seen
+- natürliche Flüsse
+- unregelmäßige Klippen
+- Dschungelpfade
+- Höhlen
+- Vulkanlandschaften
+
+Die Welt soll natürlich und nicht wie ein quadratisches Strategie-Grid aussehen.
+
+---
+
+## 149.6 Räumliche Tiefe
+
+Die Welt soll aus mehreren sichtbaren Tiefenebenen bestehen.
+
+Beispiel:
+
+```text
+Himmel / Atmosphäre
+↓
+entfernte Landschaft
+↓
+hohe Baumkronen
+↓
+Klippen / erhöhte Ebenen
+↓
+Dinosaurier
+↓
+Büsche / Farne
+↓
+Bodendetails
+↓
+Terrain
+↓
+Wasser / tieferliegende Bereiche
+```
+
+Die Welt soll dadurch wie ein kleines Diorama wirken.
+
+---
+
+## 149.7 Höhenunterschiede
+
+Maps dürfen nicht ausschließlich flach sein.
+
+Geplant werden:
+
+- Klippen
+- Plateaus
+- Schluchten
+- erhöhte Dschungelbereiche
+- Flusstäler
+- Höhleneingänge
+- Felsvorsprünge
+- natürliche Rampen
+- Brücken
+- Wasserfälle
+
+Höhenunterschiede sind primär visuell und leveldesignerisch.
+
+Es ist nicht notwendig, daraus ein komplexes echtes 3D-System zu machen.
+
+---
+
+## 149.8 Dschungel-Art-Direction
+
+Der Dschungel ist weiterhin das Startbiom.
+
+Er soll jetzt deutlich dichter und hochwertiger wirken.
+
+Verwenden:
+
+- große Farne
+- Palmfarne
+- prähistorische Pflanzen
+- dichtes Gras
+- große Blätter
+- Moose
+- Pilze
+- Baumstämme
+- Wurzeln
+- Felsen
+- kleine Wasserläufe
+- Wasserfälle
+- Lichtungen
+
+Die Welt darf dicht wirken.
+
+Der Spieler muss trotzdem eindeutig lesbar bleiben.
+
+---
+
+## 149.9 Environment Layering
+
+Vegetation soll über mehrere Ebenen aufgebaut werden.
+
+Beispiel:
+
+```text
+Background Vegetation
+↓
+Ground Vegetation
+↓
+Gameplay Layer
+↓
+Foreground Vegetation
+↓
+Tree Canopy
+↓
+Weather / Atmosphere
+```
+
+Vordergrundobjekte können den Spieler kurzzeitig teilweise verdecken.
+
+Wenn notwendig, sollen diese Objekte:
+
+- transparenter werden
+- ausgeblendet werden
+- oder visuell zurücktreten
+
+sobald sich der Spieler dahinter befindet.
+
+---
+
+## 149.10 Licht als zentraler Bestandteil des Artstyles
+
+Beleuchtung ist kein optionaler späterer Effekt.
+
+Sie gehört zur grundlegenden visuellen Identität des Spiels.
+
+Verwendet werden sollen:
+
+- Umgebungslicht
+- lokale Lichtquellen
+- Schatten
+- Glow
+- farbiges Licht
+- Wetterlicht
+- Vulkanlicht
+- Höhlenlicht
+- Meteorlicht
+
+---
+
+## 149.11 Farbkontrast
+
+Eine wichtige visuelle Regel lautet:
+
+### Kühle Umgebung + warme lokale Lichtquellen
+
+Beispiel:
+
+```text
+Dschungelnacht
+=
+Blau / Cyan / dunkles Grün
+
+Feuer
+=
+Orange / Gelb
+
+Lava
+=
+Orange / Rot
+
+Höhle
+=
+warmes, geschütztes Licht
+```
+
+Dadurch entstehen starke visuelle Kontraste.
+
+---
+
+## 149.12 Tag und Nacht
+
+Ein vollständiger Tag-Nacht-Zyklus bleibt zunächst optional.
+
+Die Rendering-Architektur soll ihn jedoch später ermöglichen.
+
+Mögliche Lichtstimmungen:
+
+```text
+Morgen
+Tag
+Abend
+Nacht
+Sturm
+Aschesturm
+Meteor-Endgame
+```
+
+---
+
+## 149.13 Wasser
+
+Wasser soll deutlich hochwertiger dargestellt werden.
+
+Verwenden:
+
+- animierte Wasseroberflächen
+- Reflexionen
+- Lichtschimmer
+- Wellen
+- Strömung
+- Spritzer
+- Fische unter der Oberfläche
+- unterschiedliche Wassertiefen
+
+Mögliche Umgebungen:
+
+- Bäche
+- Flüsse
+- Seen
+- Sümpfe
+- Wasserfälle
+
+---
+
+## 149.14 Wasserfälle
+
+Wasserfälle dürfen ein wichtiges visuelles Element werden.
+
+Sie können:
+
+- Landschaften strukturieren
+- Höhenunterschiede sichtbar machen
+- besondere Jagdgebiete markieren
+- Landmarken bilden
+
+Sie eignen sich außerdem gut für:
+
+- Partikel
+- Nebel
+- Schaum
+- Lichtreflexionen
+
+---
+
+## 149.15 Regen
+
+Regen soll nicht nur aus einzelnen Linien bestehen.
+
+Er besteht aus mehreren visuellen Komponenten:
+
+```text
+Regenpartikel
++
+Wasserspritzer
++
+nasser Boden
++
+veränderte Beleuchtung
++
+bewegtes Wasser
++
+leichter atmosphärischer Nebel
+```
+
+Optional später:
+
+- Pfützen
+- Spiegelungen
+- stärkerer Wasserfluss
+
+---
+
+## 149.16 Schnee
+
+Schnee erhält ebenfalls mehrere Ebenen:
+
+- Schneefall
+- Schnee auf Terrain
+- Schnee auf Felsen
+- Schnee auf Vegetation
+- Fußspuren
+- veränderte Beleuchtung
+
+Die Schneeregion soll deutlich kälter wirken als andere Biome.
+
+---
+
+## 149.17 Feuer
+
+Feuer erhält:
+
+- animierte Pixel-Flammen
+- Glow
+- Funken
+- Rauch
+- lokales Licht
+- leichte Beleuchtung umliegender Objekte
+
+Feuer soll die Umgebung sichtbar beeinflussen.
+
+---
+
+## 149.18 Vulkan
+
+Die Vulkanregion soll eine der visuell spektakulärsten Regionen sein.
+
+Elemente:
+
+- dunkler Basalt
+- Lava
+- Glut
+- Rauch
+- Asche
+- Feuer
+- orange Beleuchtung
+- dunkler Himmel
+- glühende Risse
+
+Die Lava dient gleichzeitig als Lichtquelle.
+
+---
+
+## 149.19 Erdbeben
+
+Erdbeben werden vermittelt durch:
+
+- Camera Shake
+- Staub
+- herunterfallende Steine
+- kleine Felsbrocken
+- Bodenrisse
+- Pflanzenbewegung
+- Umweltgeräusche
+
+Starke Effekte dürfen die Spielbarkeit nicht vollständig verdecken.
+
+---
+
+## 149.20 Höhle
+
+Die eigene Höhle ist visuell einer der wichtigsten Orte des Spiels.
+
+Sie muss:
+
+- sofort erkennbar sein
+- Geborgenheit vermitteln
+- visuell wachsen
+- sich klar von normalen Felsen unterscheiden
+
+Die Höhle kann warme Beleuchtung besitzen.
+
+Dadurch entsteht ein bewusster Gegensatz zwischen:
+
+```text
+gefährliche kalte Außenwelt
+```
+
+und
+
+```text
+warme sichere Höhle
+```
+
+---
+
+## 149.21 Höhlenentwicklung sichtbar machen
+
+Höhlen-Upgrades müssen visuell sichtbar werden.
+
+Beispiel:
+
+### Level 1
+
+- kleiner natürlicher Eingang
+- wenig Beleuchtung
+- einfache Felskammer
+
+### Level 2
+
+- größerer Innenraum
+- Vorratsbereich
+- erste erkennbare Anpassungen
+
+### Level 3
+
+- mehrere Kammern
+- stabilere Felsstrukturen
+- mehr Details
+
+### Level 4
+
+- deutlich tiefere Höhle
+- verstärkte Strukturen
+- Schutz vor Hitze und Erdbeben
+
+### Level 5
+
+- massiver Schutzraum
+- starke Wände
+- tiefer Untergrund
+- visuell klar für das Meteor-Endgame vorbereitet
+
+---
+
+## 149.22 Dinosaurier-Artstyle
+
+Dinosaurier werden in hochwertiger Pixel Art dargestellt.
+
+Sie sollen nicht:
+
+- zu niedlich
+- zu cartoonhaft
+- hyperrealistisch
+
+sein.
+
+Ziel:
+
+```text
+stilisiert
++
+glaubwürdig
++
+gut lesbar
++
+charaktervoll
+```
+
+---
+
+## 149.23 Größenwirkung der Dinosaurier
+
+Größe wird nicht nur durch Sprite-Skalierung dargestellt.
+
+Große Dinosaurier benötigen:
+
+- größere Sprites
+- schwerere Animationen
+- langsamere Bewegungen
+- größere Schatten
+- kräftigere Schritte
+- mehr Umgebungsreaktionen
+
+Kleine Dinosaurier benötigen:
+
+- schnelle Animationen
+- kleine Schritte
+- schnelle Richtungswechsel
+- leichte Körperbewegungen
+
+---
+
+## 149.24 Player Visibility
+
+Der Spieler muss immer gut erkennbar bleiben.
+
+Dazu können eingesetzt werden:
+
+- eindeutige Silhouette
+- leicht höhere Farbsättigung
+- kontrollierter Kontrast
+- dezenter Schatten
+- subtile Outline
+- Hover-/Selection-Effekt
+
+Keine dauerhafte grelle Umrandung verwenden.
+
+---
+
+## 149.25 Animationsstil
+
+Animationen sollen hochwertiger als klassische Minimal-Pixelanimationen wirken.
+
+Spieleranimationen:
+
+```text
+Idle
+Walk
+Run
+Eat
+Attack
+Hurt
+Death
+Sleep
+Drink
+Roar
+```
+
+NPCs benötigen zunächst weniger Animationen.
+
+Der Spieler und wichtige große Dinosaurier erhalten den größten Animationsumfang.
+
+---
+
+## 149.26 Partikel
+
+Partikelsysteme sind ein wichtiger Bestandteil der visuellen Qualität.
+
+Geplante Effekte:
+
+- Staub
+- Blätter
+- Regen
+- Wasserspritzer
+- Schnee
+- Asche
+- Feuerfunken
+- Lavafunken
+- Rauch
+- XP-Partikel
+- Blut
+- Meteorit-Partikel
+- Einschlagsstaub
+
+Partikel dürfen das Gameplay nicht überdecken.
+
+---
+
+## 149.27 Atmosphäre
+
+Zusätzliche atmosphärische Elemente:
+
+- Nebel
+- Hintergrundwolken
+- leichter Dunst
+- schwebende Pollen
+- kleine Lichtpartikel
+- Staub
+- Asche
+
+Diese Elemente sollen Tiefe erzeugen.
+
+---
+
+## 149.28 Farbentwicklung im Spielverlauf
+
+Der Weltfortschritt soll auch visuell erzählt werden.
+
+### Frühes Spiel
+
+```text
+Grün
+Blau
+Türkis
+warmes Sonnenlicht
+```
+
+Atmosphäre:
+
+> lebendig und wunderschön
+
+---
+
+### Mittleres Spiel
+
+```text
+dunkleres Grün
+mehr Grau
+stärkerer Regen
+mehr Schatten
+```
+
+Atmosphäre:
+
+> Welt wird instabil
+
+---
+
+### Spätes Spiel
+
+```text
+Orange
+Rot
+Aschegrau
+dunkles Blau
+```
+
+Atmosphäre:
+
+> Katastrophe nähert sich
+
+---
+
+### Finale
+
+```text
+roter Himmel
+glühender Meteor
+Feuer
+Asche
+Rauch
+lange Schatten
+```
+
+Atmosphäre:
+
+> Aussterben steht unmittelbar bevor
+
+---
+
+## 149.29 Meteor als visuelles Storytelling
+
+Der Meteor soll bereits lange vor dem Finale Teil der Welt werden.
+
+Entwicklungsstufen:
+
+```text
+kleiner Lichtpunkt
+↓
+auffälliger Stern
+↓
+sichtbarer Himmelskörper
+↓
+großer glühender Meteor
+↓
+dominantes Objekt am Himmel
+↓
+Einschlag
+```
+
+Dadurch wird der Fortschritt visuell erzählt, ohne ständig Text anzeigen zu müssen.
+
+---
+
+## 149.30 Meteorlicht
+
+Der Meteor darf im späteren Spiel selbst zur Lichtquelle werden.
+
+Mögliche Auswirkungen:
+
+- orange/rotes Umgebungslicht
+- längere Schatten
+- verfärbter Himmel
+- sichtbare Reflexionen im Wasser
+- ungewöhnliche Beleuchtung der Vegetation
+
+---
+
+## 149.31 UI-Artstyle
+
+Die UI wird ebenfalls als moderne Pixel Art umgesetzt.
+
+Gewünscht:
+
+- klare Pixel-Icons
+- hochwertige Rahmen
+- reduzierte Elemente
+- halbtransparente Hintergründe
+- passende Bitmap-/Pixel-Schrift
+
+Nicht gewünscht:
+
+- klassische 8-Bit-Menüs
+- extrem grobe UI
+- futuristische Sci-Fi-Oberflächen
+
+---
+
+## 149.32 Grafikqualität vor Asset-Menge
+
+Die Anzahl der Assets soll anfangs bewusst begrenzt werden.
+
+Bevorzugt:
+
+```text
+wenige hochwertige Assets
+```
+
+statt:
+
+```text
+viele mittelmäßige Assets
+```
+
+Ein kleiner wunderschöner Dschungelbereich ist wertvoller als fünf unfertige Biome.
+
+---
+
+## 149.33 Neuer Entwicklungsgrundsatz
+
+Bevor große Gameplay-Systeme weiter ausgebaut werden, muss ein visueller Vertical Slice erstellt werden.
+
+Dieser dient als Qualitätsreferenz für das gesamte Spiel.
+
+---
+
+## 149.34 Visual Vertical Slice
+
+Eine kleine Testszene erstellen.
+
+Die Szene enthält mindestens:
+
+- einen Spieler-Dinosaurier
+- Click-to-Move
+- hochwertige Pixelgrafik
+- Dschungelboden
+- mehrere Pflanzenarten
+- Felsen
+- Wasser
+- mindestens einen Höhenunterschied
+- Höhleneingang
+- Lichtquelle
+- Schatten
+- Partikeleffekt
+- atmosphärischen Hintergrund
+
+Optional:
+
+- kleiner Wasserfall
+- Regen
+- Feuer
+- Nebel
+
+---
+
+## 149.35 Ziel des Vertical Slice
+
+Der Vertical Slice muss beantworten:
+
+> Kann Extinction Hollow in diesem Stil tatsächlich so aussehen, wie wir es uns vorstellen?
+
+Erst wenn die Antwort eindeutig positiv ist, wird die große Weltproduktion fortgesetzt.
+
+---
+
+## 149.36 Art Quality Bar
+
+Der Vertical Slice wird zukünftig als Qualitätsmaßstab verwendet.
+
+Neue:
+
+- Biome
+- Tiere
+- Höhlen
+- Effekte
+- Landschaften
+
+sollen sich visuell an diesem Standard orientieren.
+
+---
+
+## 149.37 Keine vollständige Welt vor dem Art-Test
+
+Vor Abschluss des Visual Vertical Slice NICHT:
+
+- alle Biome bauen
+- dutzende Dinosaurier erstellen
+- riesige Maps anlegen
+- komplette Wetterbibliothek produzieren
+- umfangreiche Endgame-Grafik erstellen
+
+Zuerst muss der Kernstil funktionieren.
+
+---
+
+## 149.38 Aktualisierte technische Grafikziele
+
+Zu evaluieren sind:
+
+- interne Renderauflösung
+- Pixelgröße
+- Sprite-Auflösung
+- Tile-Auflösung
+- Kamera-Zoom
+- 3/4-Perspektive
+- Pixel-Snapping
+- Texture Filtering
+- Lichtauflösung
+- Schattenqualität
+
+Die bisher festgelegten Werte wie:
+
+```text
+640 × 360
+32 × 32 Tiles
+```
+
+sind ab jetzt **Ausgangspunkte und keine festen Vorgaben**.
+
+Der Visual Vertical Slice entscheidet über die endgültigen Werte.
+
+---
+
+## 149.39 Pixel-Art-Ziel
+
+Die Pixel dürfen kleiner und feiner sein als bei klassischer Retro-Pixel-Art.
+
+Ziel ist:
+
+```text
+sichtbare Pixel
++
+hohe Detaildichte
++
+moderne Beleuchtung
++
+hochwertige Animation
+```
+
+Nicht:
+
+```text
+riesige Retro-Pixel
+```
+
+---
+
+## 149.40 Neue Priorität
+
+Die Priorität der frühen Entwicklung wird geändert.
+
+Bisher:
+
+```text
+Gameplay-Systeme
+↓
+Art später
+```
+
+Neu:
+
+```text
+Grundbewegung
+↓
+Visual Vertical Slice
+↓
+Gameplay Core
+↓
+weitere Art-Produktion
+↓
+Weltaufbau
+```
+
+Gameplay bleibt entscheidend.
+
+Die visuelle Identität muss jedoch früh validiert werden.
+
+---
+
+## 149.41 Neue Update-Tasks
+
+| ID | Bereich | Task | Priorität | Status |
+|---|---|---|---|---|
+| UPDATE001 | Engine | Projekt auf Godot 4.x umstellen | Kritisch | Offen |
+| UPDATE002 | Engine | GDScript als Hauptsprache festlegen | Kritisch | Offen |
+| UPDATE003 | Rendering | 3/4-Top-Down-Perspektive testen | Kritisch | Offen |
+| UPDATE004 | Rendering | interne Renderauflösung evaluieren | Hoch | Offen |
+| UPDATE005 | Rendering | Pixel-Perfect-Darstellung konfigurieren | Hoch | Offen |
+| UPDATE006 | Rendering | 2D-Light-Test erstellen | Kritisch | Offen |
+| UPDATE007 | Rendering | 2D-Schatten testen | Hoch | Offen |
+| UPDATE008 | Rendering | Glow-/Highlight-Test | Mittel | Offen |
+| UPDATE009 | Art | neuen HD-Pixel-Art-Styleguide erstellen | Kritisch | Offen |
+| UPDATE010 | Art | Spieler-Dino im neuen Stil erstellen | Kritisch | Offen |
+| UPDATE011 | Environment | Dschungel-Bodenset erstellen | Hoch | Offen |
+| UPDATE012 | Environment | Farne und Pflanzen erstellen | Hoch | Offen |
+| UPDATE013 | Environment | Felsen und Klippen erstellen | Hoch | Offen |
+| UPDATE014 | Environment | Höhenebenen testen | Hoch | Offen |
+| UPDATE015 | Environment | Höhleneingang erstellen | Hoch | Offen |
+| UPDATE016 | Water | hochwertiges Wasser testen | Hoch | Offen |
+| UPDATE017 | Water | Wasserfall-Prototyp erstellen | Mittel | Offen |
+| UPDATE018 | FX | atmosphärische Partikel erstellen | Hoch | Offen |
+| UPDATE019 | FX | Regen-Prototyp erstellen | Mittel | Offen |
+| UPDATE020 | FX | Feuer-/Glow-Prototyp erstellen | Mittel | Offen |
+| UPDATE021 | Atmosphere | Nebel/Dunst testen | Mittel | Offen |
+| UPDATE022 | Lighting | warm/kalt Farbkontrast testen | Hoch | Offen |
+| UPDATE023 | Camera | Kamera für neue Perspektive abstimmen | Hoch | Offen |
+| UPDATE024 | Gameplay | Click-to-Move in neuer Perspektive testen | Kritisch | Offen |
+| UPDATE025 | Gameplay | Navigation auf Höhenebenen testen | Hoch | Offen |
+| UPDATE026 | Polish | Player Visibility im dichten Dschungel testen | Hoch | Offen |
+| UPDATE027 | Vertical Slice | komplette Testszene zusammensetzen | Kritisch | Offen |
+| UPDATE028 | Vertical Slice | Qualitätsbewertung durchführen | Kritisch | Offen |
+| UPDATE029 | Planning | endgültige Sprite-/Tilegrößen festlegen | Hoch | Offen |
+| UPDATE030 | Planning | bestehende Art-Tasks entsprechend aktualisieren | Hoch | Offen |
+
+---
+
+## 149.42 Neuer erster Meilenstein
+
+### Milestone 0 – Visual Identity
+
+Dieser Meilenstein wird vor den bisherigen größeren Gameplay-Meilensteinen eingefügt.
+
+#### Enthält
+
+- Engine-Wechsel auf Godot
+- Click-to-Move-Prototyp
+- Spieler-Dino
+- Dschungel-Testumgebung
+- Wasser
+- Klippen
+- Höhle
+- Beleuchtung
+- Schatten
+- Partikel
+- Kamera
+- Pixel-Art-Rendering
+
+#### Definition of Done
+
+Der Meilenstein ist abgeschlossen, wenn eine kleine spielbare Szene existiert, die:
+
+1. eindeutig wie **Extinction Hollow** aussieht,
+2. visuell hochwertig genug für die angestrebte Richtung ist,
+3. die 3/4-Perspektive überzeugend darstellt,
+4. Click-to-Move weiterhin angenehm spielbar macht,
+5. Licht und Schatten sinnvoll einsetzt,
+6. die gewünschte HD-Pixel-Art-Ästhetik erreicht,
+7. als Qualitätsreferenz für zukünftige Assets verwendet werden kann.
+
+---
+
+## 149.43 Neue visuelle Leitidee
+
+Die Welt von **Extinction Hollow** soll zunächst so schön wirken, dass der Spieler sie erhalten möchte.
+
+Die kommende Zerstörung gewinnt dadurch an Bedeutung.
+
+```text
+Wunderschöne prähistorische Welt
+↓
+Spieler baut Beziehung zu seiner Umgebung auf
+↓
+Welt wird zunehmend instabil
+↓
+bekannte Gebiete verändern sich
+↓
+Feuer und Asche zerstören Teile der Landschaft
+↓
+Meteor dominiert den Himmel
+↓
+Flucht zur Höhle
+↓
+Extinction Event
+```
+
+Der Kontrast zwischen Schönheit und Zerstörung ist ein zentraler Bestandteil der visuellen Identität des Spiels.
+
+---
+
+## 149.44 Zusammenfassung der Planänderung
+
+### Beibehalten
+
+- Gameplay-Konzept
+- Nahrungskette
+- XP-System
+- Höhle
+- Meteor
+- Naturkatastrophen
+- Multiplayer-Vision
+- Maussteuerung
+
+### Ändern
+
+```text
+Defold
+→ Godot 4.x
+
+striktes Top-Down
+→ 3/4 Top-Down
+
+einfache Pixel Art
+→ hochwertige HD Pixel Art
+
+flache Maps
+→ räumliche, geschichtete Landschaften
+
+Art später
+→ früher Visual Vertical Slice
+```
+
+### Neues Hauptziel
+
+> **Extinction Hollow soll aussehen wie ein hochwertiges atmosphärisches Pixel-Art-Indiespiel und nicht wie ein einfacher Retro-Prototyp.**
