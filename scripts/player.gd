@@ -154,10 +154,10 @@ func burn(amount: float) -> void:
 		_die()
 
 
-## Heavy rain, snow and cold slow the dino down (GAME_SPEC §32-§34).
+## Heavy rain, snow and cold slow the dino down (GAME_SPEC §32-§34), and so do swamp mud and deep snow (§27).
 func move_factor() -> float:
 	var weather := _weather.speed_factor() if _weather else 1.0
-	return weather * (0.9 if temperature < 5.0 else 1.0)
+	return weather * (0.9 if temperature < 5.0 else 1.0) * Biomes.FOOTING[Biomes.at(global_position)]
 
 
 func _die() -> void:

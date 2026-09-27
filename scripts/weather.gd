@@ -16,8 +16,7 @@ const LOOKS := {
 const CHANCES := {Kind.CLEAR: 5.0, Kind.RAIN: 3.0, Kind.HEAVY_RAIN: 1.0}
 const TRANSITION := 6.0 ## seconds to blend into new weather
 const BASE_TEMPERATURE := 24.0
-const STEPPE_X := 1350.0 ## the open steppe is colder at night
-const VOLCANO := Vector2(2150, 160) ## warms its surroundings
+const VOLCANO := Vector2(2690, 250) ## warms its surroundings
 
 @export var min_duration := 70.0
 @export var max_duration := 160.0
@@ -58,9 +57,8 @@ func speed_factor() -> float:
 
 
 func temperature_at(pos: Vector2) -> float:
-	var t: float = BASE_TEMPERATURE + look.temp
-	if pos.x > STEPPE_X:
-		t -= 6.0
+	# every region has its own climate: the open steppe is cold at night, the snowfields freeze
+	var t: float = BASE_TEMPERATURE + look.temp + Biomes.TEMPERATURE[Biomes.at(pos)]
 	return t + 14.0 * clampf(1.0 - pos.distance_to(VOLCANO) / 420.0, 0.0, 1.0)
 
 

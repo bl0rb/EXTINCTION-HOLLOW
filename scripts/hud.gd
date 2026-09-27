@@ -64,8 +64,8 @@ func _process(_delta: float) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(6, 6, 118, 72), PANEL)
-	draw_rect(Rect2(6.5, 6.5, 117, 71), BORDER, false, 1.0)
+	draw_rect(Rect2(6, 6, 118, 84), PANEL)
+	draw_rect(Rect2(6.5, 6.5, 117, 83), BORDER, false, 1.0)
 	_bar(11, "health", player.health / player.max_health(), Color(0.74, 0.18, 0.16), ceilf(player.health))
 	_bar(21, "stamina", player.stamina / player.max_stamina, Color(0.8, 0.74, 0.26), ceilf(player.stamina))
 	_bar(31, "hunger", player.hunger / player.max_hunger, Color(0.8, 0.46, 0.2), ceilf(player.hunger))
@@ -79,6 +79,7 @@ func _draw() -> void:
 		_text(Vector2(11, 73), weather.look.name, DIM)
 		var temp_color := COLD if player.temperature < 5.0 else (HOT if player.temperature > 32.0 else DIM)
 		_text(Vector2(84, 73), "%d°" % roundi(player.temperature), temp_color)
+	_text(Vector2(11, 85), Biomes.name_at(player.global_position), TEXT)
 
 
 func _bar(y: float, icon: String, ratio: float, color: Color, value: float) -> void:

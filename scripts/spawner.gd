@@ -58,5 +58,6 @@ func _is_free(point: Vector2) -> bool:
 
 func _spawn(point: Vector2) -> void:
 	var animal: Node2D = scene.instantiate()
+	animal.add_to_group(group) # e.g. pond and river fish are counted apart
 	animal.position = point - _parent.global_position if _parent is Pond else point
 	_parent.add_child(animal)

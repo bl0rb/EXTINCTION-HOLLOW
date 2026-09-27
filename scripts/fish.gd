@@ -41,4 +41,4 @@ func _physics_process(delta: float) -> void:
 		if state == State.WANDER:
 			_rest()
 	else:
-		global_position += velocity * delta
+		global_position = pond.clamp_point(global_position + velocity * delta) # a winding river keeps them in its bed
