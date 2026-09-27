@@ -6,6 +6,8 @@ extends CharacterBody2D
 
 var target := Vector2.ZERO
 var anim := SpriteAnimator.new()
+var _panic_from := Vector2.ZERO
+var _panic_left := 0.0
 
 @onready var radius: float = ($CollisionShape2D.shape as CircleShape2D).radius
 @onready var sprite: Sprite2D = $Sprite2D
@@ -15,6 +17,22 @@ var anim := SpriteAnimator.new()
 ## Size class (GAME_SPEC §8): animals only eat what is smaller than themselves.
 func get_size() -> int:
 	return species.size
+
+
+## Disasters (GAME_SPEC §39): run away from a spot for a while, whatever else is going on.
+func panic(from: Vector2, seconds: float) -> void:
+	_panic_from = from
+	_panic_left = seconds
+
+
+## Runs away while panicking; returns false once calm again.
+func _flee_in_panic(speed: float, delta: float) -> bool:
+	if _panic_left <= 0.0:
+		return false
+	_panic_left -= delta
+	target = global_position + (global_position - _panic_from).normalized() * 32.0
+	_walk(speed, delta)
+	return true
 
 
 ## Walks towards target, speeding up and easing into it.

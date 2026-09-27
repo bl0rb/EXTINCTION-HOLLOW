@@ -19,6 +19,7 @@ const DETOUR_TIME := 0.4 ## seconds without getting closer to the target before 
 @export var hunger_rate := 0.6 ## per second
 @export var starve_damage := 2.0 ## health per second on an empty stomach
 @export var regen := 0.5 ## health per second while well fed
+@export var freeze_damage := 1.0 ## health per second when freezing outside the cave
 
 var carried_xp := 0 ## XP collected outside the cave, lost on death
 var banked_xp := 0 ## XP brought to the cave, kept permanently
@@ -28,6 +29,8 @@ var stamina := 100.0
 var hunger := 100.0
 var dead := false
 var sprinting := false
+var temperature := 24.0
+var _burn_flash := 0.0
 
 var target := Vector2.ZERO
 var moving := false
@@ -41,6 +44,7 @@ var _best_dist := INF
 @onready var dust: CPUParticles2D = $Dust
 @onready var camera: GameCamera = $Camera2D
 @onready var _cave: Cave = get_tree().get_first_node_in_group("cave")
+@onready var _weather: Weather = get_tree().get_first_node_in_group("weather")
 @onready var _sprite_y := sprite.position.y
 
 
@@ -137,7 +141,29 @@ func take_damage(amount: float) -> void:
 		_die()
 
 
+## Fire and lava hurt continuously, without the knock of a bite.
+func burn(amount: float) -> void:
+	if dead:
+		return
+	health -= amount
+	_burn_flash -= amount
+	if _burn_flash <= 0.0:
+		_burn_flash = 6.0
+		sprite.modulate = Color(1.0, 0.55, 0.2)
+		create_tween().tween_property(sprite, "modulate", Color.WHITE, 0.3)
+	if health <= 0.0:
+		_die()
+
+
+## Heavy rain, snow and cold slow the dino down (GAME_SPEC §32-§34).
+func move_factor() -> float:
+	var weather := _weather.speed_factor() if _weather else 1.0
+	return weather * (0.9 if temperature < 5.0 else 1.0)
+
+
 func _die() -> void:
+	if dead:
+		return
 	dead = true
 	moving = false
 	prey = null
@@ -192,7 +218,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# speed up and ease into the target instead of starting and stopping dead
-	var speed := sprint_speed() if sprint else speed()
+	var speed := (sprint_speed() if sprint else speed()) * move_factor()
 	var to_target := target - global_position
 	var dist := to_target.length()
 	velocity = velocity.move_toward(to_target.normalized() * speed * clampf(dist / 12.0, 0.3, 1.0), acceleration * delta)
@@ -232,16 +258,24 @@ func _update_needs(delta: float) -> void:
 		stamina = maxf(stamina - sprint_cost * delta, 0.0)
 		if stamina == 0.0:
 			sprinting = false
-	else:
-		stamina = minf(stamina + stamina_regen * delta, max_stamina)
 	var in_cave := _cave.overlaps_body(self)
+	# the cave fire keeps it warm inside
+	temperature = maxf(_weather.temperature_at(global_position), 20.0) if in_cave else _weather.temperature_at(global_position)
+	if not (sprinting and moving and stamina > 0.0):
+		stamina = minf(stamina + stamina_regen * (0.5 if temperature < 5.0 else 1.0) * delta, max_stamina)
+	var freezing := temperature < -4.0 and not in_cave
+	if freezing:
+		health -= freeze_damage * delta
+		if health <= 0.0:
+			_die()
+			return
 	if moving and not in_cave:
 		hunger = maxf(hunger - hunger_rate * delta, 0.0)
 	if hunger == 0.0 and not in_cave:
 		health -= starve_damage * delta
 		if health <= 0.0:
 			_die()
-	elif hunger > max_hunger * 0.6:
+	elif hunger > max_hunger * 0.6 and not freezing:
 		health = minf(health + regen * delta, max_health())
 
 

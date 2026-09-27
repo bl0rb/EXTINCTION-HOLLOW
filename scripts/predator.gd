@@ -7,6 +7,7 @@ enum State { IDLE, WANDER, CHASE }
 const EYES_CALM := Color(0.7, 0.6, 0.4)
 const EYES_HUNTING := Color(1.6, 0.8, 0.5)
 const DIGEST_TIME := 3.0 ## idle time multiplier after eating
+const FIRE_FEAR := 70.0 ## keeps this far away from fire
 
 var state := State.IDLE
 var timer := 0.0
@@ -53,6 +54,13 @@ func _find_victim() -> Node2D:
 
 func _physics_process(delta: float) -> void:
 	_cooldown -= delta
+	for fire: Node2D in get_tree().get_nodes_in_group("fire"):
+		if fire.global_position.distance_to(global_position) < FIRE_FEAR:
+			panic(fire.global_position, 1.5)
+	if _flee_in_panic(species.chase_speed, delta):
+		if state == State.CHASE:
+			_rest()
+		return
 	if state != State.CHASE:
 		victim = _find_victim()
 		if victim:
