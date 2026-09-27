@@ -1,0 +1,19 @@
+class_name SaveGame
+## Progress is saved when the player is in the cave (GAME_SPEC §55).
+
+const PATH := "user://savegame.cfg"
+
+
+static func read(section: String, key: String, default: Variant) -> Variant:
+	var file := ConfigFile.new()
+	if file.load(PATH) != OK:
+		return default
+	return file.get_value(section, key, default)
+
+
+static func store(player: Player, cave: Cave) -> void:
+	var file := ConfigFile.new()
+	file.set_value("player", "banked_xp", player.banked_xp)
+	file.set_value("player", "upgrades", player.upgrades)
+	file.set_value("cave", "levels", cave.levels)
+	file.save(PATH)

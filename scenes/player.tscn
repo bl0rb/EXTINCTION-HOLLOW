@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" path="res://assets/shadow.png" id="4_shadow"]
 [ext_resource type="Texture2D" path="res://world/light_radial.tres" id="5_light"]
 
+[sub_resource type="Gradient" id="Gradient_dust"]
+colors = PackedColorArray(0.55, 0.5, 0.42, 0.7, 0.55, 0.5, 0.42, 0)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 7.0
 
@@ -21,6 +24,19 @@ texture = ExtResource("4_shadow")
 position = Vector2(0, -17)
 texture = ExtResource("2_sprite")
 hframes = 2
+
+[node name="Dust" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 12
+lifetime = 0.5
+local_coords = false
+direction = Vector2(0, -1)
+spread = 70.0
+gravity = Vector2(0, 30)
+initial_velocity_min = 8.0
+initial_velocity_max = 18.0
+scale_amount_max = 2.0
+color_ramp = SubResource("Gradient_dust")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_body")

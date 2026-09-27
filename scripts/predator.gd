@@ -28,7 +28,8 @@ func _rest(duration := 1.0) -> void:
 	eyes.modulate = EYES_CALM
 
 
-func _can_hunt(animal: Node2D) -> bool:
+## Untyped on purpose: the victim may have been eaten (freed) by someone else.
+func _can_hunt(animal) -> bool:
 	if not is_instance_valid(animal):
 		return false
 	if animal == player:
