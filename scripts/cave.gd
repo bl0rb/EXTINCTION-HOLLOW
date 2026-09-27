@@ -9,7 +9,9 @@ signal player_exited
 @onready var radius: float = ($CollisionShape2D.shape as CircleShape2D).radius
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var fire: Flicker = $FireLight
-@onready var _sprite_y := sprite.position.y
+
+const MOUTH := [0, 24, 28, 32, 36, 40] ## half width of the cave mouth per cave level
+const HEIGHT := [0, 31, 36, 41, 46, 51] ## height of the cave mouth per cave level
 
 var levels := {"level": 1, "strength": 0, "depth": 0, "heat": 0, "quake": 0, "cold": 0}
 
@@ -47,12 +49,30 @@ func buy_upgrade(id: String, player: Player) -> bool:
 	return true
 
 
-## The cave visibly grows with its level (GAME_SPEC §149.21).
+## Every upgrade shows (GAME_SPEC §15, §128, §149.21): the cave itself grows with its level
+## (food store, side chamber, stone pillars, ember-lit fortress), each stat adds its own parts.
 func _apply_level() -> void:
-	var s: float = 1.0 + 0.06 * (levels.level - 1)
-	sprite.scale = Vector2(s, s)
-	sprite.position.y = (_sprite_y + 4.0) * s - 4.0 # keep the cave mouth on the ground
-	fire.intensity = 1.0 + 0.15 * (levels.level - 1)
+	var level: int = levels.level
+	var half: float = MOUTH[level]
+	sprite.frame = level - 1
+	fire.intensity = 1.0 + 0.15 * (level - 1)
+	_part($Steps, "depth", Vector2(0, -15)) # steps lead down into the deep shelter
+	_part($Moss, "heat", Vector2(0, 7 - HEIGHT[level])) # damp moss keeps the heat out
+	_part($PillarL, "quake", Vector2(-half - 5, -30)) # stone braces against earthquakes
+	_part($PillarR, "quake", Vector2(half + 5, -30))
+	_part($WallL, "strength", Vector2(-half - 36, -14)) # piled stone walls
+	_part($WallR, "strength", Vector2(half + 36, -14))
+	_part($Nest, "cold", Vector2(0, -6)) # a bed of leaves against the cold
+	$Drips.emitting = levels.heat > 0
+	$Drips.position = Vector2(0, 14 - HEIGHT[level])
+	$DeepGlow.visible = levels.depth > 0
+	$DeepGlow.intensity = 0.6 + 0.25 * levels.depth
+
+
+func _part(part: Sprite2D, stat: String, pos: Vector2) -> void:
+	part.visible = levels[stat] > 0
+	part.frame = mini(levels[stat] / 2, 2) # bigger at stat level 2 and 4
+	part.position = pos
 
 
 func _on_body_entered(body: Node2D) -> void:
