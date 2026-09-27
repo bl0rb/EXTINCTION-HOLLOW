@@ -1,31 +1,22 @@
+local animals = require "main.animals"
+local collision = require "main.collision"
 local movement = require "main.movement"
 local pixel = require "main.pixel"
 
 go.property("speed", 90) -- pixels per second
 go.property("turn_speed", 12) -- radians per second
 go.property("radius", 10) -- half size of the collision footprint in pixels
+go.property("bite_range", 18) -- reach from the centre in pixels, added to the prey radius
+go.property("carried_xp", 0) -- XP collected outside the cave, lost on death
 
 local TOUCH = hash("touch")
-local TILEMAP = "/world#tilemap"
-local LAYER = "ground"
-local TILE_SIZE = 32
-local BLOCKING_TILES = { [4] = true } -- rock
 
-local function is_blocked(self, x, y)
-	for _, ox in ipairs({ -self.radius, self.radius }) do
-		for _, oy in ipairs({ -self.radius, self.radius }) do
-			local cx = math.floor((x + ox) / TILE_SIZE) + 1
-			local cy = math.floor((y + oy) / TILE_SIZE) + 1
-			local b = self.bounds
-			if cx < b.x or cy < b.y or cx >= b.x + b.w or cy >= b.y + b.h then
-				return true
-			end
-			if BLOCKING_TILES[tilemap.get_tile(TILEMAP, LAYER, cx, cy)] then
-				return true
-			end
-		end
-	end
-	return false
+local function eat(self)
+	self.carried_xp = self.carried_xp + animals.alive[self.prey].xp
+	animals.alive[self.prey] = nil
+	go.delete(self.prey)
+	self.prey = nil
+	self.moving = false
 end
 
 function init(self)
@@ -34,11 +25,19 @@ function init(self)
 	self.x, self.y, self.z = pos.x, pos.y, pos.z
 	self.angle = 0
 	self.moving = false
-	local bx, by, bw, bh = tilemap.get_bounds(TILEMAP)
-	self.bounds = { x = bx, y = by, w = bw, h = bh }
 end
 
 function update(self, dt)
+	local prey = self.prey and animals.alive[self.prey]
+	if prey then
+		-- keep chasing the selected prey wherever it runs
+		local pos = go.get_position(self.prey)
+		self.tx, self.ty = pos.x, pos.y
+		self.moving = true
+	elseif self.prey then
+		self.prey = nil
+		self.moving = false
+	end
 	if not self.moving then
 		return
 	end
@@ -47,8 +46,8 @@ function update(self, dt)
 
 	local nx, ny, arrived = movement.step(self.x, self.y, self.tx, self.ty, self.speed * dt)
 	-- resolve each axis separately so the dino slides along walls
-	local x = is_blocked(self, nx, self.y) and self.x or nx
-	local y = is_blocked(self, x, ny) and self.y or ny
+	local x = collision.is_blocked(nx, self.y, self.radius) and self.x or nx
+	local y = collision.is_blocked(x, ny, self.radius) and self.y or ny
 	if arrived or (x == self.x and y == self.y) then
 		self.moving = false
 	end
@@ -57,6 +56,10 @@ function update(self, dt)
 	-- movement stays smooth internally, rendering snaps to whole pixels
 	go.set_position(vmath.vector3(math.floor(x + 0.5), math.floor(y + 0.5), self.z))
 	go.set_rotation(vmath.quat_rotation_z(self.angle))
+
+	if prey and math.sqrt((self.tx - x) ^ 2 + (self.ty - y) ^ 2) <= self.bite_range + prey.radius then
+		eat(self)
+	end
 end
 
 function on_input(self, action_id, action)
@@ -66,6 +69,8 @@ function on_input(self, action_id, action)
 		local zoom = go.get("/camera#camera", "zoom")
 		-- a new click always replaces the previous target
 		self.tx, self.ty = pixel.screen_to_world(action.screen_x, action.screen_y, cam.x, cam.y, zoom, width, height)
+		-- clicking an animal selects it as prey, clicking the ground just walks there
+		self.prey = animals.find_at(self.tx, self.ty)
 		self.moving = true
 		return true
 	end
