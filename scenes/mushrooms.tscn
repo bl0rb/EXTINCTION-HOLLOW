@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/mushrooms.png" id="1_sprite"]
+[ext_resource type="Texture2D" path="res://world/light_radial.tres" id="2_light"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_unshaded"]
+light_mode = 1
+
+[node name="Mushrooms" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_unshaded")
+texture = ExtResource("1_sprite")
+offset = Vector2(0, -7)
+
+[node name="Light" type="PointLight2D" parent="."]
+position = Vector2(0, -6)
+color = Color(0.3, 1, 0.9, 1)
+energy = 0.9
+texture = ExtResource("2_light")
+texture_scale = 0.35
