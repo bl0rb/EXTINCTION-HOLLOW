@@ -19,6 +19,7 @@ var _cooldown := 0.0
 
 
 func _ready() -> void:
+	_vary()
 	_rest()
 
 

@@ -6,6 +6,10 @@ extends Prey
 @onready var pond: Pond = get_parent()
 
 
+func _vary() -> void:
+	pass # fish stay small and pale under the water
+
+
 func _physics_process(delta: float) -> void:
 	var away := global_position - player.global_position
 	var alarmed := not player.dead and away.length() < species.fear_radius and player.velocity.length() > 10.0
@@ -30,11 +34,11 @@ func _physics_process(delta: float) -> void:
 	var to_target := target - global_position
 	var desired := to_target.normalized() * speed * clampf(to_target.length() / 10.0, 0.3, 1.0)
 	velocity = velocity.move_toward(desired, species.acceleration * delta)
-	_animate(to_target, velocity.length() * delta / species.stride, delta)
+	_animate(velocity, velocity.length() * delta / species.stride, delta)
 	if to_target.length() <= maxf(velocity.length() * delta, 0.5):
 		global_position = target
 		velocity = Vector2.ZERO
 		if state == State.WANDER:
 			_rest()
 	else:
-		global_position += velocity * delta
+		global_position = pond.clamp_point(global_position + velocity * delta) # a winding river keeps them in its bed

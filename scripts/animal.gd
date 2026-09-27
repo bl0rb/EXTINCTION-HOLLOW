@@ -14,6 +14,13 @@ var _panic_left := 0.0
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 
 
+## No two animals look quite alike: a little bigger or smaller, a slightly different colour.
+func _vary() -> void:
+	var s := randf_range(0.88, 1.14)
+	sprite.scale = Vector2(s, s)
+	sprite.self_modulate = Color(randf_range(0.86, 1.1), randf_range(0.86, 1.08), randf_range(0.86, 1.08))
+
+
 ## Size class (GAME_SPEC §8): animals only eat what is smaller than themselves.
 func get_size() -> int:
 	return species.size
@@ -41,8 +48,9 @@ func _walk(speed: float, delta: float) -> bool:
 	var to_target := target - global_position
 	var dist := to_target.length()
 	var desired := to_target.normalized() * speed * clampf(dist / 10.0, 0.3, 1.0)
-	velocity = velocity.move_toward(desired, species.acceleration * delta)
-	_animate(to_target, velocity.length() * delta / species.stride, delta)
+	# brake harder when turning back, and face the way the animal really moves
+	velocity = velocity.move_toward(desired, species.acceleration * (2.0 if velocity.dot(desired) < 0.0 else 1.0) * delta)
+	_animate(velocity, velocity.length() * delta / species.stride, delta)
 	if dist <= maxf(velocity.length() * delta, 0.5):
 		velocity = to_target / delta
 		move_and_slide()

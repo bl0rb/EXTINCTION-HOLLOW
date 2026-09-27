@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/prey.gd" id="1_prey"]
+[ext_resource type="Resource" path="res://data/ankylo.tres" id="2_species"]
+[ext_resource type="Texture2D" path="res://assets/ankylo.png" id="3_sprite"]
+[ext_resource type="Texture2D" path="res://assets/shadow.png" id="4_shadow"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 10.0
+
+[node name="Ankylo" type="CharacterBody2D" groups=["prey", "ankylo"]]
+collision_layer = 4
+motion_mode = 1
+script = ExtResource("1_prey")
+species = ExtResource("2_species")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+scale = Vector2(1.1, 0.8)
+texture = ExtResource("4_shadow")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -14)
+texture = ExtResource("3_sprite")
+hframes = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")

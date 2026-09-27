@@ -77,6 +77,8 @@ func _end() -> void:
 		_volcano.set_activity(Volcano.CALM)
 		_weather.set_weather(Weather.Kind.ASH, ASH_TIME)
 	_weather.quake = 0.0
+	if active.type == &"earthquake":
+		get_tree().call_group("navigation", "rebake") # fallen rocks block the way now
 	active = null
 	pending = null
 	_timer = randf_range(min_interval, max_interval)

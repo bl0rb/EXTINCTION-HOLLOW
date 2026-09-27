@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/lava_pool.gd" id="1_pool"]
+[ext_resource type="Texture2D" path="res://assets/lava_pool.png" id="2_lava"]
+[ext_resource type="Shader" path="res://shaders/lava.gdshader" id="3_shader"]
+[ext_resource type="Texture2D" path="res://world/light_radial.tres" id="4_light"]
+[ext_resource type="Script" path="res://scripts/flicker.gd" id="5_flicker"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lava"]
+frequency = 0.02
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lava"]
+width = 128
+height = 128
+seamless = true
+noise = SubResource("FastNoiseLite_lava")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lava"]
+shader = ExtResource("3_shader")
+shader_parameter/noise = SubResource("NoiseTexture2D_lava")
+shader_parameter/activity = 1.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pool"]
+radius = 11.0
+height = 50.0
+
+[node name="LavaPool" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_pool")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_lava")
+texture = ExtResource("2_lava")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_pool")
+
+[node name="Glow" type="PointLight2D" parent="."]
+color = Color(1, 0.5, 0.2, 1)
+texture = ExtResource("4_light")
+texture_scale = 1.2
+script = ExtResource("5_flicker")
