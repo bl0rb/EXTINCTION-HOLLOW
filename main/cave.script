@@ -1,0 +1,22 @@
+go.property("radius", 20) -- entrance size in pixels: clicks inside select the cave, the player inside enters it
+
+local PLAYER = "/player"
+
+local function player_inside(self)
+	local player = go.get_position(PLAYER)
+	local pos = go.get_position()
+	return (player.x - pos.x) ^ 2 + (player.y - pos.y) ^ 2 <= self.radius ^ 2
+end
+
+function init(self)
+	-- the player spawns at the cave, so starting inside does not count as entering
+	self.inside = player_inside(self)
+end
+
+function update(self, dt)
+	local inside = player_inside(self)
+	if inside and not self.inside then
+		msg.post(PLAYER, "enter_cave")
+	end
+	self.inside = inside
+end
