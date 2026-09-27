@@ -1,0 +1,19 @@
+name: "main"
+instances {
+  id: "world"
+  prototype: "/main/world.go"
+}
+instances {
+  id: "player"
+  prototype: "/main/player.go"
+  position {
+    x: 640.0
+    y: 480.0
+    z: 0.5
+  }
+}
+instances {
+  id: "camera"
+  prototype: "/main/camera.go"
+}
+scale_along_z: 0
