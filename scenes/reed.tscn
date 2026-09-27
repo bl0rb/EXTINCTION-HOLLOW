@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/reed.png" id="1_sprite"]
+[ext_resource type="Shader" path="res://shaders/sway.gdshader" id="2_sway"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sway"]
+shader = ExtResource("2_sway")
+shader_parameter/amount = 1.0
+
+[node name="Reed" type="Sprite2D"]
+material = SubResource("ShaderMaterial_sway")
+texture = ExtResource("1_sprite")
+offset = Vector2(0, -15)
+hframes = 3

@@ -1,91 +1,106 @@
 [gd_scene format=3]
 
-[ext_resource type="Texture2D" path="res://assets/ground.png" id="1_muem4"]
-[ext_resource type="Shader" path="res://shaders/water.gdshader" id="2_dp3eg"]
-[ext_resource type="Texture2D" path="res://assets/creek.png" id="3_0ld40"]
-[ext_resource type="Texture2D" path="res://assets/pond.png" id="4_gqmmt"]
-[ext_resource type="Shader" path="res://shaders/waterfall.gdshader" id="5_yc10j"]
-[ext_resource type="Texture2D" path="res://assets/waterfall.png" id="6_jscy8"]
-[ext_resource type="PackedScene" path="res://scenes/cave.tscn" id="7_pm3ni"]
-[ext_resource type="PackedScene" path="res://scenes/predator.tscn" id="predator_scene"]
-[ext_resource type="Script" path="res://scripts/pond.gd" id="pond_script"]
-[ext_resource type="Script" path="res://scripts/spawner.gd" id="spawner_script"]
-[ext_resource type="Script" path="res://scripts/hud.gd" id="hud_script"]
-[ext_resource type="PackedScene" path="res://scenes/fish.tscn" id="fish_scene"]
-[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="8_y6deb"]
-[ext_resource type="PackedScene" path="res://scenes/lizard.tscn" id="9_og1vs"]
-[ext_resource type="PackedScene" path="res://scenes/tree.tscn" id="10_2wyq8"]
-[ext_resource type="PackedScene" path="res://scenes/rock_large.tscn" id="11_vxglm"]
-[ext_resource type="PackedScene" path="res://scenes/rock_small.tscn" id="12_2f3dj"]
-[ext_resource type="PackedScene" path="res://scenes/mushrooms.tscn" id="13_yq6so"]
-[ext_resource type="PackedScene" path="res://scenes/fern.tscn" id="14_fv21b"]
-[ext_resource type="Shader" path="res://shaders/fog.gdshader" id="15_tel4y"]
-[ext_resource type="Texture2D" path="res://world/light_radial.tres" id="16_qkpxi"]
-[ext_resource type="Shader" path="res://shaders/vignette.gdshader" id="17_5q0nq"]
+[ext_resource type="Texture2D" path="res://assets/ground.png" id="1_2f3dj"]
+[ext_resource type="Texture2D" path="res://assets/skeleton.png" id="2_yq6so"]
+[ext_resource type="Shader" path="res://shaders/water.gdshader" id="3_fv21b"]
+[ext_resource type="Texture2D" path="res://assets/creek.png" id="4_tel4y"]
+[ext_resource type="Texture2D" path="res://assets/pond.png" id="5_qkpxi"]
+[ext_resource type="Script" path="res://scripts/pond.gd" id="6_5q0nq"]
+[ext_resource type="Shader" path="res://shaders/waterfall.gdshader" id="7_dgi5k"]
+[ext_resource type="Texture2D" path="res://assets/waterfall.png" id="8_j8jky"]
+[ext_resource type="PackedScene" path="res://scenes/cave.tscn" id="9_kmb1v"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="10_fuf3a"]
+[ext_resource type="PackedScene" path="res://scenes/lizard.tscn" id="11_pibwh"]
+[ext_resource type="PackedScene" path="res://scenes/tree.tscn" id="12_c6pm6"]
+[ext_resource type="PackedScene" path="res://scenes/rock_large.tscn" id="13_5he1u"]
+[ext_resource type="PackedScene" path="res://scenes/rock_small.tscn" id="14_5poiv"]
+[ext_resource type="PackedScene" path="res://scenes/mushrooms.tscn" id="15_2cjbq"]
+[ext_resource type="PackedScene" path="res://scenes/predator.tscn" id="16_chjal"]
+[ext_resource type="PackedScene" path="res://scenes/deadtree.tscn" id="17_cjqg0"]
+[ext_resource type="PackedScene" path="res://scenes/fern.tscn" id="18_vchkt"]
+[ext_resource type="PackedScene" path="res://scenes/reed.tscn" id="19_txyw0"]
+[ext_resource type="PackedScene" path="res://scenes/grass.tscn" id="20_vc5cj"]
+[ext_resource type="Script" path="res://scripts/spawner.gd" id="21_nvyfr"]
+[ext_resource type="PackedScene" path="res://scenes/fish.tscn" id="22_ty1g6"]
+[ext_resource type="Shader" path="res://shaders/fog.gdshader" id="23_j2jfr"]
+[ext_resource type="Script" path="res://scripts/fireflies.gd" id="24_bjg73"]
+[ext_resource type="Texture2D" path="res://assets/leaf.png" id="25_bu4jf"]
+[ext_resource type="Texture2D" path="res://world/light_radial.tres" id="26_o7ddy"]
+[ext_resource type="Shader" path="res://shaders/vignette.gdshader" id="27_0loja"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="28_ids8r"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dgi5k"]
-shader = ExtResource("2_dp3eg")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dnhof"]
+shader = ExtResource("3_fv21b")
 shader_parameter/shallow = null
 shader_parameter/deep = null
 shader_parameter/glint = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_j8jky"]
-shader = ExtResource("5_yc10j")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1v6qk"]
+shader = ExtResource("7_dgi5k")
 shader_parameter/dark = null
 shader_parameter/mid = null
 shader_parameter/foam = null
 shader_parameter/speed = null
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kmb1v"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_augu2"]
 size = Vector2(16, 960)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fuf3a"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tm6hj"]
 size = Vector2(16, 960)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pibwh"]
-size = Vector2(1280, 16)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kf5aa"]
+size = Vector2(2304, 16)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_c6pm6"]
-size = Vector2(1280, 16)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t5ykj"]
+size = Vector2(2304, 16)
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_5he1u"]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_e755i"]
 closed = false
-polygon = PackedVector2Array(0, 254.36589, 16, 256.5127, 32, 255.4319, 48, 253.1998, 64, 252.61395, 80, 254.80565, 96, 258.25085, 112, 259.99838, 128, 258.1073, 144, 253.28862, 160, 248.39702, 176, 246.18349, 192, 247.14813, 208, 249.24838, 224, 249.69159, 240, 247.32787, 256, 243.66676, 272, 241.67511, 288, 243.34137, 304, 248.00868, 320, 252.85054, 336, 255.10362, 352, 254.22989, 368, 252.24017, 384, 251.92374, 400, 254.45026, 416, 258.32574, 432, 260.56833, 448, 259.1417, 464, 254.64708, 480, 249.88051, 496, 247.615, 512, 248.42393, 528, 250.3262, 544, 250.5343, 560, 247.85727, 576, 243.77222, 592, 241.2752, 608, 242.45035, 624, 246.75322, 640, 251.42036, 656, 253.6717, 672, 252.90097, 688, 251.06163, 704, 250.94116, 720, 253.75354, 736, 258.0401, 752, 260.79175, 768, 259.87686, 784, 255.78221, 800, 251.23677, 816, 249.02527, 832, 249.7845, 848, 251.58652, 864, 251.64197, 880, 248.71208, 896, 244.23526, 912, 241.23209, 928, 241.88116, 944, 245.75392, 960, 250.15753, 976, 252.3048, 992, 251.53072, 1008, 249.73973, 1024, 249.72505, 1040, 252.75223, 1056, 257.40515, 1072, 260.6534, 1088, 260.2724, 1104, 256.63217, 1120, 252.38809, 1136, 250.32779, 1152, 251.14236, 1168, 252.94882, 1184, 252.94821, 1200, 249.84607, 1216, 245.03403, 1232, 241.5503, 1248, 241.66434, 1264, 245.06454, 1280, 249.1341)
+polygon = PackedVector2Array(0, 254.36589, 16, 256.5127, 32, 255.4319, 48, 253.1998, 64, 252.61395, 80, 254.80565, 96, 258.25085, 112, 259.99838, 128, 258.1073, 144, 253.28862, 160, 248.39702, 176, 246.18349, 192, 247.14813, 208, 249.24838, 224, 249.69159, 240, 247.32787, 256, 243.66676, 272, 241.67511, 288, 243.34137, 304, 248.00868, 320, 252.85054, 336, 255.10362, 352, 254.22989, 368, 252.24017, 384, 251.92374, 400, 254.45026, 416, 258.32574, 432, 260.56833, 448, 259.1417, 464, 254.64708, 480, 249.88051, 496, 247.615, 512, 248.42393, 528, 250.3262, 544, 250.5343, 560, 247.85727, 576, 243.77222, 592, 241.2752, 608, 242.45035, 624, 246.75322, 640, 251.42036, 656, 253.6717, 672, 252.90097, 688, 251.06163, 704, 250.94116, 720, 253.75354, 736, 258.0401, 752, 260.79175, 768, 259.87686, 784, 255.78221, 800, 251.23677, 816, 249.02527, 832, 249.7845, 848, 251.58652, 864, 251.64197, 880, 248.71208, 896, 244.23526, 912, 241.23209, 928, 241.88116, 944, 245.75392, 960, 250.15753, 976, 252.3048, 992, 251.53072, 1008, 249.73973, 1024, 249.72505, 1040, 252.75223, 1056, 257.40515, 1072, 260.6534, 1088, 260.2724, 1104, 256.63217, 1120, 252.38809, 1136, 250.32779, 1152, 251.14236, 1168, 252.94882, 1184, 252.94821, 1200, 249.84607, 1216, 245.03403, 1232, 241.5503, 1248, 241.66434, 1264, 245.06454, 1280, 249.1341, 1296, 251.08669)
 
-[sub_resource type="Gradient" id="Gradient_5poiv"]
+[sub_resource type="Gradient" id="Gradient_ro3en"]
 colors = PackedColorArray(0.8, 0.92, 1, 0.6, 0.8, 0.92, 1, 0)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_2cjbq"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_od4ux"]
 frequency = 0.012
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_chjal"]
-width = 256
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xhfw6"]
+width = 460
 height = 192
-noise = SubResource("FastNoiseLite_2cjbq")
+noise = SubResource("FastNoiseLite_od4ux")
 seamless = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cjqg0"]
-shader = ExtResource("15_tel4y")
-shader_parameter/noise = SubResource("NoiseTexture2D_chjal")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1epgm"]
+shader = ExtResource("23_j2jfr")
+shader_parameter/noise = SubResource("NoiseTexture2D_xhfw6")
 shader_parameter/fog_color = null
 shader_parameter/density = null
 shader_parameter/drift = null
-shader_parameter/world_size = null
+shader_parameter/world_size = Vector2(2304, 960)
+shader_parameter/clear_x = Vector2(1250, 1450)
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vchkt"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_152kg"]
 blend_mode = 1
 light_mode = 1
 
-[sub_resource type="Gradient" id="Gradient_txyw0"]
-offsets = PackedFloat32Array(0, 0.2, 0.8, 1)
+[sub_resource type="Gradient" id="Gradient_r4e17"]
+offsets = PackedFloat32Array(0, 0.1, 0.85, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vc5cj"]
-shader = ExtResource("17_5q0nq")
+[sub_resource type="Gradient" id="Gradient_y57op"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.25, 0.4, 0.2, 1, 0.45, 0.32, 0.16, 1, 0.36, 0.2, 0.12, 1)
+
+[sub_resource type="Gradient" id="Gradient_mlv25"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.5, 1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a82wo"]
+shader = ExtResource("27_0loja")
 shader_parameter/tint = null
 shader_parameter/strength = null
 
-[sub_resource type="Environment" id="Environment_nvyfr"]
+[sub_resource type="Environment" id="Environment_gdvew"]
 background_mode = 3
 glow_enabled = true
 glow_intensity = 0.9
@@ -93,1256 +108,2211 @@ glow_bloom = 0.05
 glow_blend_mode = 0
 glow_hdr_threshold = 0.8
 
-[node name="Main" type="Node2D" unique_id=2092423047]
+[node name="Main" type="Node2D" unique_id=1079900197]
 
-[node name="Ground" type="Sprite2D" parent="." unique_id=1288496811]
-texture = ExtResource("1_muem4")
+[node name="Ground" type="Sprite2D" parent="." unique_id=640076091]
+texture = ExtResource("1_2f3dj")
 centered = false
 
-[node name="Creek" type="Sprite2D" parent="." unique_id=1844537127]
-material = SubResource("ShaderMaterial_dgi5k")
+[node name="Skeleton" type="Sprite2D" parent="." unique_id=1113587160]
+position = Vector2(1760, 420)
+texture = ExtResource("2_yq6so")
+
+[node name="Creek" type="Sprite2D" parent="." unique_id=2142264737]
+material = SubResource("ShaderMaterial_dnhof")
 position = Vector2(180, 0)
-texture = ExtResource("3_0ld40")
+texture = ExtResource("4_tel4y")
 centered = false
 
-[node name="Pond" type="Sprite2D" parent="." unique_id=1609209947]
-script = ExtResource("pond_script")
-material = SubResource("ShaderMaterial_dgi5k")
+[node name="Pond" type="Sprite2D" parent="." unique_id=987233015]
+material = SubResource("ShaderMaterial_dnhof")
 position = Vector2(300, 372)
-texture = ExtResource("4_gqmmt")
+texture = ExtResource("5_qkpxi")
+script = ExtResource("6_5q0nq")
 
-[node name="Waterfall" type="Sprite2D" parent="." unique_id=1086100715]
-material = SubResource("ShaderMaterial_j8jky")
+[node name="Waterfall" type="Sprite2D" parent="." unique_id=532009851]
+material = SubResource("ShaderMaterial_1v6qk")
 position = Vector2(300, 297.69562)
-texture = ExtResource("6_jscy8")
+texture = ExtResource("8_j8jky")
 
-[node name="Terrain" type="StaticBody2D" parent="." unique_id=1696872714]
+[node name="Terrain" type="StaticBody2D" parent="." unique_id=86405]
 
-[node name="Cliff" type="CollisionPolygon2D" parent="Terrain" unique_id=659046838]
+[node name="Cliff" type="CollisionPolygon2D" parent="Terrain" unique_id=81748722]
 polygon = PackedVector2Array(0, 256.36588, 16, 258.5127, 32, 257.43192, 48, 255.1998, 64, 254.61395, 80, 256.80563, 96, 260.25085, 112, 261.99838, 128, 260.1073, 144, 255.28862, 160, 250.39702, 176, 248.18349, 192, 249.14813, 208, 251.24838, 224, 251.69159, 240, 249.32787, 256, 245.66676, 272, 243.67511, 288, 245.34137, 304, 250.00868, 320, 254.85054, 336, 257.1036, 352, 256.2299, 368, 254.24017, 384, 253.92374, 400, 256.45026, 416, 260.32574, 432, 262.56833, 448, 261.1417, 464, 256.64706, 480, 251.88051, 496, 249.615, 512, 250.42393, 528, 252.3262, 544, 252.5343, 560, 249.85727, 576, 245.77222, 592, 243.2752, 608, 244.45035, 624, 248.75322, 640, 253.42036, 656, 255.6717, 672, 254.90097, 688, 253.06163, 704, 252.94116, 720, 255.75354, 736, 260.0401, 752, 262.79175, 768, 261.87686, 784, 257.78223, 800, 253.23677, 816, 251.02527, 832, 251.7845, 848, 253.58652, 864, 253.64197, 880, 250.71208, 896, 246.23526, 912, 243.23209, 928, 243.88116, 944, 247.75392, 960, 252.15753, 976, 254.3048, 992, 253.53072, 1008, 251.73973, 1008, 311.3162, 992, 312.53998, 976, 313.63437, 960, 312.59988, 944, 309.7713, 928, 307.4684, 912, 307.91818, 896, 311.22308, 880, 315.11496, 864, 316.74686, 848, 315.06552, 832, 311.79224, 816, 310.15295, 800, 312.33676, 784, 317.71512, 768, 323.2561, 752, 325.80154, 736, 324.38077, 720, 320.7305, 704, 317.67096, 688, 316.7342, 672, 317.01996, 656, 316.2018, 640, 312.7978, 624, 307.75623, 608, 303.9683, 592, 304.04468, 576, 308.1584, 560, 313.7455, 544, 317.3643, 528, 317.25812, 512, 314.5877, 496, 312.36853, 480, 313.00015, 464, 316.3941, 448, 320.1847, 432, 321.7848, 416, 320.54172, 400, 318.19516, 384, 317.27325, 368, 318.79385, 352, 321.2299, 336, 321.6597, 320, 318.20416, 304, 311.75815, 288, 305.561, 272, 302.89328, 256, 304.70898, 240, 309.0719, 224, 312.80685, 208, 313.99747, 192, 313.30875, 176, 313.1144, 160, 315.22855, 144, 319.18045, 128, 322.498, 112, 322.77203, 96, 319.7714, 80, 315.80884, 64, 313.98914, 48, 315.72592, 32, 319.5463, 16, 322.18146, 0, 321.09378)
 
-[node name="@CollisionPolygon2D@2" type="CollisionPolygon2D" parent="Terrain" unique_id=958346109]
-polygon = PackedVector2Array(1112, 256.38336, 1128, 252.97545, 1144, 252.44386, 1160, 254.10486, 1176, 255.31473, 1192, 253.75935, 1208, 249.4765, 1224, 244.93701, 1240, 243.10805, 1256, 245.08237, 1272, 249.21693, 1280, 251.1341, 1280, 315.6355, 1272, 314.07486, 1256, 309.99442, 1240, 307.21002, 1224, 307.60516, 1208, 310.51254, 1192, 313.44934, 1176, 314.34418, 1160, 313.3553, 1144, 312.73123, 1128, 314.808, 1112, 319.8108)
+[node name="@CollisionPolygon2D@2" type="CollisionPolygon2D" parent="Terrain" unique_id=989617943]
+polygon = PackedVector2Array(1112, 256.38336, 1128, 252.97545, 1144, 252.44386, 1160, 254.10486, 1176, 255.31473, 1192, 253.75935, 1208, 249.4765, 1224, 244.93701, 1240, 243.10805, 1256, 245.08237, 1272, 249.21693, 1288, 252.48575, 1300, 253.09752, 1300, 270.05615, 1288, 279.13174, 1272, 288.88092, 1256, 297.38782, 1240, 307.21002, 1224, 307.60516, 1208, 310.51254, 1192, 313.44934, 1176, 314.34418, 1160, 313.3553, 1144, 312.73123, 1128, 314.808, 1112, 319.8108)
 
-[node name="Pond" type="CollisionPolygon2D" parent="Terrain" unique_id=1463947589]
+[node name="Pond" type="CollisionPolygon2D" parent="Terrain" unique_id=1476771767]
 polygon = PackedVector2Array(410, 372, 406.25183, 384.94095, 395.2628, 397, 377.78174, 407.35535, 355, 415.30127, 328.4701, 420.2963, 300, 422, 271.5299, 420.2963, 245, 415.30127, 222.21826, 407.35535, 204.73721, 397, 193.74817, 384.94095, 190, 372, 193.74817, 359.05905, 204.73721, 347, 222.21825, 336.64465, 245.00002, 328.69873, 271.5299, 323.7037, 300, 322, 328.4701, 323.7037, 355, 328.69873, 377.78174, 336.64465, 395.2628, 347, 406.25183, 359.05905)
 
-[node name="Border" type="CollisionShape2D" parent="Terrain" unique_id=628561391]
+[node name="Border" type="CollisionShape2D" parent="Terrain" unique_id=1667400558]
 position = Vector2(-8, 480)
-shape = SubResource("RectangleShape2D_kmb1v")
+shape = SubResource("RectangleShape2D_augu2")
 
-[node name="@CollisionShape2D@3" type="CollisionShape2D" parent="Terrain" unique_id=1042225519]
-position = Vector2(1288, 480)
-shape = SubResource("RectangleShape2D_fuf3a")
+[node name="@CollisionShape2D@3" type="CollisionShape2D" parent="Terrain" unique_id=1241736821]
+position = Vector2(2312, 480)
+shape = SubResource("RectangleShape2D_tm6hj")
 
-[node name="@CollisionShape2D@4" type="CollisionShape2D" parent="Terrain" unique_id=884767457]
-position = Vector2(640, -8)
-shape = SubResource("RectangleShape2D_pibwh")
+[node name="@CollisionShape2D@4" type="CollisionShape2D" parent="Terrain" unique_id=1047948999]
+position = Vector2(1152, -8)
+shape = SubResource("RectangleShape2D_kf5aa")
 
-[node name="@CollisionShape2D@5" type="CollisionShape2D" parent="Terrain" unique_id=1918216185]
-position = Vector2(640, 968)
-shape = SubResource("RectangleShape2D_c6pm6")
+[node name="@CollisionShape2D@5" type="CollisionShape2D" parent="Terrain" unique_id=1266484456]
+position = Vector2(1152, 968)
+shape = SubResource("RectangleShape2D_t5ykj")
 
-[node name="CliffOccluder" type="LightOccluder2D" parent="." unique_id=1325681403]
-occluder = SubResource("OccluderPolygon2D_5he1u")
+[node name="CliffOccluder" type="LightOccluder2D" parent="." unique_id=169867037]
+occluder = SubResource("OccluderPolygon2D_e755i")
 
-[node name="Cave" parent="." unique_id=51289451 instance=ExtResource("7_pm3ni")]
+[node name="Cave" parent="." unique_id=1486120734 instance=ExtResource("9_kmb1v")]
 position = Vector2(640, 321.7978)
 
-[node name="Actors" type="Node2D" parent="." unique_id=2087219329]
+[node name="Actors" type="Node2D" parent="." unique_id=139520960]
 y_sort_enabled = true
 
-[node name="Player" parent="Actors" unique_id=1582618152 instance=ExtResource("8_y6deb")]
+[node name="Player" parent="Actors" unique_id=373907053 instance=ExtResource("10_fuf3a")]
 position = Vector2(640, 321.7978)
 
-[node name="Lizard1" parent="Actors" unique_id=1342123769 instance=ExtResource("9_og1vs")]
+[node name="Lizard1" parent="Actors" unique_id=1346070810 instance=ExtResource("11_pibwh")]
 position = Vector2(420, 640)
 
-[node name="Lizard2" parent="Actors" unique_id=1656582837 instance=ExtResource("9_og1vs")]
+[node name="Lizard2" parent="Actors" unique_id=1429804662 instance=ExtResource("11_pibwh")]
 position = Vector2(860, 660)
 
-[node name="Lizard3" parent="Actors" unique_id=651201090 instance=ExtResource("9_og1vs")]
+[node name="Lizard3" parent="Actors" unique_id=18548384 instance=ExtResource("11_pibwh")]
 position = Vector2(250, 520)
 
-[node name="Lizard4" parent="Actors" unique_id=782030753 instance=ExtResource("9_og1vs")]
+[node name="Lizard4" parent="Actors" unique_id=855992500 instance=ExtResource("11_pibwh")]
 position = Vector2(1080, 760)
 
-[node name="Lizard5" parent="Actors" unique_id=1942613380 instance=ExtResource("9_og1vs")]
+[node name="Lizard5" parent="Actors" unique_id=214944671 instance=ExtResource("11_pibwh")]
 position = Vector2(700, 760)
 
-[node name="Lizard6" parent="Actors" unique_id=1930986500 instance=ExtResource("9_og1vs")]
+[node name="Lizard6" parent="Actors" unique_id=1496540081 instance=ExtResource("11_pibwh")]
 position = Vector2(560, 480)
 
-[node name="Tree" parent="Actors" unique_id=2146487817 instance=ExtResource("10_2wyq8")]
+[node name="Tree" parent="Actors" unique_id=1069535791 instance=ExtResource("12_c6pm6")]
 position = Vector2(40, 70)
 
-[node name="@StaticBody2D@6" parent="Actors" unique_id=151463453 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@6" parent="Actors" unique_id=632473019 instance=ExtResource("12_c6pm6")]
 position = Vector2(130, 150)
 variant = 1
 
-[node name="@StaticBody2D@7" parent="Actors" unique_id=1481296486 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@7" parent="Actors" unique_id=1729416705 instance=ExtResource("12_c6pm6")]
 position = Vector2(80, 232)
 
-[node name="@StaticBody2D@8" parent="Actors" unique_id=529991659 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@8" parent="Actors" unique_id=2083461254 instance=ExtResource("12_c6pm6")]
 position = Vector2(380, 80)
 variant = 1
 
-[node name="@StaticBody2D@9" parent="Actors" unique_id=52805785 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@9" parent="Actors" unique_id=1285746930 instance=ExtResource("12_c6pm6")]
 position = Vector2(460, 196)
 
-[node name="@StaticBody2D@10" parent="Actors" unique_id=1137584935 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@10" parent="Actors" unique_id=843513210 instance=ExtResource("12_c6pm6")]
 position = Vector2(560, 60)
 variant = 1
 
-[node name="@StaticBody2D@11" parent="Actors" unique_id=819594232 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@11" parent="Actors" unique_id=1081128062 instance=ExtResource("12_c6pm6")]
 position = Vector2(690, 130)
 
-[node name="@StaticBody2D@12" parent="Actors" unique_id=353731375 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@12" parent="Actors" unique_id=1379797970 instance=ExtResource("12_c6pm6")]
 position = Vector2(820, 58)
 variant = 1
 
-[node name="@StaticBody2D@13" parent="Actors" unique_id=226699138 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@13" parent="Actors" unique_id=720872593 instance=ExtResource("12_c6pm6")]
 position = Vector2(900, 200)
 
-[node name="@StaticBody2D@14" parent="Actors" unique_id=1758750525 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@14" parent="Actors" unique_id=631611930 instance=ExtResource("12_c6pm6")]
 position = Vector2(1180, 80)
 
-[node name="@StaticBody2D@15" parent="Actors" unique_id=326958282 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@15" parent="Actors" unique_id=95941521 instance=ExtResource("12_c6pm6")]
 position = Vector2(1250, 200)
 variant = 1
 
-[node name="@StaticBody2D@16" parent="Actors" unique_id=2004225012 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@16" parent="Actors" unique_id=2018185698 instance=ExtResource("12_c6pm6")]
 position = Vector2(960, 110)
 variant = 1
 
-[node name="@StaticBody2D@17" parent="Actors" unique_id=1654679236 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@17" parent="Actors" unique_id=1756901925 instance=ExtResource("12_c6pm6")]
 position = Vector2(600, 226)
 variant = 1
 
-[node name="@StaticBody2D@18" parent="Actors" unique_id=1894088147 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@18" parent="Actors" unique_id=614151120 instance=ExtResource("12_c6pm6")]
 position = Vector2(330, 226)
 
-[node name="@StaticBody2D@19" parent="Actors" unique_id=1153973863 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@19" parent="Actors" unique_id=644090636 instance=ExtResource("12_c6pm6")]
 position = Vector2(30, 430)
 variant = 1
 
-[node name="@StaticBody2D@20" parent="Actors" unique_id=950461441 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@20" parent="Actors" unique_id=1482334259 instance=ExtResource("12_c6pm6")]
 position = Vector2(62, 560)
 
-[node name="@StaticBody2D@21" parent="Actors" unique_id=631374418 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@21" parent="Actors" unique_id=996381784 instance=ExtResource("12_c6pm6")]
 position = Vector2(22, 700)
 variant = 1
 
-[node name="@StaticBody2D@22" parent="Actors" unique_id=1326576254 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@22" parent="Actors" unique_id=1227641157 instance=ExtResource("12_c6pm6")]
 position = Vector2(70, 850)
 
-[node name="@StaticBody2D@23" parent="Actors" unique_id=22796734 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@23" parent="Actors" unique_id=97044006 instance=ExtResource("12_c6pm6")]
 position = Vector2(40, 955)
 variant = 1
 
-[node name="@StaticBody2D@24" parent="Actors" unique_id=991969564 instance=ExtResource("10_2wyq8")]
-position = Vector2(1250, 400)
+[node name="@StaticBody2D@24" parent="Actors" unique_id=2045549105 instance=ExtResource("12_c6pm6")]
+position = Vector2(1236, 400)
 
-[node name="@StaticBody2D@25" parent="Actors" unique_id=820803506 instance=ExtResource("10_2wyq8")]
-position = Vector2(1212, 530)
+[node name="@StaticBody2D@25" parent="Actors" unique_id=1306854851 instance=ExtResource("12_c6pm6")]
+position = Vector2(1190, 800)
 variant = 1
 
-[node name="@StaticBody2D@26" parent="Actors" unique_id=1582740502 instance=ExtResource("10_2wyq8")]
-position = Vector2(1262, 660)
-
-[node name="@StaticBody2D@27" parent="Actors" unique_id=283149267 instance=ExtResource("10_2wyq8")]
-position = Vector2(1228, 800)
-variant = 1
-
-[node name="@StaticBody2D@28" parent="Actors" unique_id=698403814 instance=ExtResource("10_2wyq8")]
-position = Vector2(1250, 945)
-
-[node name="@StaticBody2D@29" parent="Actors" unique_id=830168325 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@26" parent="Actors" unique_id=610614255 instance=ExtResource("12_c6pm6")]
 position = Vector2(200, 952)
 
-[node name="@StaticBody2D@30" parent="Actors" unique_id=1586440201 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@27" parent="Actors" unique_id=1473960158 instance=ExtResource("12_c6pm6")]
 position = Vector2(330, 930)
 variant = 1
 
-[node name="@StaticBody2D@31" parent="Actors" unique_id=590919586 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@28" parent="Actors" unique_id=821434854 instance=ExtResource("12_c6pm6")]
 position = Vector2(460, 955)
 
-[node name="@StaticBody2D@32" parent="Actors" unique_id=751827969 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@29" parent="Actors" unique_id=1288751497 instance=ExtResource("12_c6pm6")]
 position = Vector2(760, 950)
 variant = 1
 
-[node name="@StaticBody2D@33" parent="Actors" unique_id=496670302 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@30" parent="Actors" unique_id=1950098710 instance=ExtResource("12_c6pm6")]
 position = Vector2(880, 928)
 
-[node name="@StaticBody2D@34" parent="Actors" unique_id=1209930563 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@31" parent="Actors" unique_id=943497852 instance=ExtResource("12_c6pm6")]
 position = Vector2(1010, 955)
 variant = 1
 
-[node name="@StaticBody2D@35" parent="Actors" unique_id=1452060842 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@32" parent="Actors" unique_id=352631374 instance=ExtResource("12_c6pm6")]
 position = Vector2(1120, 938)
 
-[node name="@StaticBody2D@36" parent="Actors" unique_id=1195854675 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@33" parent="Actors" unique_id=1571524565 instance=ExtResource("12_c6pm6")]
 position = Vector2(880, 712)
 
-[node name="@StaticBody2D@37" parent="Actors" unique_id=1529299086 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@34" parent="Actors" unique_id=2096119636 instance=ExtResource("12_c6pm6")]
 position = Vector2(420, 700)
 variant = 1
 
-[node name="@StaticBody2D@38" parent="Actors" unique_id=151395553 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@35" parent="Actors" unique_id=1358043775 instance=ExtResource("12_c6pm6")]
 position = Vector2(262, 580)
 
-[node name="@StaticBody2D@39" parent="Actors" unique_id=1111997037 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@36" parent="Actors" unique_id=1303634529 instance=ExtResource("12_c6pm6")]
 position = Vector2(770, 420)
 variant = 1
 
-[node name="@StaticBody2D@40" parent="Actors" unique_id=282145401 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@37" parent="Actors" unique_id=1092682181 instance=ExtResource("12_c6pm6")]
 position = Vector2(1150, 640)
 variant = 1
 
-[node name="@StaticBody2D@41" parent="Actors" unique_id=749237395 instance=ExtResource("10_2wyq8")]
+[node name="@StaticBody2D@38" parent="Actors" unique_id=514590223 instance=ExtResource("12_c6pm6")]
 position = Vector2(160, 760)
 
-[node name="Rock" parent="Actors" unique_id=635286405 instance=ExtResource("11_vxglm")]
+[node name="Rock" parent="Actors" unique_id=1783583885 instance=ExtResource("13_5he1u")]
 position = Vector2(470, 342)
 
-[node name="@StaticBody2D@42" parent="Actors" unique_id=1174402817 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@39" parent="Actors" unique_id=1838440316 instance=ExtResource("14_5poiv")]
 position = Vector2(842, 338)
 
-[node name="@StaticBody2D@43" parent="Actors" unique_id=894045758 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@40" parent="Actors" unique_id=1300046661 instance=ExtResource("14_5poiv")]
 position = Vector2(440, 446)
 
-[node name="@StaticBody2D@44" parent="Actors" unique_id=1914129177 instance=ExtResource("11_vxglm")]
+[node name="@StaticBody2D@41" parent="Actors" unique_id=918626396 instance=ExtResource("13_5he1u")]
 position = Vector2(168, 452)
 
-[node name="@StaticBody2D@45" parent="Actors" unique_id=1714441702 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@42" parent="Actors" unique_id=1324770008 instance=ExtResource("14_5poiv")]
 position = Vector2(722, 474)
 
-[node name="@StaticBody2D@46" parent="Actors" unique_id=192862484 instance=ExtResource("11_vxglm")]
+[node name="@StaticBody2D@43" parent="Actors" unique_id=235321231 instance=ExtResource("13_5he1u")]
 position = Vector2(540, 604)
 
-[node name="@StaticBody2D@47" parent="Actors" unique_id=1083591745 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@44" parent="Actors" unique_id=2134258691 instance=ExtResource("14_5poiv")]
 position = Vector2(962, 782)
 
-[node name="@StaticBody2D@48" parent="Actors" unique_id=846388317 instance=ExtResource("11_vxglm")]
+[node name="@StaticBody2D@45" parent="Actors" unique_id=2050899711 instance=ExtResource("13_5he1u")]
 position = Vector2(300, 764)
 
-[node name="@StaticBody2D@49" parent="Actors" unique_id=1268777593 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@46" parent="Actors" unique_id=942980524 instance=ExtResource("14_5poiv")]
 position = Vector2(1132, 472)
 
-[node name="@StaticBody2D@50" parent="Actors" unique_id=797001963 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@47" parent="Actors" unique_id=1359922556 instance=ExtResource("14_5poiv")]
 position = Vector2(700, 862)
 
-[node name="@StaticBody2D@51" parent="Actors" unique_id=933336551 instance=ExtResource("11_vxglm")]
+[node name="@StaticBody2D@48" parent="Actors" unique_id=1460805813 instance=ExtResource("13_5he1u")]
 position = Vector2(1180, 300)
 
-[node name="@StaticBody2D@52" parent="Actors" unique_id=1092769467 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@49" parent="Actors" unique_id=1195575678 instance=ExtResource("14_5poiv")]
 position = Vector2(760, 170)
 
-[node name="@StaticBody2D@53" parent="Actors" unique_id=1244915925 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@50" parent="Actors" unique_id=1063719627 instance=ExtResource("14_5poiv")]
 position = Vector2(196, 420)
 
-[node name="@StaticBody2D@54" parent="Actors" unique_id=1023946941 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@51" parent="Actors" unique_id=462026335 instance=ExtResource("14_5poiv")]
 position = Vector2(408, 404)
 
-[node name="@StaticBody2D@55" parent="Actors" unique_id=693234241 instance=ExtResource("12_2f3dj")]
+[node name="@StaticBody2D@52" parent="Actors" unique_id=1926506458 instance=ExtResource("14_5poiv")]
 position = Vector2(250, 434)
 
-[node name="Mushrooms" parent="Actors" unique_id=568596677 instance=ExtResource("13_yq6so")]
+[node name="Mushrooms" parent="Actors" unique_id=1390152451 instance=ExtResource("15_2cjbq")]
 position = Vector2(192, 612)
 
-[node name="@Node2D@56" parent="Actors" unique_id=1276286877 instance=ExtResource("13_yq6so")]
+[node name="@Node2D@53" parent="Actors" unique_id=2025183692 instance=ExtResource("15_2cjbq")]
 position = Vector2(868, 468)
 
-[node name="@Node2D@57" parent="Actors" unique_id=196961514 instance=ExtResource("13_yq6so")]
+[node name="@Node2D@54" parent="Actors" unique_id=872645092 instance=ExtResource("15_2cjbq")]
 position = Vector2(1108, 862)
 
-[node name="@Node2D@58" parent="Actors" unique_id=587507937 instance=ExtResource("13_yq6so")]
+[node name="@Node2D@55" parent="Actors" unique_id=626197033 instance=ExtResource("15_2cjbq")]
 position = Vector2(482, 802)
 
-[node name="@Node2D@59" parent="Actors" unique_id=942549518 instance=ExtResource("13_yq6so")]
+[node name="@Node2D@56" parent="Actors" unique_id=319008499 instance=ExtResource("15_2cjbq")]
 position = Vector2(560, 206)
 
-[node name="@Node2D@60" parent="Actors" unique_id=1542704627 instance=ExtResource("13_yq6so")]
+[node name="@Node2D@57" parent="Actors" unique_id=202462426 instance=ExtResource("15_2cjbq")]
 position = Vector2(1000, 640)
 
-[node name="Fern" parent="Actors" unique_id=1539998465 instance=ExtResource("14_fv21b")]
-position = Vector2(553.9727, 681.8175)
-flip_h = true
-
-[node name="@Sprite2D@61" parent="Actors" unique_id=1963140208 instance=ExtResource("14_fv21b")]
-position = Vector2(322.21588, 799.00964)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@62" parent="Actors" unique_id=419280906 instance=ExtResource("14_fv21b")]
-position = Vector2(491.82852, 58.15543)
-
-[node name="@Sprite2D@63" parent="Actors" unique_id=845195754 instance=ExtResource("14_fv21b")]
-position = Vector2(849.88513, 849.2531)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@64" parent="Actors" unique_id=1471416097 instance=ExtResource("14_fv21b")]
-position = Vector2(1028.2771, 61.8575)
-frame = 1
-
-[node name="@Sprite2D@65" parent="Actors" unique_id=982615810 instance=ExtResource("14_fv21b")]
-position = Vector2(220.19963, 913.5721)
-frame = 2
-
-[node name="@Sprite2D@66" parent="Actors" unique_id=2122105564 instance=ExtResource("14_fv21b")]
-position = Vector2(408.50745, 69.5761)
-flip_h = true
-
-[node name="@Sprite2D@67" parent="Actors" unique_id=1135663166 instance=ExtResource("14_fv21b")]
-position = Vector2(510.6302, 182.75374)
-frame = 2
-
-[node name="@Sprite2D@68" parent="Actors" unique_id=765893403 instance=ExtResource("14_fv21b")]
-position = Vector2(236.25044, 484.19266)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@69" parent="Actors" unique_id=1182512703 instance=ExtResource("14_fv21b")]
-position = Vector2(1240.5076, 888.4804)
-flip_h = true
-
-[node name="@Sprite2D@70" parent="Actors" unique_id=1547238223 instance=ExtResource("14_fv21b")]
-position = Vector2(636.8648, 759.32733)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@71" parent="Actors" unique_id=1459702040 instance=ExtResource("14_fv21b")]
-position = Vector2(956.65936, 924.23785)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@72" parent="Actors" unique_id=1944674108 instance=ExtResource("14_fv21b")]
-position = Vector2(770.7413, 394.78345)
-flip_h = true
-
-[node name="@Sprite2D@73" parent="Actors" unique_id=1036328406 instance=ExtResource("14_fv21b")]
-position = Vector2(322.75952, 592.4375)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@74" parent="Actors" unique_id=1982326661 instance=ExtResource("14_fv21b")]
-position = Vector2(211.02232, 230.25803)
-
-[node name="@Sprite2D@75" parent="Actors" unique_id=479521322 instance=ExtResource("14_fv21b")]
-position = Vector2(640.9316, 813.5277)
-frame = 1
-
-[node name="@Sprite2D@76" parent="Actors" unique_id=1464641418 instance=ExtResource("14_fv21b")]
-position = Vector2(272.4083, 52.019028)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@77" parent="Actors" unique_id=1500425334 instance=ExtResource("14_fv21b")]
-position = Vector2(667.2062, 649.774)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@78" parent="Actors" unique_id=167663077 instance=ExtResource("14_fv21b")]
-position = Vector2(1161.8905, 414.6981)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@79" parent="Actors" unique_id=2043065126 instance=ExtResource("14_fv21b")]
-position = Vector2(390.0742, 669.68994)
-
-[node name="@Sprite2D@80" parent="Actors" unique_id=507716435 instance=ExtResource("14_fv21b")]
-position = Vector2(1012.5122, 795.382)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@81" parent="Actors" unique_id=205191355 instance=ExtResource("14_fv21b")]
-position = Vector2(1148.3918, 693.7933)
-frame = 1
-
-[node name="@Sprite2D@82" parent="Actors" unique_id=1817633235 instance=ExtResource("14_fv21b")]
-position = Vector2(935.9753, 744.1177)
-flip_h = true
-
-[node name="@Sprite2D@83" parent="Actors" unique_id=527473402 instance=ExtResource("14_fv21b")]
-position = Vector2(238.87459, 582.0675)
-flip_h = true
-
-[node name="@Sprite2D@84" parent="Actors" unique_id=619006689 instance=ExtResource("14_fv21b")]
-position = Vector2(1134.917, 791.7117)
-
-[node name="@Sprite2D@85" parent="Actors" unique_id=1892348882 instance=ExtResource("14_fv21b")]
-position = Vector2(1178.5995, 701.66583)
-frame = 1
-
-[node name="@Sprite2D@86" parent="Actors" unique_id=1673234436 instance=ExtResource("14_fv21b")]
-position = Vector2(76.49197, 933.3063)
-flip_h = true
-
-[node name="@Sprite2D@87" parent="Actors" unique_id=1048942292 instance=ExtResource("14_fv21b")]
-position = Vector2(1047.0908, 666.08923)
-frame = 1
-
-[node name="@Sprite2D@88" parent="Actors" unique_id=533847588 instance=ExtResource("14_fv21b")]
-position = Vector2(158.24994, 351.42392)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@89" parent="Actors" unique_id=729159279 instance=ExtResource("14_fv21b")]
-position = Vector2(1121.3735, 329.8982)
-frame = 2
-
-[node name="@Sprite2D@90" parent="Actors" unique_id=557136144 instance=ExtResource("14_fv21b")]
-position = Vector2(77.21814, 893.37024)
-frame = 2
-
-[node name="@Sprite2D@91" parent="Actors" unique_id=1361463690 instance=ExtResource("14_fv21b")]
-position = Vector2(1132.5082, 515.4497)
-frame = 2
-
-[node name="@Sprite2D@92" parent="Actors" unique_id=1388239955 instance=ExtResource("14_fv21b")]
-position = Vector2(1134.432, 157.64113)
-frame = 2
-
-[node name="@Sprite2D@93" parent="Actors" unique_id=299560733 instance=ExtResource("14_fv21b")]
-position = Vector2(378.42697, 927.2445)
-frame = 1
-
-[node name="@Sprite2D@94" parent="Actors" unique_id=1160897373 instance=ExtResource("14_fv21b")]
-position = Vector2(251.74379, 929.8183)
-
-[node name="@Sprite2D@95" parent="Actors" unique_id=288261150 instance=ExtResource("14_fv21b")]
-position = Vector2(363.70874, 649.43365)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@96" parent="Actors" unique_id=1272277355 instance=ExtResource("14_fv21b")]
-position = Vector2(489.10626, 153.5215)
-
-[node name="@Sprite2D@97" parent="Actors" unique_id=1508027086 instance=ExtResource("14_fv21b")]
-position = Vector2(1142.3604, 49.496437)
-frame = 2
-
-[node name="@Sprite2D@98" parent="Actors" unique_id=1142971115 instance=ExtResource("14_fv21b")]
-position = Vector2(252.54861, 479.2531)
-frame = 1
-
-[node name="@Sprite2D@99" parent="Actors" unique_id=581993446 instance=ExtResource("14_fv21b")]
-position = Vector2(940.8423, 801.3665)
-frame = 2
-
-[node name="@Sprite2D@100" parent="Actors" unique_id=687462828 instance=ExtResource("14_fv21b")]
-position = Vector2(461.2016, 497.52106)
-
-[node name="@Sprite2D@101" parent="Actors" unique_id=195995303 instance=ExtResource("14_fv21b")]
-position = Vector2(418.3442, 532.982)
-frame = 2
-
-[node name="@Sprite2D@102" parent="Actors" unique_id=1630152811 instance=ExtResource("14_fv21b")]
-position = Vector2(829.2124, 798.28296)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@103" parent="Actors" unique_id=685504763 instance=ExtResource("14_fv21b")]
-position = Vector2(1165.2446, 206.21135)
-
-[node name="@Sprite2D@104" parent="Actors" unique_id=594112853 instance=ExtResource("14_fv21b")]
-position = Vector2(733.7173, 91.55993)
-flip_h = true
-
-[node name="@Sprite2D@105" parent="Actors" unique_id=809477830 instance=ExtResource("14_fv21b")]
-position = Vector2(774.1444, 79.755264)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@106" parent="Actors" unique_id=1221564057 instance=ExtResource("14_fv21b")]
-position = Vector2(686.4708, 825.49084)
-flip_h = true
-
-[node name="@Sprite2D@107" parent="Actors" unique_id=1534034251 instance=ExtResource("14_fv21b")]
-position = Vector2(368.009, 175.5289)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@108" parent="Actors" unique_id=1734875207 instance=ExtResource("14_fv21b")]
-position = Vector2(823.9801, 951.2149)
-frame = 1
-
-[node name="@Sprite2D@109" parent="Actors" unique_id=1734376795 instance=ExtResource("14_fv21b")]
-position = Vector2(353.83023, 542.6233)
-frame = 2
-
-[node name="@Sprite2D@110" parent="Actors" unique_id=179330676 instance=ExtResource("14_fv21b")]
-position = Vector2(237.15247, 140.18541)
-
-[node name="@Sprite2D@111" parent="Actors" unique_id=2127895610 instance=ExtResource("14_fv21b")]
-position = Vector2(884.51776, 378.3977)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@112" parent="Actors" unique_id=93305730 instance=ExtResource("14_fv21b")]
-position = Vector2(494.06335, 191.65257)
-flip_h = true
-
-[node name="@Sprite2D@113" parent="Actors" unique_id=486872626 instance=ExtResource("14_fv21b")]
-position = Vector2(626.7244, 90.84742)
-
-[node name="@Sprite2D@114" parent="Actors" unique_id=614877938 instance=ExtResource("14_fv21b")]
-position = Vector2(102.0797, 446.18076)
-frame = 2
-
-[node name="@Sprite2D@115" parent="Actors" unique_id=1000813658 instance=ExtResource("14_fv21b")]
-position = Vector2(985.5616, 906.4717)
-flip_h = true
-
-[node name="@Sprite2D@116" parent="Actors" unique_id=96166750 instance=ExtResource("14_fv21b")]
-position = Vector2(18.957275, 349.66705)
-frame = 2
-
-[node name="@Sprite2D@117" parent="Actors" unique_id=465631689 instance=ExtResource("14_fv21b")]
-position = Vector2(476.72827, 502.19864)
-flip_h = true
-
-[node name="@Sprite2D@118" parent="Actors" unique_id=2004938239 instance=ExtResource("14_fv21b")]
-position = Vector2(1062.8688, 187.83049)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@119" parent="Actors" unique_id=1966862318 instance=ExtResource("14_fv21b")]
-position = Vector2(539.3879, 694.683)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@120" parent="Actors" unique_id=1371783037 instance=ExtResource("14_fv21b")]
-position = Vector2(724.64233, 230.02687)
-flip_h = true
-
-[node name="@Sprite2D@121" parent="Actors" unique_id=931938432 instance=ExtResource("14_fv21b")]
-position = Vector2(607.771, 924.96405)
-flip_h = true
-
-[node name="@Sprite2D@122" parent="Actors" unique_id=37128737 instance=ExtResource("14_fv21b")]
-position = Vector2(533.40436, 423.8517)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@123" parent="Actors" unique_id=1171435806 instance=ExtResource("14_fv21b")]
-position = Vector2(121.24224, 542.35486)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@124" parent="Actors" unique_id=1902361669 instance=ExtResource("14_fv21b")]
-position = Vector2(1264.8624, 586.2663)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@125" parent="Actors" unique_id=887751111 instance=ExtResource("14_fv21b")]
-position = Vector2(555.9957, 509.80768)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@126" parent="Actors" unique_id=1246689173 instance=ExtResource("14_fv21b")]
-position = Vector2(530.3435, 713.7371)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@127" parent="Actors" unique_id=1939267977 instance=ExtResource("14_fv21b")]
-position = Vector2(1042.0803, 116.36903)
-
-[node name="@Sprite2D@128" parent="Actors" unique_id=1175220418 instance=ExtResource("14_fv21b")]
-position = Vector2(152.52074, 393.70468)
-flip_h = true
-
-[node name="@Sprite2D@129" parent="Actors" unique_id=2048774767 instance=ExtResource("14_fv21b")]
-position = Vector2(397.46323, 631.51746)
-frame = 2
-
-[node name="@Sprite2D@130" parent="Actors" unique_id=493133672 instance=ExtResource("14_fv21b")]
-position = Vector2(1264.9656, 908.25195)
-frame = 2
-
-[node name="@Sprite2D@131" parent="Actors" unique_id=1485239479 instance=ExtResource("14_fv21b")]
-position = Vector2(167.74098, 50.17347)
-flip_h = true
-
-[node name="@Sprite2D@132" parent="Actors" unique_id=519772255 instance=ExtResource("14_fv21b")]
-position = Vector2(1125.6647, 715.1292)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@133" parent="Actors" unique_id=837153013 instance=ExtResource("14_fv21b")]
-position = Vector2(506.78, 489.13354)
-flip_h = true
-
-[node name="@Sprite2D@134" parent="Actors" unique_id=1903089174 instance=ExtResource("14_fv21b")]
-position = Vector2(93.42803, 438.59634)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@135" parent="Actors" unique_id=1884605918 instance=ExtResource("14_fv21b")]
-position = Vector2(1034.6703, 645.4424)
-frame = 1
-
-[node name="@Sprite2D@136" parent="Actors" unique_id=4459666 instance=ExtResource("14_fv21b")]
-position = Vector2(692.8457, 946.0532)
-flip_h = true
-
-[node name="@Sprite2D@137" parent="Actors" unique_id=366009269 instance=ExtResource("14_fv21b")]
-position = Vector2(836.7275, 663.6868)
-flip_h = true
-
-[node name="@Sprite2D@138" parent="Actors" unique_id=1904812791 instance=ExtResource("14_fv21b")]
-position = Vector2(989.1855, 445.49124)
-
-[node name="@Sprite2D@139" parent="Actors" unique_id=1472549229 instance=ExtResource("14_fv21b")]
-position = Vector2(74.57864, 798.25116)
-flip_h = true
-
-[node name="@Sprite2D@140" parent="Actors" unique_id=2010907201 instance=ExtResource("14_fv21b")]
-position = Vector2(713.09106, 93.175095)
-frame = 2
-
-[node name="@Sprite2D@141" parent="Actors" unique_id=1221940364 instance=ExtResource("14_fv21b")]
-position = Vector2(60.994118, 927.50696)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@142" parent="Actors" unique_id=1393570362 instance=ExtResource("14_fv21b")]
-position = Vector2(29.94006, 148.6872)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@143" parent="Actors" unique_id=142253194 instance=ExtResource("14_fv21b")]
-position = Vector2(513.1155, 140.18741)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@144" parent="Actors" unique_id=71145461 instance=ExtResource("14_fv21b")]
-position = Vector2(1243.6758, 876.89655)
-flip_h = true
-
-[node name="@Sprite2D@145" parent="Actors" unique_id=1187769586 instance=ExtResource("14_fv21b")]
-position = Vector2(744.9749, 128.08882)
-flip_h = true
-
-[node name="@Sprite2D@146" parent="Actors" unique_id=1143596125 instance=ExtResource("14_fv21b")]
-position = Vector2(97.16213, 575.55725)
-
-[node name="@Sprite2D@147" parent="Actors" unique_id=1727567341 instance=ExtResource("14_fv21b")]
-position = Vector2(203.52881, 192.16278)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@148" parent="Actors" unique_id=1774387590 instance=ExtResource("14_fv21b")]
-position = Vector2(110.51374, 561.55334)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@149" parent="Actors" unique_id=1110476273 instance=ExtResource("14_fv21b")]
-position = Vector2(348.71603, 699.2987)
-frame = 1
-
-[node name="@Sprite2D@150" parent="Actors" unique_id=1738164111 instance=ExtResource("14_fv21b")]
-position = Vector2(1157.4321, 764.8575)
-frame = 2
-
-[node name="@Sprite2D@151" parent="Actors" unique_id=1219537338 instance=ExtResource("14_fv21b")]
-position = Vector2(872.03564, 63.91588)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@152" parent="Actors" unique_id=188354535 instance=ExtResource("14_fv21b")]
-position = Vector2(927.12756, 327.4294)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@153" parent="Actors" unique_id=1943295238 instance=ExtResource("14_fv21b")]
-position = Vector2(939.47687, 770.06555)
-frame = 2
-
-[node name="@Sprite2D@154" parent="Actors" unique_id=1861219283 instance=ExtResource("14_fv21b")]
-position = Vector2(92.461105, 924.61176)
-frame = 1
-
-[node name="@Sprite2D@155" parent="Actors" unique_id=48492656 instance=ExtResource("14_fv21b")]
-position = Vector2(84.105995, 620.3853)
-frame = 1
-
-[node name="@Sprite2D@156" parent="Actors" unique_id=83487284 instance=ExtResource("14_fv21b")]
-position = Vector2(551.00714, 705.267)
-frame = 1
-
-[node name="@Sprite2D@157" parent="Actors" unique_id=1283269402 instance=ExtResource("14_fv21b")]
-position = Vector2(506.16122, 121.12599)
-frame = 1
-
-[node name="@Sprite2D@158" parent="Actors" unique_id=1532947643 instance=ExtResource("14_fv21b")]
-position = Vector2(1063.9525, 942.84766)
-frame = 1
-
-[node name="@Sprite2D@159" parent="Actors" unique_id=712641977 instance=ExtResource("14_fv21b")]
-position = Vector2(419.27753, 808.69476)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@160" parent="Actors" unique_id=470323121 instance=ExtResource("14_fv21b")]
-position = Vector2(639.7225, 239.75258)
-frame = 1
-
-[node name="@Sprite2D@161" parent="Actors" unique_id=1964171201 instance=ExtResource("14_fv21b")]
-position = Vector2(1210.0018, 464.62335)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@162" parent="Actors" unique_id=1063986709 instance=ExtResource("14_fv21b")]
-position = Vector2(663.35864, 711.4344)
-
-[node name="@Sprite2D@163" parent="Actors" unique_id=1571084750 instance=ExtResource("14_fv21b")]
-position = Vector2(541.3703, 499.36697)
-frame = 2
-
-[node name="@Sprite2D@164" parent="Actors" unique_id=192201754 instance=ExtResource("14_fv21b")]
-position = Vector2(176.95877, 847.6241)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@165" parent="Actors" unique_id=1563352547 instance=ExtResource("14_fv21b")]
-position = Vector2(452.7883, 712.858)
-frame = 2
-
-[node name="@Sprite2D@166" parent="Actors" unique_id=347325831 instance=ExtResource("14_fv21b")]
-position = Vector2(692.81744, 839.81635)
-frame = 2
-
-[node name="@Sprite2D@167" parent="Actors" unique_id=276246350 instance=ExtResource("14_fv21b")]
-position = Vector2(467.00806, 702.6783)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@168" parent="Actors" unique_id=1489388701 instance=ExtResource("14_fv21b")]
-position = Vector2(1195.1139, 217.6749)
-
-[node name="@Sprite2D@169" parent="Actors" unique_id=1494798671 instance=ExtResource("14_fv21b")]
-position = Vector2(971.01697, 946.77954)
-frame = 2
-
-[node name="@Sprite2D@170" parent="Actors" unique_id=1492671225 instance=ExtResource("14_fv21b")]
-position = Vector2(931.0981, 445.1954)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@171" parent="Actors" unique_id=959659763 instance=ExtResource("14_fv21b")]
-position = Vector2(108.130646, 406.21475)
-
-[node name="@Sprite2D@172" parent="Actors" unique_id=446323557 instance=ExtResource("14_fv21b")]
-position = Vector2(229.98993, 926.5897)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@173" parent="Actors" unique_id=1136563692 instance=ExtResource("14_fv21b")]
-position = Vector2(186.016, 436.7168)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@174" parent="Actors" unique_id=1331719347 instance=ExtResource("14_fv21b")]
-position = Vector2(814.50507, 114.80493)
-
-[node name="@Sprite2D@175" parent="Actors" unique_id=62719471 instance=ExtResource("14_fv21b")]
-position = Vector2(329.97507, 40.10177)
-
-[node name="@Sprite2D@176" parent="Actors" unique_id=1354192123 instance=ExtResource("14_fv21b")]
-position = Vector2(110.21145, 462.2945)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@177" parent="Actors" unique_id=1851852380 instance=ExtResource("14_fv21b")]
-position = Vector2(99.12039, 810.1873)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@178" parent="Actors" unique_id=1377072353 instance=ExtResource("14_fv21b")]
-position = Vector2(1110.901, 340.44794)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@179" parent="Actors" unique_id=801371222 instance=ExtResource("14_fv21b")]
-position = Vector2(618.02576, 119.33548)
-
-[node name="@Sprite2D@180" parent="Actors" unique_id=1976160734 instance=ExtResource("14_fv21b")]
-position = Vector2(784.08105, 762.23175)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@181" parent="Actors" unique_id=1207791275 instance=ExtResource("14_fv21b")]
-position = Vector2(142.99294, 720.1495)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@182" parent="Actors" unique_id=1181159735 instance=ExtResource("14_fv21b")]
-position = Vector2(848.14294, 538.3242)
-frame = 1
-
-[node name="@Sprite2D@183" parent="Actors" unique_id=977769905 instance=ExtResource("14_fv21b")]
-position = Vector2(991.8392, 381.34958)
-flip_h = true
-
-[node name="@Sprite2D@184" parent="Actors" unique_id=415697265 instance=ExtResource("14_fv21b")]
-position = Vector2(874.43066, 352.56064)
-frame = 1
-
-[node name="@Sprite2D@185" parent="Actors" unique_id=585332023 instance=ExtResource("14_fv21b")]
-position = Vector2(319.16556, 490.67737)
-frame = 2
-
-[node name="@Sprite2D@186" parent="Actors" unique_id=1554536307 instance=ExtResource("14_fv21b")]
-position = Vector2(485.5579, 167.5801)
-frame = 1
-
-[node name="@Sprite2D@187" parent="Actors" unique_id=1155362281 instance=ExtResource("14_fv21b")]
-position = Vector2(1056.2433, 889.1188)
-frame = 2
-
-[node name="@Sprite2D@188" parent="Actors" unique_id=915721175 instance=ExtResource("14_fv21b")]
-position = Vector2(347.08453, 660.88513)
-
-[node name="@Sprite2D@189" parent="Actors" unique_id=1505164316 instance=ExtResource("14_fv21b")]
-position = Vector2(808.469, 738.4585)
-frame = 1
-
-[node name="@Sprite2D@190" parent="Actors" unique_id=611427355 instance=ExtResource("14_fv21b")]
-position = Vector2(527.7551, 574.3333)
-flip_h = true
-
-[node name="@Sprite2D@191" parent="Actors" unique_id=1464497306 instance=ExtResource("14_fv21b")]
-position = Vector2(1196.1188, 200.12906)
-flip_h = true
-
-[node name="@Sprite2D@192" parent="Actors" unique_id=980316456 instance=ExtResource("14_fv21b")]
-position = Vector2(500.32767, 817.88354)
-frame = 1
-
-[node name="@Sprite2D@193" parent="Actors" unique_id=1563047192 instance=ExtResource("14_fv21b")]
-position = Vector2(816.0692, 128.66095)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@194" parent="Actors" unique_id=1197813799 instance=ExtResource("14_fv21b")]
-position = Vector2(222.13385, 219.07204)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@195" parent="Actors" unique_id=1437393746 instance=ExtResource("14_fv21b")]
-position = Vector2(795.6954, 36.445404)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@196" parent="Actors" unique_id=70851200 instance=ExtResource("14_fv21b")]
-position = Vector2(667.78595, 676.1107)
-flip_h = true
-
-[node name="@Sprite2D@197" parent="Actors" unique_id=1437838349 instance=ExtResource("14_fv21b")]
-position = Vector2(747.56647, 843.4205)
-frame = 1
-
-[node name="@Sprite2D@198" parent="Actors" unique_id=1020373778 instance=ExtResource("14_fv21b")]
-position = Vector2(1125.9174, 48.274693)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@199" parent="Actors" unique_id=314940846 instance=ExtResource("14_fv21b")]
-position = Vector2(293.48682, 898.1812)
-
-[node name="@Sprite2D@200" parent="Actors" unique_id=2014264257 instance=ExtResource("14_fv21b")]
-position = Vector2(1019.0621, 487.11285)
-frame = 1
-
-[node name="@Sprite2D@201" parent="Actors" unique_id=331748598 instance=ExtResource("14_fv21b")]
-position = Vector2(134.9595, 559.7245)
-
-[node name="@Sprite2D@202" parent="Actors" unique_id=1317855694 instance=ExtResource("14_fv21b")]
-position = Vector2(482.77914, 894.36707)
-
-[node name="@Sprite2D@203" parent="Actors" unique_id=1156933174 instance=ExtResource("14_fv21b")]
-position = Vector2(899.5945, 704.2804)
-frame = 2
-
-[node name="@Sprite2D@204" parent="Actors" unique_id=602837913 instance=ExtResource("14_fv21b")]
-position = Vector2(795.95825, 954.42426)
-flip_h = true
-
-[node name="@Sprite2D@205" parent="Actors" unique_id=1353131771 instance=ExtResource("14_fv21b")]
-position = Vector2(725.6915, 874.33636)
-frame = 1
-
-[node name="@Sprite2D@206" parent="Actors" unique_id=2109432107 instance=ExtResource("14_fv21b")]
-position = Vector2(161.67764, 667.9866)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@207" parent="Actors" unique_id=1613634849 instance=ExtResource("14_fv21b")]
-position = Vector2(777.5745, 476.99896)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@208" parent="Actors" unique_id=578886242 instance=ExtResource("14_fv21b")]
-position = Vector2(1140.9357, 361.56924)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@209" parent="Actors" unique_id=616583691 instance=ExtResource("14_fv21b")]
-position = Vector2(198.98906, 857.0981)
-frame = 1
-
-[node name="@Sprite2D@210" parent="Actors" unique_id=304661356 instance=ExtResource("14_fv21b")]
-position = Vector2(805.02844, 700.97034)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@211" parent="Actors" unique_id=1439304604 instance=ExtResource("14_fv21b")]
-position = Vector2(165.5489, 90.44918)
-frame = 2
-
-[node name="@Sprite2D@212" parent="Actors" unique_id=424108958 instance=ExtResource("14_fv21b")]
-position = Vector2(58.33246, 353.40317)
-
-[node name="@Sprite2D@213" parent="Actors" unique_id=1108518975 instance=ExtResource("14_fv21b")]
-position = Vector2(1223.4146, 695.8508)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@214" parent="Actors" unique_id=1509281676 instance=ExtResource("14_fv21b")]
-position = Vector2(1165.0889, 221.4228)
-frame = 2
-
-[node name="@Sprite2D@215" parent="Actors" unique_id=283300639 instance=ExtResource("14_fv21b")]
-position = Vector2(311.3949, 566.42847)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@216" parent="Actors" unique_id=1704999663 instance=ExtResource("14_fv21b")]
-position = Vector2(220.6313, 182.53804)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@217" parent="Actors" unique_id=1015616178 instance=ExtResource("14_fv21b")]
-position = Vector2(462.92798, 444.9196)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@218" parent="Actors" unique_id=435030228 instance=ExtResource("14_fv21b")]
-position = Vector2(1221.2626, 630.4828)
-flip_h = true
-
-[node name="@Sprite2D@219" parent="Actors" unique_id=964198944 instance=ExtResource("14_fv21b")]
-position = Vector2(125.9319, 610.2694)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@220" parent="Actors" unique_id=1216340678 instance=ExtResource("14_fv21b")]
-position = Vector2(272.58368, 619.67487)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@221" parent="Actors" unique_id=711185838 instance=ExtResource("14_fv21b")]
-position = Vector2(374.9758, 808.4664)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@222" parent="Actors" unique_id=1068430163 instance=ExtResource("14_fv21b")]
-position = Vector2(294.87912, 205.53781)
-frame = 2
-
-[node name="@Sprite2D@223" parent="Actors" unique_id=1428324503 instance=ExtResource("14_fv21b")]
-position = Vector2(1215.1278, 194.95891)
-frame = 1
-
-[node name="@Sprite2D@224" parent="Actors" unique_id=1443396594 instance=ExtResource("14_fv21b")]
-position = Vector2(563.3397, 349.03003)
-
-[node name="@Sprite2D@225" parent="Actors" unique_id=1362551886 instance=ExtResource("14_fv21b")]
-position = Vector2(1188.0085, 926.03815)
-
-[node name="@Sprite2D@226" parent="Actors" unique_id=318641483 instance=ExtResource("14_fv21b")]
-position = Vector2(46.81317, 736.21893)
-
-[node name="@Sprite2D@227" parent="Actors" unique_id=1791042830 instance=ExtResource("14_fv21b")]
-position = Vector2(1036.6893, 481.25537)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@228" parent="Actors" unique_id=782464647 instance=ExtResource("14_fv21b")]
-position = Vector2(612.84204, 103.30404)
-frame = 2
-
-[node name="@Sprite2D@229" parent="Actors" unique_id=705695370 instance=ExtResource("14_fv21b")]
-position = Vector2(425.8847, 495.7523)
-flip_h = true
-
-[node name="@Sprite2D@230" parent="Actors" unique_id=106928913 instance=ExtResource("14_fv21b")]
-position = Vector2(415.08484, 37.609455)
-flip_h = true
-
-[node name="@Sprite2D@231" parent="Actors" unique_id=680691168 instance=ExtResource("14_fv21b")]
-position = Vector2(102.50034, 954.2003)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@232" parent="Actors" unique_id=1055323726 instance=ExtResource("14_fv21b")]
-position = Vector2(210.6178, 613.89496)
-frame = 2
-
-[node name="@Sprite2D@233" parent="Actors" unique_id=899757242 instance=ExtResource("14_fv21b")]
-position = Vector2(225.84882, 761.53674)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@234" parent="Actors" unique_id=821147226 instance=ExtResource("14_fv21b")]
-position = Vector2(742.87854, 163.1537)
-flip_h = true
-
-[node name="@Sprite2D@235" parent="Actors" unique_id=135842118 instance=ExtResource("14_fv21b")]
-position = Vector2(486.10226, 858.5607)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@236" parent="Actors" unique_id=363896885 instance=ExtResource("14_fv21b")]
-position = Vector2(276.19385, 192.2548)
-frame = 1
-
-[node name="@Sprite2D@237" parent="Actors" unique_id=911476887 instance=ExtResource("14_fv21b")]
-position = Vector2(695.56976, 338.60498)
-frame = 2
-
-[node name="@Sprite2D@238" parent="Actors" unique_id=1979528122 instance=ExtResource("14_fv21b")]
-position = Vector2(336.58102, 809.0638)
-flip_h = true
-
-[node name="@Sprite2D@239" parent="Actors" unique_id=697049805 instance=ExtResource("14_fv21b")]
-position = Vector2(516.6575, 729.24225)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@240" parent="Actors" unique_id=677565196 instance=ExtResource("14_fv21b")]
-position = Vector2(1076.1868, 934.3624)
-frame = 2
-
-[node name="@Sprite2D@241" parent="Actors" unique_id=1615226810 instance=ExtResource("14_fv21b")]
-position = Vector2(967.3944, 872.44354)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@242" parent="Actors" unique_id=663796386 instance=ExtResource("14_fv21b")]
-position = Vector2(436.11258, 809.3217)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@243" parent="Actors" unique_id=1373454406 instance=ExtResource("14_fv21b")]
-position = Vector2(485.61786, 947.74164)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@244" parent="Actors" unique_id=1658079315 instance=ExtResource("14_fv21b")]
-position = Vector2(502.5872, 689.75104)
-frame = 1
-
-[node name="@Sprite2D@245" parent="Actors" unique_id=1530760139 instance=ExtResource("14_fv21b")]
-position = Vector2(450.2719, 769.9101)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@246" parent="Actors" unique_id=1778685375 instance=ExtResource("14_fv21b")]
-position = Vector2(128.34811, 748.08734)
-flip_h = true
-
-[node name="@Sprite2D@247" parent="Actors" unique_id=33187433 instance=ExtResource("14_fv21b")]
-position = Vector2(502.50974, 83.57293)
-frame = 2
-
-[node name="@Sprite2D@248" parent="Actors" unique_id=1424016862 instance=ExtResource("14_fv21b")]
-position = Vector2(172.38698, 834.6079)
-
-[node name="@Sprite2D@249" parent="Actors" unique_id=617346973 instance=ExtResource("14_fv21b")]
-position = Vector2(328.31436, 787.25116)
-frame = 2
-
-[node name="@Sprite2D@250" parent="Actors" unique_id=296341904 instance=ExtResource("14_fv21b")]
-position = Vector2(909.817, 809.9421)
-
-[node name="@Sprite2D@251" parent="Actors" unique_id=1057213657 instance=ExtResource("14_fv21b")]
-position = Vector2(677.54, 237.12271)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@252" parent="Actors" unique_id=604399497 instance=ExtResource("14_fv21b")]
-position = Vector2(1044.7552, 805.4789)
-frame = 2
-
-[node name="@Sprite2D@253" parent="Actors" unique_id=1565922936 instance=ExtResource("14_fv21b")]
-position = Vector2(742.33746, 830.6147)
-flip_h = true
-
-[node name="@Sprite2D@254" parent="Actors" unique_id=630958491 instance=ExtResource("14_fv21b")]
-position = Vector2(768.2159, 485.88916)
-flip_h = true
-
-[node name="@Sprite2D@255" parent="Actors" unique_id=1851023800 instance=ExtResource("14_fv21b")]
-position = Vector2(497.97235, 234.71066)
-frame = 1
-
-[node name="@Sprite2D@256" parent="Actors" unique_id=820996709 instance=ExtResource("14_fv21b")]
-position = Vector2(299.4711, 32.713326)
-frame = 2
-
-[node name="@Sprite2D@257" parent="Actors" unique_id=274396083 instance=ExtResource("14_fv21b")]
-position = Vector2(304.5487, 185.45697)
-frame = 1
-
-[node name="@Sprite2D@258" parent="Actors" unique_id=328731812 instance=ExtResource("14_fv21b")]
-position = Vector2(858.7514, 702.8408)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@259" parent="Actors" unique_id=2025265881 instance=ExtResource("14_fv21b")]
-position = Vector2(20.449806, 246.34952)
-frame = 1
-
-[node name="@Sprite2D@260" parent="Actors" unique_id=2117562477 instance=ExtResource("14_fv21b")]
-position = Vector2(1005.6855, 670.148)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@261" parent="Actors" unique_id=177803743 instance=ExtResource("14_fv21b")]
-position = Vector2(130.31125, 585.8495)
-frame = 2
-
-[node name="@Sprite2D@262" parent="Actors" unique_id=2104298115 instance=ExtResource("14_fv21b")]
-position = Vector2(581.80444, 505.43323)
-flip_h = true
-
-[node name="@Sprite2D@263" parent="Actors" unique_id=1912087231 instance=ExtResource("14_fv21b")]
-position = Vector2(943.53357, 932.25867)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@264" parent="Actors" unique_id=1476621781 instance=ExtResource("14_fv21b")]
-position = Vector2(196.67082, 124.52215)
-
-[node name="@Sprite2D@265" parent="Actors" unique_id=462299494 instance=ExtResource("14_fv21b")]
-position = Vector2(964.1126, 656.0743)
-flip_h = true
-
-[node name="@Sprite2D@266" parent="Actors" unique_id=1457351146 instance=ExtResource("14_fv21b")]
-position = Vector2(1263.0426, 882.30383)
-
-[node name="@Sprite2D@267" parent="Actors" unique_id=936008971 instance=ExtResource("14_fv21b")]
-position = Vector2(865.5315, 81.11859)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@268" parent="Actors" unique_id=2122754328 instance=ExtResource("14_fv21b")]
-position = Vector2(336.10587, 720.11444)
-frame = 2
-
-[node name="@Sprite2D@269" parent="Actors" unique_id=1075645317 instance=ExtResource("14_fv21b")]
-position = Vector2(891.45874, 786.5667)
-frame = 2
-
-[node name="@Sprite2D@270" parent="Actors" unique_id=479992877 instance=ExtResource("14_fv21b")]
-position = Vector2(535.22394, 55.293633)
-flip_h = true
-frame = 2
-
-[node name="@Sprite2D@271" parent="Actors" unique_id=1880911010 instance=ExtResource("14_fv21b")]
-position = Vector2(1171.2523, 831.45905)
-flip_h = true
-
-[node name="@Sprite2D@272" parent="Actors" unique_id=886985303 instance=ExtResource("14_fv21b")]
-position = Vector2(90.104675, 895.0528)
-frame = 1
-
-[node name="@Sprite2D@273" parent="Actors" unique_id=2105395571 instance=ExtResource("14_fv21b")]
-position = Vector2(345.46265, 764.1401)
-frame = 1
-
-[node name="@Sprite2D@274" parent="Actors" unique_id=1176353633 instance=ExtResource("14_fv21b")]
-position = Vector2(370.25455, 684.63104)
-frame = 1
-
-[node name="@Sprite2D@275" parent="Actors" unique_id=166930593 instance=ExtResource("14_fv21b")]
-position = Vector2(818.0254, 663.1939)
-frame = 2
-
-[node name="@Sprite2D@276" parent="Actors" unique_id=1745676267 instance=ExtResource("14_fv21b")]
-position = Vector2(1261.1873, 357.66913)
-frame = 2
-
-[node name="@Sprite2D@277" parent="Actors" unique_id=2003024338 instance=ExtResource("14_fv21b")]
-position = Vector2(747.12006, 411.57104)
-
-[node name="@Sprite2D@278" parent="Actors" unique_id=436530592 instance=ExtResource("14_fv21b")]
-position = Vector2(483.3262, 230.08679)
-frame = 2
-
-[node name="@Sprite2D@279" parent="Actors" unique_id=2095835284 instance=ExtResource("14_fv21b")]
-position = Vector2(1101.2148, 381.03052)
-frame = 1
-
-[node name="@Sprite2D@280" parent="Actors" unique_id=1267525155 instance=ExtResource("14_fv21b")]
-position = Vector2(41.570465, 235.00461)
-flip_h = true
-
-[node name="@Sprite2D@281" parent="Actors" unique_id=1042836196 instance=ExtResource("14_fv21b")]
-position = Vector2(94.49817, 737.751)
-frame = 1
-
-[node name="@Sprite2D@282" parent="Actors" unique_id=2055189849 instance=ExtResource("14_fv21b")]
-position = Vector2(662.98126, 625.7193)
-
-[node name="@Sprite2D@283" parent="Actors" unique_id=488375006 instance=ExtResource("14_fv21b")]
-position = Vector2(611.2663, 515.27893)
-flip_h = true
-frame = 1
-
-[node name="@Sprite2D@284" parent="Actors" unique_id=565515152 instance=ExtResource("14_fv21b")]
-position = Vector2(1227.8135, 358.43604)
-
-[node name="@Sprite2D@285" parent="Actors" unique_id=1995993664 instance=ExtResource("14_fv21b")]
-position = Vector2(155.94293, 101.97668)
-flip_h = true
-
-[node name="@Sprite2D@286" parent="Actors" unique_id=1423389709 instance=ExtResource("14_fv21b")]
-position = Vector2(1255.8315, 787.6091)
-
-[node name="@Sprite2D@287" parent="Actors" unique_id=1131078095 instance=ExtResource("14_fv21b")]
-position = Vector2(543.0251, 516.00964)
-frame = 2
-
-[node name="@Sprite2D@288" parent="Actors" unique_id=412845585 instance=ExtResource("14_fv21b")]
-position = Vector2(151.98587, 733.3686)
-
-[node name="@Sprite2D@289" parent="Actors" unique_id=1111591886 instance=ExtResource("14_fv21b")]
-position = Vector2(870.0261, 27.69098)
-frame = 1
-
-[node name="Predator" parent="Actors" unique_id=2090436975 instance=ExtResource("predator_scene")]
+[node name="Predator" parent="Actors" unique_id=1893046280 instance=ExtResource("16_chjal")]
 position = Vector2(900, 830)
 
-[node name="LizardSpawner" type="Node2D" parent="." unique_id=1163248245]
-script = ExtResource("spawner_script")
-scene = ExtResource("9_og1vs")
+[node name="Predator2" parent="Actors" unique_id=1422633325 instance=ExtResource("16_chjal")]
+position = Vector2(1950, 780)
+
+[node name="DeadTree" parent="Actors" unique_id=1223293908 instance=ExtResource("17_cjqg0")]
+position = Vector2(1420, 330)
+
+[node name="@StaticBody2D@59" parent="Actors" unique_id=60102860 instance=ExtResource("17_cjqg0")]
+position = Vector2(1560, 820)
+variant = 1
+
+[node name="@StaticBody2D@60" parent="Actors" unique_id=449886162 instance=ExtResource("17_cjqg0")]
+position = Vector2(1690, 150)
+variant = 1
+
+[node name="@StaticBody2D@61" parent="Actors" unique_id=1919892466 instance=ExtResource("17_cjqg0")]
+position = Vector2(1840, 470)
+
+[node name="@StaticBody2D@62" parent="Actors" unique_id=932635303 instance=ExtResource("17_cjqg0")]
+position = Vector2(2020, 880)
+
+[node name="@StaticBody2D@63" parent="Actors" unique_id=1646206274 instance=ExtResource("17_cjqg0")]
+position = Vector2(2150, 360)
+variant = 1
+
+[node name="@StaticBody2D@64" parent="Actors" unique_id=1032035036 instance=ExtResource("17_cjqg0")]
+position = Vector2(2240, 110)
+
+[node name="@StaticBody2D@65" parent="Actors" unique_id=1182702698 instance=ExtResource("17_cjqg0")]
+position = Vector2(1350, 560)
+variant = 1
+
+[node name="@StaticBody2D@66" parent="Actors" unique_id=1013388997 instance=ExtResource("17_cjqg0")]
+position = Vector2(1980, 90)
+
+[node name="@StaticBody2D@67" parent="Actors" unique_id=1433475373 instance=ExtResource("13_5he1u")]
+position = Vector2(1460, 470)
+
+[node name="@StaticBody2D@68" parent="Actors" unique_id=1035677216 instance=ExtResource("14_5poiv")]
+position = Vector2(1480, 490)
+
+[node name="@StaticBody2D@69" parent="Actors" unique_id=621364089 instance=ExtResource("13_5he1u")]
+position = Vector2(1640, 560)
+
+[node name="@StaticBody2D@70" parent="Actors" unique_id=789348740 instance=ExtResource("14_5poiv")]
+position = Vector2(1720, 740)
+
+[node name="@StaticBody2D@71" parent="Actors" unique_id=1421109208 instance=ExtResource("13_5he1u")]
+position = Vector2(2060, 520)
+
+[node name="@StaticBody2D@72" parent="Actors" unique_id=354887364 instance=ExtResource("14_5poiv")]
+position = Vector2(2090, 540)
+
+[node name="@StaticBody2D@73" parent="Actors" unique_id=2058546430 instance=ExtResource("13_5he1u")]
+position = Vector2(2200, 780)
+
+[node name="@StaticBody2D@74" parent="Actors" unique_id=214099514 instance=ExtResource("14_5poiv")]
+position = Vector2(1600, 380)
+
+[node name="@StaticBody2D@75" parent="Actors" unique_id=166737629 instance=ExtResource("13_5he1u")]
+position = Vector2(1880, 870)
+
+[node name="@StaticBody2D@76" parent="Actors" unique_id=1653780099 instance=ExtResource("14_5poiv")]
+position = Vector2(2260, 440)
+
+[node name="@StaticBody2D@77" parent="Actors" unique_id=1843715796 instance=ExtResource("13_5he1u")]
+position = Vector2(1380, 120)
+
+[node name="Fern" parent="Actors" unique_id=1486534437 instance=ExtResource("18_vchkt")]
+position = Vector2(559.1508, 681.8175)
+flip_h = true
+
+[node name="@Sprite2D@78" parent="Actors" unique_id=466106445 instance=ExtResource("18_vchkt")]
+position = Vector2(693.9803, 712.95905)
+frame = 2
+
+[node name="@Sprite2D@79" parent="Actors" unique_id=199292716 instance=ExtResource("18_vchkt")]
+position = Vector2(496.41287, 58.15543)
+
+[node name="@Sprite2D@80" parent="Actors" unique_id=1665356866 instance=ExtResource("18_vchkt")]
+position = Vector2(857.8904, 849.2531)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@81" parent="Actors" unique_id=1059845492 instance=ExtResource("18_vchkt")]
+position = Vector2(1037.9868, 61.8575)
+frame = 1
+
+[node name="@Sprite2D@82" parent="Actors" unique_id=382441620 instance=ExtResource("18_vchkt")]
+position = Vector2(222.1888, 913.5721)
+frame = 2
+
+[node name="@Sprite2D@83" parent="Actors" unique_id=1217233381 instance=ExtResource("18_vchkt")]
+position = Vector2(412.29572, 69.5761)
+flip_h = true
+
+[node name="@Sprite2D@84" parent="Actors" unique_id=1252529367 instance=ExtResource("18_vchkt")]
+position = Vector2(515.39417, 182.75374)
+frame = 2
+
+[node name="@Sprite2D@85" parent="Actors" unique_id=844719863 instance=ExtResource("18_vchkt")]
+position = Vector2(238.39296, 484.19266)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@86" parent="Actors" unique_id=1029448520 instance=ExtResource("18_vchkt")]
+position = Vector2(357.92596, 644.98346)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@87" parent="Actors" unique_id=1556457662 instance=ExtResource("18_vchkt")]
+position = Vector2(479.29337, 897.83673)
+frame = 2
+
+[node name="@Sprite2D@88" parent="Actors" unique_id=743578671 instance=ExtResource("18_vchkt")]
+position = Vector2(589.12213, 123.138054)
+frame = 1
+
+[node name="@Sprite2D@89" parent="Actors" unique_id=2141141367 instance=ExtResource("18_vchkt")]
+position = Vector2(1173.2222, 890.0436)
+
+[node name="@Sprite2D@90" parent="Actors" unique_id=254927919 instance=ExtResource("18_vchkt")]
+position = Vector2(240.10466, 145.62076)
+frame = 2
+
+[node name="@Sprite2D@91" parent="Actors" unique_id=176531402 instance=ExtResource("18_vchkt")]
+position = Vector2(777.9904, 394.78345)
+flip_h = true
+
+[node name="@Sprite2D@92" parent="Actors" unique_id=402546487 instance=ExtResource("18_vchkt")]
+position = Vector2(325.72858, 592.4375)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@93" parent="Actors" unique_id=935698310 instance=ExtResource("18_vchkt")]
+position = Vector2(212.92381, 230.25803)
+
+[node name="@Sprite2D@94" parent="Actors" unique_id=198448885 instance=ExtResource("18_vchkt")]
+position = Vector2(646.9405, 813.5277)
+frame = 1
+
+[node name="@Sprite2D@95" parent="Actors" unique_id=1986523364 instance=ExtResource("18_vchkt")]
+position = Vector2(274.89627, 52.019028)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@96" parent="Actors" unique_id=679562943 instance=ExtResource("18_vchkt")]
+position = Vector2(673.4661, 649.774)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@97" parent="Actors" unique_id=475976479 instance=ExtResource("18_vchkt")]
+position = Vector2(1061.121, 765.8457)
+flip_h = true
+
+[node name="@Sprite2D@98" parent="Actors" unique_id=1727936029 instance=ExtResource("18_vchkt")]
+position = Vector2(393.68637, 669.68994)
+
+[node name="@Sprite2D@99" parent="Actors" unique_id=702342137 instance=ExtResource("18_vchkt")]
+position = Vector2(1022.0712, 795.382)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@100" parent="Actors" unique_id=31698949 instance=ExtResource("18_vchkt")]
+position = Vector2(196.66954, 189.07214)
+flip_h = true
+
+[node name="@Sprite2D@101" parent="Actors" unique_id=1340506720 instance=ExtResource("18_vchkt")]
+position = Vector2(14.664974, 104.42138)
+frame = 2
+
+[node name="@Sprite2D@102" parent="Actors" unique_id=1092999326 instance=ExtResource("18_vchkt")]
+position = Vector2(704.9915, 384.63464)
+frame = 2
+
+[node name="@Sprite2D@103" parent="Actors" unique_id=876919087 instance=ExtResource("18_vchkt")]
+position = Vector2(1145.6455, 791.7117)
+
+[node name="@Sprite2D@104" parent="Actors" unique_id=1226705049 instance=ExtResource("18_vchkt")]
+position = Vector2(1189.7454, 701.66583)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@105" parent="Actors" unique_id=91264424 instance=ExtResource("18_vchkt")]
+position = Vector2(159.64723, 351.42392)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@106" parent="Actors" unique_id=1618944417 instance=ExtResource("18_vchkt")]
+position = Vector2(1131.9727, 329.8982)
+frame = 2
+
+[node name="@Sprite2D@107" parent="Actors" unique_id=768498934 instance=ExtResource("18_vchkt")]
+position = Vector2(77.84125, 893.37024)
+frame = 2
+
+[node name="@Sprite2D@108" parent="Actors" unique_id=1565269955 instance=ExtResource("18_vchkt")]
+position = Vector2(639.16595, 108.78197)
+
+[node name="@Sprite2D@109" parent="Actors" unique_id=1387053452 instance=ExtResource("18_vchkt")]
+position = Vector2(1145.1559, 157.64113)
+frame = 2
+
+[node name="@Sprite2D@110" parent="Actors" unique_id=541512901 instance=ExtResource("18_vchkt")]
+position = Vector2(1221.5076, 386.21225)
+flip_h = true
+
+[node name="@Sprite2D@111" parent="Actors" unique_id=2078848911 instance=ExtResource("18_vchkt")]
+position = Vector2(254.03433, 929.8183)
+
+[node name="@Sprite2D@112" parent="Actors" unique_id=1984263459 instance=ExtResource("18_vchkt")]
+position = Vector2(690.56866, 904.8376)
+
+[node name="@Sprite2D@113" parent="Actors" unique_id=1785950660 instance=ExtResource("18_vchkt")]
+position = Vector2(493.6646, 153.5215)
+
+[node name="@Sprite2D@114" parent="Actors" unique_id=415866253 instance=ExtResource("18_vchkt")]
+position = Vector2(1153.16, 49.496437)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@115" parent="Actors" unique_id=869937261 instance=ExtResource("18_vchkt")]
+position = Vector2(634.1506, 509.39194)
+frame = 1
+
+[node name="@Sprite2D@116" parent="Actors" unique_id=2060139164 instance=ExtResource("18_vchkt")]
+position = Vector2(1070.5178, 734.2222)
+
+[node name="@Sprite2D@117" parent="Actors" unique_id=663372123 instance=ExtResource("18_vchkt")]
+position = Vector2(696.0909, 691.277)
+flip_h = true
+
+[node name="@Sprite2D@118" parent="Actors" unique_id=963604165 instance=ExtResource("18_vchkt")]
+position = Vector2(969.0624, 607.39667)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@119" parent="Actors" unique_id=294704617 instance=ExtResource("18_vchkt")]
+position = Vector2(396.32632, 819.24603)
+frame = 1
+
+[node name="@Sprite2D@120" parent="Actors" unique_id=2103524537 instance=ExtResource("18_vchkt")]
+position = Vector2(1126.5, 649.23987)
+frame = 1
+
+[node name="@Sprite2D@121" parent="Actors" unique_id=615109942 instance=ExtResource("18_vchkt")]
+position = Vector2(837.02014, 798.28296)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@122" parent="Actors" unique_id=1212188047 instance=ExtResource("18_vchkt")]
+position = Vector2(1176.263, 206.21135)
+frame = 1
+
+[node name="@Sprite2D@123" parent="Actors" unique_id=402582261 instance=ExtResource("18_vchkt")]
+position = Vector2(116.04291, 536.6458)
+frame = 2
+
+[node name="@Sprite2D@124" parent="Actors" unique_id=1600062662 instance=ExtResource("18_vchkt")]
+position = Vector2(881.99915, 28.64929)
+
+[node name="@Sprite2D@125" parent="Actors" unique_id=1543808768 instance=ExtResource("18_vchkt")]
+position = Vector2(805.4922, 730.7492)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@126" parent="Actors" unique_id=1399776705 instance=ExtResource("18_vchkt")]
+position = Vector2(994.86316, 906.4717)
+flip_h = true
+
+[node name="@Sprite2D@127" parent="Actors" unique_id=814827467 instance=ExtResource("18_vchkt")]
+position = Vector2(19.023746, 349.66705)
+frame = 2
+
+[node name="@Sprite2D@128" parent="Actors" unique_id=482227594 instance=ExtResource("18_vchkt")]
+position = Vector2(481.16837, 502.19864)
+flip_h = true
+
+[node name="@Sprite2D@129" parent="Actors" unique_id=556965781 instance=ExtResource("18_vchkt")]
+position = Vector2(1072.9089, 187.83049)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@130" parent="Actors" unique_id=1865232103 instance=ExtResource("18_vchkt")]
+position = Vector2(544.4266, 694.683)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@131" parent="Actors" unique_id=292332812 instance=ExtResource("18_vchkt")]
+position = Vector2(1127.6771, 539.4969)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@132" parent="Actors" unique_id=947325152 instance=ExtResource("18_vchkt")]
+position = Vector2(613.4631, 924.96405)
+flip_h = true
+
+[node name="@Sprite2D@133" parent="Actors" unique_id=2016538802 instance=ExtResource("18_vchkt")]
+position = Vector2(377.42783, 810.90356)
+flip_h = true
+
+[node name="@Sprite2D@134" parent="Actors" unique_id=950962610 instance=ExtResource("18_vchkt")]
+position = Vector2(404.29843, 475.44495)
+
+[node name="@Sprite2D@135" parent="Actors" unique_id=1606503480 instance=ExtResource("18_vchkt")]
+position = Vector2(661.79663, 780.99664)
+flip_h = true
+
+[node name="@Sprite2D@136" parent="Actors" unique_id=546436902 instance=ExtResource("18_vchkt")]
+position = Vector2(675.5429, 204.41176)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@137" parent="Actors" unique_id=1259148189 instance=ExtResource("18_vchkt")]
+position = Vector2(678.8624, 722.1532)
+frame = 2
+
+[node name="@Sprite2D@138" parent="Actors" unique_id=975608763 instance=ExtResource("18_vchkt")]
+position = Vector2(494.9567, 140.16907)
+frame = 2
+
+[node name="@Sprite2D@139" parent="Actors" unique_id=1427508966 instance=ExtResource("18_vchkt")]
+position = Vector2(1257.4979, 884.3659)
+flip_h = true
+
+[node name="@Sprite2D@140" parent="Actors" unique_id=10386625 instance=ExtResource("18_vchkt")]
+position = Vector2(52.876026, 908.95905)
+
+[node name="@Sprite2D@141" parent="Actors" unique_id=729623659 instance=ExtResource("18_vchkt")]
+position = Vector2(748.04, 480.95294)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@142" parent="Actors" unique_id=1392911530 instance=ExtResource("18_vchkt")]
+position = Vector2(88.16926, 388.7214)
+flip_h = true
+
+[node name="@Sprite2D@143" parent="Actors" unique_id=1697067368 instance=ExtResource("18_vchkt")]
+position = Vector2(579.0728, 340.3065)
+
+[node name="@Sprite2D@144" parent="Actors" unique_id=1158871166 instance=ExtResource("18_vchkt")]
+position = Vector2(1095.3696, 782.1174)
+frame = 2
+
+[node name="@Sprite2D@145" parent="Actors" unique_id=753543009 instance=ExtResource("18_vchkt")]
+position = Vector2(1126.3896, 171.58435)
+frame = 2
+
+[node name="@Sprite2D@146" parent="Actors" unique_id=1618842460 instance=ExtResource("18_vchkt")]
+position = Vector2(884.0031, 87.74531)
+flip_h = true
+
+[node name="@Sprite2D@147" parent="Actors" unique_id=729559018 instance=ExtResource("18_vchkt")]
+position = Vector2(767.90466, 748.22107)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@148" parent="Actors" unique_id=1815614546 instance=ExtResource("18_vchkt")]
+position = Vector2(651.72046, 858.62915)
+frame = 2
+
+[node name="@Sprite2D@149" parent="Actors" unique_id=444254106 instance=ExtResource("18_vchkt")]
+position = Vector2(148.48802, 356.07715)
+flip_h = true
+
+[node name="@Sprite2D@150" parent="Actors" unique_id=779438048 instance=ExtResource("18_vchkt")]
+position = Vector2(75.17653, 798.25116)
+flip_h = true
+
+[node name="@Sprite2D@151" parent="Actors" unique_id=1627684201 instance=ExtResource("18_vchkt")]
+position = Vector2(719.78937, 93.175095)
+frame = 2
+
+[node name="@Sprite2D@152" parent="Actors" unique_id=881907072 instance=ExtResource("18_vchkt")]
+position = Vector2(61.462215, 927.50696)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@153" parent="Actors" unique_id=1136172952 instance=ExtResource("18_vchkt")]
+position = Vector2(30.111462, 148.6872)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@154" parent="Actors" unique_id=2011865018 instance=ExtResource("18_vchkt")]
+position = Vector2(517.9032, 140.18741)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@155" parent="Actors" unique_id=1508694422 instance=ExtResource("18_vchkt")]
+position = Vector2(71.13481, 434.1763)
+
+[node name="@Sprite2D@156" parent="Actors" unique_id=1595547744 instance=ExtResource("18_vchkt")]
+position = Vector2(751.97784, 128.08882)
+flip_h = true
+
+[node name="@Sprite2D@157" parent="Actors" unique_id=1839976815 instance=ExtResource("18_vchkt")]
+position = Vector2(97.975784, 575.55725)
+
+[node name="@Sprite2D@158" parent="Actors" unique_id=1030716603 instance=ExtResource("18_vchkt")]
+position = Vector2(299.40747, 592.6875)
+frame = 1
+
+[node name="@Sprite2D@159" parent="Actors" unique_id=1367179666 instance=ExtResource("18_vchkt")]
+position = Vector2(1127.4974, 148.9617)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@160" parent="Actors" unique_id=1848410341 instance=ExtResource("18_vchkt")]
+position = Vector2(841.4527, 809.5549)
+flip_h = true
+
+[node name="@Sprite2D@161" parent="Actors" unique_id=1971399514 instance=ExtResource("18_vchkt")]
+position = Vector2(746.4249, 149.95212)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@162" parent="Actors" unique_id=1287452573 instance=ExtResource("18_vchkt")]
+position = Vector2(880.2525, 63.91588)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@163" parent="Actors" unique_id=526117347 instance=ExtResource("18_vchkt")]
+position = Vector2(935.8708, 327.4294)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@164" parent="Actors" unique_id=969864386 instance=ExtResource("18_vchkt")]
+position = Vector2(948.33813, 770.06555)
+frame = 2
+
+[node name="@Sprite2D@165" parent="Actors" unique_id=487118662 instance=ExtResource("18_vchkt")]
+position = Vector2(93.22984, 924.61176)
+frame = 1
+
+[node name="@Sprite2D@166" parent="Actors" unique_id=292042368 instance=ExtResource("18_vchkt")]
+position = Vector2(84.79491, 620.3853)
+frame = 1
+
+[node name="@Sprite2D@167" parent="Actors" unique_id=367194091 instance=ExtResource("18_vchkt")]
+position = Vector2(556.15686, 705.267)
+frame = 1
+
+[node name="@Sprite2D@168" parent="Actors" unique_id=122089479 instance=ExtResource("18_vchkt")]
+position = Vector2(510.8825, 121.12599)
+frame = 1
+
+[node name="@Sprite2D@169" parent="Actors" unique_id=973612918 instance=ExtResource("18_vchkt")]
+position = Vector2(1074.003, 942.84766)
+frame = 1
+
+[node name="@Sprite2D@170" parent="Actors" unique_id=1584485016 instance=ExtResource("18_vchkt")]
+position = Vector2(423.1687, 808.69476)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@171" parent="Actors" unique_id=1469289430 instance=ExtResource("18_vchkt")]
+position = Vector2(734.3005, 144.39304)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@172" parent="Actors" unique_id=1475077706 instance=ExtResource("18_vchkt")]
+position = Vector2(1083.4188, 926.83527)
+frame = 2
+
+[node name="@Sprite2D@173" parent="Actors" unique_id=1207707262 instance=ExtResource("18_vchkt")]
+position = Vector2(669.58185, 711.4344)
+
+[node name="@Sprite2D@174" parent="Actors" unique_id=610615272 instance=ExtResource("18_vchkt")]
+position = Vector2(546.428, 499.36697)
+frame = 2
+
+[node name="@Sprite2D@175" parent="Actors" unique_id=535017866 instance=ExtResource("18_vchkt")]
+position = Vector2(178.5348, 847.6241)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@176" parent="Actors" unique_id=222445501 instance=ExtResource("18_vchkt")]
+position = Vector2(456.99966, 712.858)
+frame = 2
+
+[node name="@Sprite2D@177" parent="Actors" unique_id=931656532 instance=ExtResource("18_vchkt")]
+position = Vector2(699.322, 839.81635)
+frame = 2
+
+[node name="@Sprite2D@178" parent="Actors" unique_id=847542073 instance=ExtResource("18_vchkt")]
+position = Vector2(471.35526, 702.6783)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@179" parent="Actors" unique_id=875830955 instance=ExtResource("18_vchkt")]
+position = Vector2(408.29224, 32.38877)
+
+[node name="@Sprite2D@180" parent="Actors" unique_id=1614302800 instance=ExtResource("18_vchkt")]
+position = Vector2(163.3981, 833.45636)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@181" parent="Actors" unique_id=245910785 instance=ExtResource("18_vchkt")]
+position = Vector2(570.44666, 580.93695)
+flip_h = true
+
+[node name="@Sprite2D@182" parent="Actors" unique_id=1959722707 instance=ExtResource("18_vchkt")]
+position = Vector2(915.45593, 759.57623)
+flip_h = true
+
+[node name="@Sprite2D@183" parent="Actors" unique_id=1926652638 instance=ExtResource("18_vchkt")]
+position = Vector2(232.07263, 926.5897)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@184" parent="Actors" unique_id=1737178660 instance=ExtResource("18_vchkt")]
+position = Vector2(187.67859, 436.7168)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@185" parent="Actors" unique_id=196146373 instance=ExtResource("18_vchkt")]
+position = Vector2(199.90872, 905.3301)
+frame = 2
+
+[node name="@Sprite2D@186" parent="Actors" unique_id=608930995 instance=ExtResource("18_vchkt")]
+position = Vector2(333.01303, 40.10177)
+
+[node name="@Sprite2D@187" parent="Actors" unique_id=970543909 instance=ExtResource("18_vchkt")]
+position = Vector2(111.14977, 462.2945)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@188" parent="Actors" unique_id=1557038140 instance=ExtResource("18_vchkt")]
+position = Vector2(99.95275, 810.1873)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@189" parent="Actors" unique_id=2032243091 instance=ExtResource("18_vchkt")]
+position = Vector2(1121.4, 340.44794)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@190" parent="Actors" unique_id=839680829 instance=ExtResource("18_vchkt")]
+position = Vector2(623.8158, 119.33548)
+
+[node name="@Sprite2D@191" parent="Actors" unique_id=1943173429 instance=ExtResource("18_vchkt")]
+position = Vector2(791.45764, 762.23175)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@192" parent="Actors" unique_id=2001361009 instance=ExtResource("18_vchkt")]
+position = Vector2(960.49304, 431.30966)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@193" parent="Actors" unique_id=1061079095 instance=ExtResource("18_vchkt")]
+position = Vector2(565.8782, 712.64105)
+
+[node name="@Sprite2D@194" parent="Actors" unique_id=1698149829 instance=ExtResource("18_vchkt")]
+position = Vector2(1001.20074, 381.34958)
+flip_h = true
+
+[node name="@Sprite2D@195" parent="Actors" unique_id=513176943 instance=ExtResource("18_vchkt")]
+position = Vector2(882.6704, 352.56064)
+frame = 1
+
+[node name="@Sprite2D@196" parent="Actors" unique_id=2045814306 instance=ExtResource("18_vchkt")]
+position = Vector2(322.10028, 490.67737)
+frame = 2
+
+[node name="@Sprite2D@197" parent="Actors" unique_id=1844055605 instance=ExtResource("18_vchkt")]
+position = Vector2(490.08234, 167.5801)
+frame = 1
+
+[node name="@Sprite2D@198" parent="Actors" unique_id=1859881372 instance=ExtResource("18_vchkt")]
+position = Vector2(1066.2201, 889.1188)
+frame = 2
+
+[node name="@Sprite2D@199" parent="Actors" unique_id=1858408496 instance=ExtResource("18_vchkt")]
+position = Vector2(350.28598, 660.88513)
+
+[node name="@Sprite2D@200" parent="Actors" unique_id=1373838804 instance=ExtResource("18_vchkt")]
+position = Vector2(816.07855, 738.4585)
+frame = 1
+
+[node name="@Sprite2D@201" parent="Actors" unique_id=626497745 instance=ExtResource("18_vchkt")]
+position = Vector2(532.68274, 574.3333)
+flip_h = true
+
+[node name="@Sprite2D@202" parent="Actors" unique_id=2055080207 instance=ExtResource("18_vchkt")]
+position = Vector2(1207.432, 200.12906)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@203" parent="Actors" unique_id=1360608406 instance=ExtResource("18_vchkt")]
+position = Vector2(618.9316, 201.78058)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@204" parent="Actors" unique_id=829434884 instance=ExtResource("18_vchkt")]
+position = Vector2(491.89478, 425.41525)
+frame = 1
+
+[node name="@Sprite2D@205" parent="Actors" unique_id=1223661555 instance=ExtResource("18_vchkt")]
+position = Vector2(504.99323, 817.88354)
+frame = 1
+
+[node name="@Sprite2D@206" parent="Actors" unique_id=1682150628 instance=ExtResource("18_vchkt")]
+position = Vector2(323.28003, 715.8105)
+flip_h = true
+
+[node name="@Sprite2D@207" parent="Actors" unique_id=766437874 instance=ExtResource("18_vchkt")]
+position = Vector2(842.89435, 417.59048)
+flip_h = true
+
+[node name="@Sprite2D@208" parent="Actors" unique_id=1077693209 instance=ExtResource("18_vchkt")]
+position = Vector2(583.4843, 825.4149)
+flip_h = true
+
+[node name="@Sprite2D@209" parent="Actors" unique_id=1436868171 instance=ExtResource("18_vchkt")]
+position = Vector2(674.0514, 676.1107)
+flip_h = true
+
+[node name="@Sprite2D@210" parent="Actors" unique_id=1323555766 instance=ExtResource("18_vchkt")]
+position = Vector2(754.5942, 843.4205)
+frame = 1
+
+[node name="@Sprite2D@211" parent="Actors" unique_id=574801773 instance=ExtResource("18_vchkt")]
+position = Vector2(1136.5599, 48.274693)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@212" parent="Actors" unique_id=1427749587 instance=ExtResource("18_vchkt")]
+position = Vector2(296.1762, 898.1812)
+
+[node name="@Sprite2D@213" parent="Actors" unique_id=322373198 instance=ExtResource("18_vchkt")]
+position = Vector2(1028.6837, 487.11285)
+frame = 1
+
+[node name="@Sprite2D@214" parent="Actors" unique_id=1193905463 instance=ExtResource("18_vchkt")]
+position = Vector2(136.13428, 559.7245)
+
+[node name="@Sprite2D@215" parent="Actors" unique_id=1251989017 instance=ExtResource("18_vchkt")]
+position = Vector2(858.74414, 547.8359)
+frame = 2
+
+[node name="@Sprite2D@216" parent="Actors" unique_id=1153558246 instance=ExtResource("18_vchkt")]
+position = Vector2(568.70374, 922.25854)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@217" parent="Actors" unique_id=51987408 instance=ExtResource("18_vchkt")]
+position = Vector2(342.06027, 163.92305)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@218" parent="Actors" unique_id=1022599669 instance=ExtResource("18_vchkt")]
+position = Vector2(1015.8847, 84.15388)
+flip_h = true
+
+[node name="@Sprite2D@219" parent="Actors" unique_id=190143022 instance=ExtResource("18_vchkt")]
+position = Vector2(77.69638, 581.58356)
+frame = 1
+
+[node name="@Sprite2D@220" parent="Actors" unique_id=876201050 instance=ExtResource("18_vchkt")]
+position = Vector2(1081.6174, 771.54)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@221" parent="Actors" unique_id=907034512 instance=ExtResource("18_vchkt")]
+position = Vector2(449.47867, 384.34665)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@222" parent="Actors" unique_id=1827844909 instance=ExtResource("18_vchkt")]
+position = Vector2(867.25934, 693.35333)
+frame = 2
+
+[node name="@Sprite2D@223" parent="Actors" unique_id=915242402 instance=ExtResource("18_vchkt")]
+position = Vector2(58.775127, 353.40317)
+
+[node name="@Sprite2D@224" parent="Actors" unique_id=1051305690 instance=ExtResource("18_vchkt")]
+position = Vector2(197.6199, 458.75537)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@225" parent="Actors" unique_id=1920697783 instance=ExtResource("18_vchkt")]
+position = Vector2(60.046497, 880.49133)
+frame = 2
+
+[node name="@Sprite2D@226" parent="Actors" unique_id=1496294338 instance=ExtResource("18_vchkt")]
+position = Vector2(314.25534, 566.42847)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@227" parent="Actors" unique_id=507165984 instance=ExtResource("18_vchkt")]
+position = Vector2(222.6246, 182.53804)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@228" parent="Actors" unique_id=773229529 instance=ExtResource("18_vchkt")]
+position = Vector2(467.2362, 444.9196)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@229" parent="Actors" unique_id=371590980 instance=ExtResource("18_vchkt")]
+position = Vector2(756.7225, 69.65013)
+frame = 2
+
+[node name="@Sprite2D@230" parent="Actors" unique_id=526449382 instance=ExtResource("18_vchkt")]
+position = Vector2(29.17907, 785.25824)
+flip_h = true
+
+[node name="@Sprite2D@231" parent="Actors" unique_id=576151110 instance=ExtResource("18_vchkt")]
+position = Vector2(824.38007, 409.41092)
+flip_h = true
+
+[node name="@Sprite2D@232" parent="Actors" unique_id=2098906122 instance=ExtResource("18_vchkt")]
+position = Vector2(1080.1361, 756.50946)
+
+[node name="@Sprite2D@233" parent="Actors" unique_id=24273487 instance=ExtResource("18_vchkt")]
+position = Vector2(821.5721, 230.80801)
+
+[node name="@Sprite2D@234" parent="Actors" unique_id=227502143 instance=ExtResource("18_vchkt")]
+position = Vector2(989.5148, 916.59845)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@235" parent="Actors" unique_id=439739644 instance=ExtResource("18_vchkt")]
+position = Vector2(47.145782, 736.21893)
+
+[node name="@Sprite2D@236" parent="Actors" unique_id=215778616 instance=ExtResource("18_vchkt")]
+position = Vector2(101.85845, 713.13983)
+flip_h = true
+
+[node name="@Sprite2D@237" parent="Actors" unique_id=1939559799 instance=ExtResource("18_vchkt")]
+position = Vector2(124.85205, 375.7384)
+
+[node name="@Sprite2D@238" parent="Actors" unique_id=1978726630 instance=ExtResource("18_vchkt")]
+position = Vector2(479.34216, 210.37717)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@239" parent="Actors" unique_id=1338912144 instance=ExtResource("18_vchkt")]
+position = Vector2(996.1466, 522.1371)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@240" parent="Actors" unique_id=1065786745 instance=ExtResource("18_vchkt")]
+position = Vector2(991.2487, 438.45285)
+frame = 2
+
+[node name="@Sprite2D@241" parent="Actors" unique_id=1687957481 instance=ExtResource("18_vchkt")]
+position = Vector2(418.93594, 37.609455)
+flip_h = true
+
+[node name="@Sprite2D@242" parent="Actors" unique_id=1298626981 instance=ExtResource("18_vchkt")]
+position = Vector2(103.365, 954.2003)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@243" parent="Actors" unique_id=1221820067 instance=ExtResource("18_vchkt")]
+position = Vector2(1040.2122, 32.397976)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@244" parent="Actors" unique_id=153735193 instance=ExtResource("18_vchkt")]
+position = Vector2(1097.5741, 377.2769)
+flip_h = true
+
+[node name="@Sprite2D@245" parent="Actors" unique_id=173905891 instance=ExtResource("18_vchkt")]
+position = Vector2(339.6821, 809.0638)
+flip_h = true
+
+[node name="@Sprite2D@246" parent="Actors" unique_id=747510191 instance=ExtResource("18_vchkt")]
+position = Vector2(890.05396, 696.1418)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@247" parent="Actors" unique_id=1084346373 instance=ExtResource("18_vchkt")]
+position = Vector2(628.5281, 189.23451)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@248" parent="Actors" unique_id=1096647748 instance=ExtResource("18_vchkt")]
+position = Vector2(976.5224, 872.44354)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@249" parent="Actors" unique_id=1960673084 instance=ExtResource("18_vchkt")]
+position = Vector2(440.1646, 809.3217)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@250" parent="Actors" unique_id=845437656 instance=ExtResource("18_vchkt")]
+position = Vector2(490.14288, 947.74164)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@251" parent="Actors" unique_id=140469119 instance=ExtResource("18_vchkt")]
+position = Vector2(357.27863, 693.09906)
+flip_h = true
+
+[node name="@Sprite2D@252" parent="Actors" unique_id=1023372131 instance=ExtResource("18_vchkt")]
+position = Vector2(454.45923, 769.9101)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@253" parent="Actors" unique_id=279950153 instance=ExtResource("18_vchkt")]
+position = Vector2(129.45972, 748.08734)
+flip_h = true
+
+[node name="@Sprite2D@254" parent="Actors" unique_id=132661377 instance=ExtResource("18_vchkt")]
+position = Vector2(507.19614, 83.57293)
+frame = 2
+
+[node name="@Sprite2D@255" parent="Actors" unique_id=2056698409 instance=ExtResource("18_vchkt")]
+position = Vector2(84.2468, 666.3068)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@256" parent="Actors" unique_id=766897330 instance=ExtResource("18_vchkt")]
+position = Vector2(176.95866, 408.5449)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@257" parent="Actors" unique_id=248048220 instance=ExtResource("18_vchkt")]
+position = Vector2(152.0415, 824.18146)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@258" parent="Actors" unique_id=660246287 instance=ExtResource("18_vchkt")]
+position = Vector2(43.739838, 44.596313)
+frame = 1
+
+[node name="@Sprite2D@259" parent="Actors" unique_id=867222981 instance=ExtResource("18_vchkt")]
+position = Vector2(1125.6698, 567.73865)
+
+[node name="@Sprite2D@260" parent="Actors" unique_id=542792588 instance=ExtResource("18_vchkt")]
+position = Vector2(307.34375, 185.45697)
+frame = 1
+
+[node name="@Sprite2D@261" parent="Actors" unique_id=357692315 instance=ExtResource("18_vchkt")]
+position = Vector2(1024.1836, 326.65915)
+frame = 2
+
+[node name="@Sprite2D@262" parent="Actors" unique_id=36564427 instance=ExtResource("18_vchkt")]
+position = Vector2(501.88947, 199.03357)
+frame = 1
+
+[node name="@Sprite2D@263" parent="Actors" unique_id=575928215 instance=ExtResource("18_vchkt")]
+position = Vector2(831.64197, 540.6951)
+frame = 1
+
+[node name="@Sprite2D@264" parent="Actors" unique_id=1243477196 instance=ExtResource("18_vchkt")]
+position = Vector2(131.44162, 585.8495)
+frame = 2
+
+[node name="@Sprite2D@265" parent="Actors" unique_id=1701211886 instance=ExtResource("18_vchkt")]
+position = Vector2(526.81964, 710.9832)
+flip_h = true
+
+[node name="@Sprite2D@266" parent="Actors" unique_id=1534036447 instance=ExtResource("18_vchkt")]
+position = Vector2(952.4336, 932.25867)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@267" parent="Actors" unique_id=2044552461 instance=ExtResource("18_vchkt")]
+position = Vector2(198.43518, 124.52215)
+
+[node name="@Sprite2D@268" parent="Actors" unique_id=407542986 instance=ExtResource("18_vchkt")]
+position = Vector2(973.2092, 656.0743)
+flip_h = true
+
+[node name="@Sprite2D@269" parent="Actors" unique_id=512805919 instance=ExtResource("18_vchkt")]
+position = Vector2(319.42703, 441.15222)
+flip_h = true
+
+[node name="@Sprite2D@270" parent="Actors" unique_id=180408191 instance=ExtResource("18_vchkt")]
+position = Vector2(873.6862, 81.11859)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@271" parent="Actors" unique_id=6886616 instance=ExtResource("18_vchkt")]
+position = Vector2(339.2024, 720.11444)
+frame = 2
+
+[node name="@Sprite2D@272" parent="Actors" unique_id=313572928 instance=ExtResource("18_vchkt")]
+position = Vector2(741.53674, 505.26923)
+frame = 1
+
+[node name="@Sprite2D@273" parent="Actors" unique_id=1756770898 instance=ExtResource("18_vchkt")]
+position = Vector2(540.2229, 55.293633)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@274" parent="Actors" unique_id=1323242995 instance=ExtResource("18_vchkt")]
+position = Vector2(725.2073, 933.96826)
+frame = 2
+
+[node name="@Sprite2D@275" parent="Actors" unique_id=144251973 instance=ExtResource("18_vchkt")]
+position = Vector2(373.67737, 684.63104)
+frame = 1
+
+[node name="@Sprite2D@276" parent="Actors" unique_id=760148152 instance=ExtResource("18_vchkt")]
+position = Vector2(825.72626, 663.1939)
+frame = 2
+
+[node name="@Sprite2D@277" parent="Actors" unique_id=1489035631 instance=ExtResource("18_vchkt")]
+position = Vector2(351.06702, 948.10315)
+frame = 2
+
+[node name="@Sprite2D@278" parent="Actors" unique_id=750415245 instance=ExtResource("18_vchkt")]
+position = Vector2(42.27048, 658.892)
+frame = 1
+
+[node name="@Sprite2D@279" parent="Actors" unique_id=388380222 instance=ExtResource("18_vchkt")]
+position = Vector2(552.65173, 575.30444)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@280" parent="Actors" unique_id=1562633470 instance=ExtResource("18_vchkt")]
+position = Vector2(839.1719, 846.71405)
+flip_h = true
+
+[node name="@Sprite2D@281" parent="Actors" unique_id=1744590461 instance=ExtResource("18_vchkt")]
+position = Vector2(877.32837, 537.34735)
+
+[node name="@Sprite2D@282" parent="Actors" unique_id=79481129 instance=ExtResource("18_vchkt")]
+position = Vector2(1126.806, 604.63715)
+
+[node name="@Sprite2D@283" parent="Actors" unique_id=758333022 instance=ExtResource("18_vchkt")]
+position = Vector2(1117.4818, 387.1462)
+frame = 1
+
+[node name="@Sprite2D@284" parent="Actors" unique_id=1482858828 instance=ExtResource("18_vchkt")]
+position = Vector2(823.8292, 161.12231)
+
+[node name="@Sprite2D@285" parent="Actors" unique_id=673529021 instance=ExtResource("18_vchkt")]
+position = Vector2(103.49029, 935.32166)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@286" parent="Actors" unique_id=493620978 instance=ExtResource("18_vchkt")]
+position = Vector2(548.0986, 516.00964)
+frame = 2
+
+[node name="@Sprite2D@287" parent="Actors" unique_id=1503402761 instance=ExtResource("18_vchkt")]
+position = Vector2(153.32332, 733.3686)
+
+[node name="@Sprite2D@288" parent="Actors" unique_id=811161243 instance=ExtResource("18_vchkt")]
+position = Vector2(876.7735, 854.3083)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@289" parent="Actors" unique_id=817400388 instance=ExtResource("18_vchkt")]
+position = Vector2(77.23776, 167.41946)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@290" parent="Actors" unique_id=1373207216 instance=ExtResource("18_vchkt")]
+position = Vector2(176.18309, 143.57376)
+flip_h = true
+
+[node name="@Sprite2D@291" parent="Actors" unique_id=1455971271 instance=ExtResource("18_vchkt")]
+position = Vector2(773.76715, 81.62956)
+frame = 2
+
+[node name="@Sprite2D@292" parent="Actors" unique_id=1943004257 instance=ExtResource("18_vchkt")]
+position = Vector2(565.37036, 593.6131)
+frame = 1
+
+[node name="@Sprite2D@293" parent="Actors" unique_id=1619261956 instance=ExtResource("18_vchkt")]
+position = Vector2(241.85817, 579.84863)
+frame = 2
+
+[node name="@Sprite2D@294" parent="Actors" unique_id=1300411582 instance=ExtResource("18_vchkt")]
+position = Vector2(1106.2134, 412.16998)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@295" parent="Actors" unique_id=796888431 instance=ExtResource("18_vchkt")]
+position = Vector2(360.60538, 528.42126)
+flip_h = true
+
+[node name="@Sprite2D@296" parent="Actors" unique_id=706609187 instance=ExtResource("18_vchkt")]
+position = Vector2(1194.6848, 655.52545)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@297" parent="Actors" unique_id=717752743 instance=ExtResource("18_vchkt")]
+position = Vector2(947.48, 799.0509)
+frame = 2
+
+[node name="@Sprite2D@298" parent="Actors" unique_id=1291357941 instance=ExtResource("18_vchkt")]
+position = Vector2(783.2545, 864.45575)
+frame = 2
+
+[node name="@Sprite2D@299" parent="Actors" unique_id=1570746160 instance=ExtResource("18_vchkt")]
+position = Vector2(252.23213, 636.9324)
+
+[node name="@Sprite2D@300" parent="Actors" unique_id=679046558 instance=ExtResource("18_vchkt")]
+position = Vector2(274.34592, 40.465866)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@301" parent="Actors" unique_id=1867098710 instance=ExtResource("18_vchkt")]
+position = Vector2(728.9083, 601.80273)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@302" parent="Actors" unique_id=914184231 instance=ExtResource("18_vchkt")]
+position = Vector2(769.06244, 880.63855)
+
+[node name="@Sprite2D@303" parent="Actors" unique_id=1379054090 instance=ExtResource("18_vchkt")]
+position = Vector2(820.8714, 792.2397)
+
+[node name="@Sprite2D@304" parent="Actors" unique_id=1211258916 instance=ExtResource("18_vchkt")]
+position = Vector2(218.03438, 504.21524)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@305" parent="Actors" unique_id=591105261 instance=ExtResource("18_vchkt")]
+position = Vector2(995.1775, 107.8997)
+frame = 1
+
+[node name="@Sprite2D@306" parent="Actors" unique_id=1530264661 instance=ExtResource("18_vchkt")]
+position = Vector2(962.178, 326.6817)
+flip_h = true
+
+[node name="Reed" parent="Actors" unique_id=826724604 instance=ExtResource("19_txyw0")]
+position = Vector2(417.4397, 346.8976)
+frame = 1
+
+[node name="@Sprite2D@307" parent="Actors" unique_id=558442760 instance=ExtResource("19_txyw0")]
+position = Vector2(420.6858, 358.08615)
+
+[node name="@Sprite2D@308" parent="Actors" unique_id=1375364960 instance=ExtResource("19_txyw0")]
+position = Vector2(421.5938, 371.43976)
+flip_h = true
+
+[node name="@Sprite2D@309" parent="Actors" unique_id=1309342863 instance=ExtResource("19_txyw0")]
+position = Vector2(421.64026, 377.95215)
+frame = 1
+
+[node name="@Sprite2D@310" parent="Actors" unique_id=1743045284 instance=ExtResource("19_txyw0")]
+position = Vector2(418.5401, 387.6986)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@311" parent="Actors" unique_id=270013948 instance=ExtResource("19_txyw0")]
+position = Vector2(406.53064, 399.383)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@312" parent="Actors" unique_id=218486411 instance=ExtResource("19_txyw0")]
+position = Vector2(395.95862, 410.79724)
+frame = 2
+
+[node name="@Sprite2D@313" parent="Actors" unique_id=5553454 instance=ExtResource("19_txyw0")]
+position = Vector2(378.39648, 418.24097)
+frame = 1
+
+[node name="@Sprite2D@314" parent="Actors" unique_id=1299085362 instance=ExtResource("19_txyw0")]
+position = Vector2(363.4763, 426.00732)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@315" parent="Actors" unique_id=860722450 instance=ExtResource("19_txyw0")]
+position = Vector2(339.69043, 430.68933)
+
+[node name="@Sprite2D@316" parent="Actors" unique_id=1797350759 instance=ExtResource("19_txyw0")]
+position = Vector2(311.30176, 431.42938)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@317" parent="Actors" unique_id=1491971304 instance=ExtResource("19_txyw0")]
+position = Vector2(289.3537, 428.10773)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@318" parent="Actors" unique_id=226610087 instance=ExtResource("19_txyw0")]
+position = Vector2(267.5286, 431.96054)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@319" parent="Actors" unique_id=156816424 instance=ExtResource("19_txyw0")]
+position = Vector2(255.7042, 428.89853)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@320" parent="Actors" unique_id=1400501831 instance=ExtResource("19_txyw0")]
+position = Vector2(224.71143, 423.7296)
+frame = 1
+
+[node name="@Sprite2D@321" parent="Actors" unique_id=1198079200 instance=ExtResource("19_txyw0")]
+position = Vector2(213.15259, 414.67212)
+
+[node name="@Sprite2D@322" parent="Actors" unique_id=2064291486 instance=ExtResource("19_txyw0")]
+position = Vector2(194.55832, 408.99622)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@323" parent="Actors" unique_id=1602039400 instance=ExtResource("19_txyw0")]
+position = Vector2(182.69382, 395.32965)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@324" parent="Actors" unique_id=1450472792 instance=ExtResource("19_txyw0")]
+position = Vector2(177.63794, 386.1272)
+frame = 2
+
+[node name="@Sprite2D@325" parent="Actors" unique_id=107631600 instance=ExtResource("19_txyw0")]
+position = Vector2(178.6293, 372.4579)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@326" parent="Actors" unique_id=130381522 instance=ExtResource("19_txyw0")]
+position = Vector2(173.38315, 364.2905)
+
+[node name="@Sprite2D@327" parent="Actors" unique_id=1780300075 instance=ExtResource("19_txyw0")]
+position = Vector2(180.28577, 353.93683)
+flip_h = true
+
+[node name="Grass" parent="Actors" unique_id=697137785 instance=ExtResource("20_vc5cj")]
+position = Vector2(1877.9414, 686.375)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@328" parent="Actors" unique_id=1468247274 instance=ExtResource("20_vc5cj")]
+position = Vector2(1600.0542, 136.85388)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@329" parent="Actors" unique_id=312832291 instance=ExtResource("20_vc5cj")]
+position = Vector2(2135.2021, 488.53552)
+frame = 1
+
+[node name="@Sprite2D@330" parent="Actors" unique_id=516907877 instance=ExtResource("20_vc5cj")]
+position = Vector2(1620.7195, 701.853)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@331" parent="Actors" unique_id=20594307 instance=ExtResource("20_vc5cj")]
+position = Vector2(2228.4773, 127.43365)
+frame = 2
+
+[node name="@Sprite2D@332" parent="Actors" unique_id=6055916 instance=ExtResource("20_vc5cj")]
+position = Vector2(1732.1353, 86.45854)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@333" parent="Actors" unique_id=618936585 instance=ExtResource("20_vc5cj")]
+position = Vector2(2036.2642, 296.0609)
+frame = 1
+
+[node name="@Sprite2D@334" parent="Actors" unique_id=1890780375 instance=ExtResource("20_vc5cj")]
+position = Vector2(1400.4624, 759.5274)
+
+[node name="@Sprite2D@335" parent="Actors" unique_id=608666347 instance=ExtResource("20_vc5cj")]
+position = Vector2(1532.9979, 790.13165)
+flip_h = true
+
+[node name="@Sprite2D@336" parent="Actors" unique_id=1898897659 instance=ExtResource("20_vc5cj")]
+position = Vector2(1446.9841, 156.41331)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@337" parent="Actors" unique_id=1209512135 instance=ExtResource("20_vc5cj")]
+position = Vector2(1737.9623, 634.9229)
+flip_h = true
+
+[node name="@Sprite2D@338" parent="Actors" unique_id=1301856799 instance=ExtResource("20_vc5cj")]
+position = Vector2(1541.1212, 512.90735)
+frame = 1
+
+[node name="@Sprite2D@339" parent="Actors" unique_id=1179968713 instance=ExtResource("20_vc5cj")]
+position = Vector2(1820.634, 655.2104)
+frame = 1
+
+[node name="@Sprite2D@340" parent="Actors" unique_id=760423723 instance=ExtResource("20_vc5cj")]
+position = Vector2(2045.7097, 595.3982)
+
+[node name="@Sprite2D@341" parent="Actors" unique_id=1685481009 instance=ExtResource("20_vc5cj")]
+position = Vector2(1908.1709, 611.35345)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@342" parent="Actors" unique_id=170498411 instance=ExtResource("20_vc5cj")]
+position = Vector2(2216.6172, 955.89325)
+frame = 1
+
+[node name="@Sprite2D@343" parent="Actors" unique_id=1610685019 instance=ExtResource("20_vc5cj")]
+position = Vector2(1660.1115, 188.83788)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@344" parent="Actors" unique_id=1813509386 instance=ExtResource("20_vc5cj")]
+position = Vector2(2273.4214, 426.8959)
+frame = 1
+
+[node name="@Sprite2D@345" parent="Actors" unique_id=1318517086 instance=ExtResource("20_vc5cj")]
+position = Vector2(2277.1719, 770.1837)
+frame = 1
+
+[node name="@Sprite2D@346" parent="Actors" unique_id=1564197463 instance=ExtResource("20_vc5cj")]
+position = Vector2(1384.8463, 376.9525)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@347" parent="Actors" unique_id=373835519 instance=ExtResource("20_vc5cj")]
+position = Vector2(1390.2312, 330.08087)
+frame = 2
+
+[node name="@Sprite2D@348" parent="Actors" unique_id=1484113255 instance=ExtResource("20_vc5cj")]
+position = Vector2(1553.0792, 445.97058)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@349" parent="Actors" unique_id=1719886044 instance=ExtResource("20_vc5cj")]
+position = Vector2(1744.045, 528.55884)
+frame = 1
+
+[node name="@Sprite2D@350" parent="Actors" unique_id=1841194123 instance=ExtResource("20_vc5cj")]
+position = Vector2(2191.6753, 317.68945)
+frame = 2
+
+[node name="@Sprite2D@351" parent="Actors" unique_id=907463812 instance=ExtResource("20_vc5cj")]
+position = Vector2(1797.4668, 65.7975)
+
+[node name="@Sprite2D@352" parent="Actors" unique_id=1432943160 instance=ExtResource("20_vc5cj")]
+position = Vector2(1981.8191, 740.44)
+flip_h = true
+
+[node name="@Sprite2D@353" parent="Actors" unique_id=252527248 instance=ExtResource("20_vc5cj")]
+position = Vector2(1387.2528, 851.8308)
+
+[node name="@Sprite2D@354" parent="Actors" unique_id=2098404178 instance=ExtResource("20_vc5cj")]
+position = Vector2(1406.8978, 418.65494)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@355" parent="Actors" unique_id=52058979 instance=ExtResource("20_vc5cj")]
+position = Vector2(2069.9358, 877.12195)
+flip_h = true
+
+[node name="@Sprite2D@356" parent="Actors" unique_id=1351734182 instance=ExtResource("20_vc5cj")]
+position = Vector2(1850.5215, 665.3676)
+frame = 1
+
+[node name="@Sprite2D@357" parent="Actors" unique_id=714059754 instance=ExtResource("20_vc5cj")]
+position = Vector2(2256.9434, 897.53534)
+frame = 2
+
+[node name="@Sprite2D@358" parent="Actors" unique_id=1179853477 instance=ExtResource("20_vc5cj")]
+position = Vector2(2024.7395, 704.78845)
+flip_h = true
+
+[node name="@Sprite2D@359" parent="Actors" unique_id=1258020267 instance=ExtResource("20_vc5cj")]
+position = Vector2(1718.1007, 128.38637)
+frame = 2
+
+[node name="@Sprite2D@360" parent="Actors" unique_id=1800908131 instance=ExtResource("20_vc5cj")]
+position = Vector2(2000.9961, 873.2852)
+flip_h = true
+
+[node name="@Sprite2D@361" parent="Actors" unique_id=1971081803 instance=ExtResource("20_vc5cj")]
+position = Vector2(1438.1646, 516.83484)
+frame = 1
+
+[node name="@Sprite2D@362" parent="Actors" unique_id=1453774907 instance=ExtResource("20_vc5cj")]
+position = Vector2(2199.6267, 168.1589)
+
+[node name="@Sprite2D@363" parent="Actors" unique_id=1249337970 instance=ExtResource("20_vc5cj")]
+position = Vector2(1711.3229, 65.51285)
+frame = 2
+
+[node name="@Sprite2D@364" parent="Actors" unique_id=1906915475 instance=ExtResource("20_vc5cj")]
+position = Vector2(2282.1284, 863.2232)
+flip_h = true
+
+[node name="@Sprite2D@365" parent="Actors" unique_id=922150259 instance=ExtResource("20_vc5cj")]
+position = Vector2(2160.201, 583.28546)
+
+[node name="@Sprite2D@366" parent="Actors" unique_id=445793034 instance=ExtResource("20_vc5cj")]
+position = Vector2(1548.8918, 705.1852)
+flip_h = true
+
+[node name="@Sprite2D@367" parent="Actors" unique_id=345390931 instance=ExtResource("20_vc5cj")]
+position = Vector2(2113.4011, 850.0829)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@368" parent="Actors" unique_id=1626601584 instance=ExtResource("20_vc5cj")]
+position = Vector2(2059.1746, 537.2503)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@369" parent="Actors" unique_id=721318713 instance=ExtResource("20_vc5cj")]
+position = Vector2(1683.3491, 450.68924)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@370" parent="Actors" unique_id=189147669 instance=ExtResource("20_vc5cj")]
+position = Vector2(2084.4495, 954.00397)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@371" parent="Actors" unique_id=1584162130 instance=ExtResource("20_vc5cj")]
+position = Vector2(1631.4476, 439.7119)
+frame = 1
+
+[node name="@Sprite2D@372" parent="Actors" unique_id=1814245543 instance=ExtResource("20_vc5cj")]
+position = Vector2(2063.5664, 590.79254)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@373" parent="Actors" unique_id=809791873 instance=ExtResource("20_vc5cj")]
+position = Vector2(2226.948, 492.3672)
+flip_h = true
+
+[node name="@Sprite2D@374" parent="Actors" unique_id=1389679155 instance=ExtResource("20_vc5cj")]
+position = Vector2(1877.7288, 888.2397)
+frame = 2
+
+[node name="@Sprite2D@375" parent="Actors" unique_id=1686258723 instance=ExtResource("20_vc5cj")]
+position = Vector2(1580.9117, 31.284006)
+frame = 2
+
+[node name="@Sprite2D@376" parent="Actors" unique_id=101916458 instance=ExtResource("20_vc5cj")]
+position = Vector2(2204.2158, 803.70026)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@377" parent="Actors" unique_id=1330239346 instance=ExtResource("20_vc5cj")]
+position = Vector2(2126.9114, 587.5554)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@378" parent="Actors" unique_id=601756230 instance=ExtResource("20_vc5cj")]
+position = Vector2(1805.9379, 639.4387)
+flip_h = true
+
+[node name="@Sprite2D@379" parent="Actors" unique_id=315819065 instance=ExtResource("20_vc5cj")]
+position = Vector2(1496.7194, 304.9259)
+
+[node name="@Sprite2D@380" parent="Actors" unique_id=1542118841 instance=ExtResource("20_vc5cj")]
+position = Vector2(2208.4548, 880.59644)
+frame = 1
+
+[node name="@Sprite2D@381" parent="Actors" unique_id=1935016492 instance=ExtResource("20_vc5cj")]
+position = Vector2(1954.0276, 554.5149)
+
+[node name="@Sprite2D@382" parent="Actors" unique_id=1995869961 instance=ExtResource("20_vc5cj")]
+position = Vector2(1980.2349, 681.8363)
+flip_h = true
+
+[node name="@Sprite2D@383" parent="Actors" unique_id=584439535 instance=ExtResource("20_vc5cj")]
+position = Vector2(1440.3223, 759.8173)
+frame = 2
+
+[node name="@Sprite2D@384" parent="Actors" unique_id=767339877 instance=ExtResource("20_vc5cj")]
+position = Vector2(1406.8069, 437.67026)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@385" parent="Actors" unique_id=1626374508 instance=ExtResource("20_vc5cj")]
+position = Vector2(2095.349, 165.01184)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@386" parent="Actors" unique_id=1536763045 instance=ExtResource("20_vc5cj")]
+position = Vector2(1620.4111, 137.19736)
+
+[node name="@Sprite2D@387" parent="Actors" unique_id=534891728 instance=ExtResource("20_vc5cj")]
+position = Vector2(2120.8967, 559.2718)
+frame = 2
+
+[node name="@Sprite2D@388" parent="Actors" unique_id=559224834 instance=ExtResource("20_vc5cj")]
+position = Vector2(1998.0425, 98.86697)
+
+[node name="@Sprite2D@389" parent="Actors" unique_id=429355822 instance=ExtResource("20_vc5cj")]
+position = Vector2(1521.3693, 809.1242)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@390" parent="Actors" unique_id=1556305912 instance=ExtResource("20_vc5cj")]
+position = Vector2(1406.9027, 198.27113)
+flip_h = true
+
+[node name="@Sprite2D@391" parent="Actors" unique_id=827733416 instance=ExtResource("20_vc5cj")]
+position = Vector2(2060.7625, 54.130222)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@392" parent="Actors" unique_id=737756451 instance=ExtResource("20_vc5cj")]
+position = Vector2(1324.4213, 73.055176)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@393" parent="Actors" unique_id=1961504513 instance=ExtResource("20_vc5cj")]
+position = Vector2(2251.1255, 135.06934)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@394" parent="Actors" unique_id=1484144093 instance=ExtResource("20_vc5cj")]
+position = Vector2(1900.8088, 109.4124)
+frame = 2
+
+[node name="@Sprite2D@395" parent="Actors" unique_id=1605695645 instance=ExtResource("20_vc5cj")]
+position = Vector2(1904.4396, 454.7048)
+
+[node name="@Sprite2D@396" parent="Actors" unique_id=1034032777 instance=ExtResource("20_vc5cj")]
+position = Vector2(1620.2225, 278.10278)
+frame = 1
+
+[node name="@Sprite2D@397" parent="Actors" unique_id=1184443350 instance=ExtResource("20_vc5cj")]
+position = Vector2(2283.1943, 908.33606)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@398" parent="Actors" unique_id=1822423472 instance=ExtResource("20_vc5cj")]
+position = Vector2(1857.0356, 952.1121)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@399" parent="Actors" unique_id=193766989 instance=ExtResource("20_vc5cj")]
+position = Vector2(2024.3469, 691.20593)
+flip_h = true
+
+[node name="@Sprite2D@400" parent="Actors" unique_id=719758061 instance=ExtResource("20_vc5cj")]
+position = Vector2(2081.251, 684.31635)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@401" parent="Actors" unique_id=2035936849 instance=ExtResource("20_vc5cj")]
+position = Vector2(1961.0686, 313.21817)
+
+[node name="@Sprite2D@402" parent="Actors" unique_id=1047519944 instance=ExtResource("20_vc5cj")]
+position = Vector2(1544.1953, 591.17377)
+flip_h = true
+
+[node name="@Sprite2D@403" parent="Actors" unique_id=383566615 instance=ExtResource("20_vc5cj")]
+position = Vector2(1666.8953, 681.0504)
+frame = 2
+
+[node name="@Sprite2D@404" parent="Actors" unique_id=119566851 instance=ExtResource("20_vc5cj")]
+position = Vector2(2125.634, 323.37564)
+
+[node name="@Sprite2D@405" parent="Actors" unique_id=414724858 instance=ExtResource("20_vc5cj")]
+position = Vector2(1425.6498, 491.96512)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@406" parent="Actors" unique_id=1744460874 instance=ExtResource("20_vc5cj")]
+position = Vector2(1712.4084, 778.6841)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@407" parent="Actors" unique_id=1163024933 instance=ExtResource("20_vc5cj")]
+position = Vector2(1881.4033, 315.61862)
+
+[node name="@Sprite2D@408" parent="Actors" unique_id=1809859892 instance=ExtResource("20_vc5cj")]
+position = Vector2(1726.1024, 829.8865)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@409" parent="Actors" unique_id=145393472 instance=ExtResource("20_vc5cj")]
+position = Vector2(2120.3877, 464.44907)
+flip_h = true
+
+[node name="@Sprite2D@410" parent="Actors" unique_id=561351676 instance=ExtResource("20_vc5cj")]
+position = Vector2(1696.5219, 340.31442)
+
+[node name="@Sprite2D@411" parent="Actors" unique_id=356311687 instance=ExtResource("20_vc5cj")]
+position = Vector2(1940.3245, 118.638306)
+frame = 1
+
+[node name="@Sprite2D@412" parent="Actors" unique_id=94606420 instance=ExtResource("20_vc5cj")]
+position = Vector2(2292.6907, 506.7431)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@413" parent="Actors" unique_id=695283211 instance=ExtResource("20_vc5cj")]
+position = Vector2(1519.6387, 707.8372)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@414" parent="Actors" unique_id=1495695755 instance=ExtResource("20_vc5cj")]
+position = Vector2(1378.9717, 774.0562)
+frame = 2
+
+[node name="@Sprite2D@415" parent="Actors" unique_id=103507219 instance=ExtResource("20_vc5cj")]
+position = Vector2(1811.3676, 346.27036)
+frame = 2
+
+[node name="@Sprite2D@416" parent="Actors" unique_id=346264293 instance=ExtResource("20_vc5cj")]
+position = Vector2(1421.5703, 926.63574)
+frame = 2
+
+[node name="@Sprite2D@417" parent="Actors" unique_id=1397015952 instance=ExtResource("20_vc5cj")]
+position = Vector2(2276.9775, 176.70253)
+frame = 1
+
+[node name="@Sprite2D@418" parent="Actors" unique_id=1387187735 instance=ExtResource("20_vc5cj")]
+position = Vector2(2030.3716, 754.03436)
+
+[node name="@Sprite2D@419" parent="Actors" unique_id=1059108287 instance=ExtResource("20_vc5cj")]
+position = Vector2(2176.8696, 265.16443)
+frame = 2
+
+[node name="@Sprite2D@420" parent="Actors" unique_id=1780525281 instance=ExtResource("20_vc5cj")]
+position = Vector2(1767.5825, 887.29663)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@421" parent="Actors" unique_id=827854312 instance=ExtResource("20_vc5cj")]
+position = Vector2(1936.4082, 314.92883)
+frame = 1
+
+[node name="@Sprite2D@422" parent="Actors" unique_id=1908384245 instance=ExtResource("20_vc5cj")]
+position = Vector2(1913.7649, 370.70993)
+frame = 1
+
+[node name="@Sprite2D@423" parent="Actors" unique_id=1900293683 instance=ExtResource("20_vc5cj")]
+position = Vector2(2216.6802, 264.91293)
+flip_h = true
+
+[node name="@Sprite2D@424" parent="Actors" unique_id=168009856 instance=ExtResource("20_vc5cj")]
+position = Vector2(1921.8378, 326.4879)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@425" parent="Actors" unique_id=140151321 instance=ExtResource("20_vc5cj")]
+position = Vector2(2031.198, 379.37582)
+frame = 1
+
+[node name="@Sprite2D@426" parent="Actors" unique_id=1861251216 instance=ExtResource("20_vc5cj")]
+position = Vector2(1866.7917, 263.28076)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@427" parent="Actors" unique_id=821925288 instance=ExtResource("20_vc5cj")]
+position = Vector2(1869.9226, 646.2907)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@428" parent="Actors" unique_id=1103790496 instance=ExtResource("20_vc5cj")]
+position = Vector2(2018.585, 739.3832)
+flip_h = true
+
+[node name="@Sprite2D@429" parent="Actors" unique_id=1650312921 instance=ExtResource("20_vc5cj")]
+position = Vector2(1350.7301, 462.57376)
+frame = 2
+
+[node name="@Sprite2D@430" parent="Actors" unique_id=52006130 instance=ExtResource("20_vc5cj")]
+position = Vector2(2044.5093, 777.0481)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@431" parent="Actors" unique_id=1861520701 instance=ExtResource("20_vc5cj")]
+position = Vector2(1389.937, 428.70157)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@432" parent="Actors" unique_id=123778654 instance=ExtResource("20_vc5cj")]
+position = Vector2(1888.5076, 930.0095)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@433" parent="Actors" unique_id=62544503 instance=ExtResource("20_vc5cj")]
+position = Vector2(1379.1055, 365.5225)
+frame = 1
+
+[node name="@Sprite2D@434" parent="Actors" unique_id=357390425 instance=ExtResource("20_vc5cj")]
+position = Vector2(1962.4896, 563.6719)
+flip_h = true
+
+[node name="@Sprite2D@435" parent="Actors" unique_id=1078727772 instance=ExtResource("20_vc5cj")]
+position = Vector2(1469.0952, 925.38794)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@436" parent="Actors" unique_id=1253558899 instance=ExtResource("20_vc5cj")]
+position = Vector2(1522.821, 830.72906)
+frame = 1
+
+[node name="@Sprite2D@437" parent="Actors" unique_id=610527 instance=ExtResource("20_vc5cj")]
+position = Vector2(1683.3871, 566.4936)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@438" parent="Actors" unique_id=1322876644 instance=ExtResource("20_vc5cj")]
+position = Vector2(1546.7089, 928.31335)
+frame = 1
+
+[node name="@Sprite2D@439" parent="Actors" unique_id=999227589 instance=ExtResource("20_vc5cj")]
+position = Vector2(2046.3369, 284.462)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@440" parent="Actors" unique_id=1498303333 instance=ExtResource("20_vc5cj")]
+position = Vector2(1384.2964, 948.4476)
+flip_h = true
+
+[node name="@Sprite2D@441" parent="Actors" unique_id=311791050 instance=ExtResource("20_vc5cj")]
+position = Vector2(1893.5564, 759.31744)
+
+[node name="@Sprite2D@442" parent="Actors" unique_id=2090868307 instance=ExtResource("20_vc5cj")]
+position = Vector2(1621.2053, 38.38227)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@443" parent="Actors" unique_id=1412908189 instance=ExtResource("20_vc5cj")]
+position = Vector2(2052.4592, 896.9428)
+frame = 2
+
+[node name="@Sprite2D@444" parent="Actors" unique_id=1331496483 instance=ExtResource("20_vc5cj")]
+position = Vector2(2198.961, 565.8537)
+
+[node name="@Sprite2D@445" parent="Actors" unique_id=2046790315 instance=ExtResource("20_vc5cj")]
+position = Vector2(1940.9625, 683.8657)
+
+[node name="@Sprite2D@446" parent="Actors" unique_id=677311770 instance=ExtResource("20_vc5cj")]
+position = Vector2(1984.7693, 443.36533)
+
+[node name="@Sprite2D@447" parent="Actors" unique_id=827641712 instance=ExtResource("20_vc5cj")]
+position = Vector2(1844.0425, 421.86194)
+flip_h = true
+
+[node name="@Sprite2D@448" parent="Actors" unique_id=2125494576 instance=ExtResource("20_vc5cj")]
+position = Vector2(1492.5846, 796.4766)
+frame = 2
+
+[node name="@Sprite2D@449" parent="Actors" unique_id=1464338181 instance=ExtResource("20_vc5cj")]
+position = Vector2(1965.0262, 479.47528)
+frame = 2
+
+[node name="@Sprite2D@450" parent="Actors" unique_id=1887608362 instance=ExtResource("20_vc5cj")]
+position = Vector2(1365.9873, 355.02313)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@451" parent="Actors" unique_id=1224469254 instance=ExtResource("20_vc5cj")]
+position = Vector2(2148.6226, 687.7262)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@452" parent="Actors" unique_id=1909913123 instance=ExtResource("20_vc5cj")]
+position = Vector2(1832.8289, 366.34622)
+flip_h = true
+
+[node name="@Sprite2D@453" parent="Actors" unique_id=626076588 instance=ExtResource("20_vc5cj")]
+position = Vector2(1501.613, 510.90854)
+frame = 2
+
+[node name="@Sprite2D@454" parent="Actors" unique_id=1818094883 instance=ExtResource("20_vc5cj")]
+position = Vector2(2105.0376, 478.79355)
+frame = 2
+
+[node name="@Sprite2D@455" parent="Actors" unique_id=104131574 instance=ExtResource("20_vc5cj")]
+position = Vector2(1976.3198, 609.2479)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@456" parent="Actors" unique_id=373366526 instance=ExtResource("20_vc5cj")]
+position = Vector2(2042.0348, 808.6335)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@457" parent="Actors" unique_id=1951641673 instance=ExtResource("20_vc5cj")]
+position = Vector2(2265.285, 948.1754)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@458" parent="Actors" unique_id=1769969046 instance=ExtResource("20_vc5cj")]
+position = Vector2(1453.5098, 269.46167)
+frame = 1
+
+[node name="@Sprite2D@459" parent="Actors" unique_id=1820541949 instance=ExtResource("20_vc5cj")]
+position = Vector2(1346.5642, 101.54965)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@460" parent="Actors" unique_id=2007609425 instance=ExtResource("20_vc5cj")]
+position = Vector2(2011.844, 750.9043)
+frame = 1
+
+[node name="@Sprite2D@461" parent="Actors" unique_id=1659085142 instance=ExtResource("20_vc5cj")]
+position = Vector2(2286.9358, 252.84378)
+
+[node name="@Sprite2D@462" parent="Actors" unique_id=2010480823 instance=ExtResource("20_vc5cj")]
+position = Vector2(1888.6345, 158.51213)
+frame = 1
+
+[node name="@Sprite2D@463" parent="Actors" unique_id=750042112 instance=ExtResource("20_vc5cj")]
+position = Vector2(1420.5707, 517.633)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@464" parent="Actors" unique_id=509267492 instance=ExtResource("20_vc5cj")]
+position = Vector2(1327.1041, 126.9358)
+frame = 1
+
+[node name="@Sprite2D@465" parent="Actors" unique_id=112606612 instance=ExtResource("20_vc5cj")]
+position = Vector2(1836.275, 349.61716)
+flip_h = true
+
+[node name="@Sprite2D@466" parent="Actors" unique_id=1892950007 instance=ExtResource("20_vc5cj")]
+position = Vector2(1597.5801, 214.89912)
+
+[node name="@Sprite2D@467" parent="Actors" unique_id=907415480 instance=ExtResource("20_vc5cj")]
+position = Vector2(2029.876, 462.0746)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@468" parent="Actors" unique_id=1756095009 instance=ExtResource("20_vc5cj")]
+position = Vector2(2085.3032, 717.28394)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@469" parent="Actors" unique_id=607026315 instance=ExtResource("20_vc5cj")]
+position = Vector2(1570.9751, 619.50836)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@470" parent="Actors" unique_id=1265326838 instance=ExtResource("20_vc5cj")]
+position = Vector2(1667.6929, 306.66232)
+frame = 1
+
+[node name="@Sprite2D@471" parent="Actors" unique_id=1383418214 instance=ExtResource("20_vc5cj")]
+position = Vector2(1898.3376, 472.5484)
+frame = 1
+
+[node name="@Sprite2D@472" parent="Actors" unique_id=2038700288 instance=ExtResource("20_vc5cj")]
+position = Vector2(1648.309, 185.48074)
+frame = 2
+
+[node name="@Sprite2D@473" parent="Actors" unique_id=563852854 instance=ExtResource("20_vc5cj")]
+position = Vector2(1412.6287, 764.0901)
+
+[node name="@Sprite2D@474" parent="Actors" unique_id=1011627762 instance=ExtResource("20_vc5cj")]
+position = Vector2(1480.4983, 950.8041)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@475" parent="Actors" unique_id=625802716 instance=ExtResource("20_vc5cj")]
+position = Vector2(1850.8264, 366.5176)
+frame = 2
+
+[node name="@Sprite2D@476" parent="Actors" unique_id=1473111840 instance=ExtResource("20_vc5cj")]
+position = Vector2(2233.039, 17.666128)
+
+[node name="@Sprite2D@477" parent="Actors" unique_id=204509433 instance=ExtResource("20_vc5cj")]
+position = Vector2(1437.4587, 698.73816)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@478" parent="Actors" unique_id=987541248 instance=ExtResource("20_vc5cj")]
+position = Vector2(1413.0424, 859.17346)
+frame = 2
+
+[node name="@Sprite2D@479" parent="Actors" unique_id=503149208 instance=ExtResource("20_vc5cj")]
+position = Vector2(1925.7223, 801.17426)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@480" parent="Actors" unique_id=496385245 instance=ExtResource("20_vc5cj")]
+position = Vector2(1583.3887, 193.66238)
+frame = 2
+
+[node name="@Sprite2D@481" parent="Actors" unique_id=113056405 instance=ExtResource("20_vc5cj")]
+position = Vector2(2058.2834, 441.76468)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@482" parent="Actors" unique_id=1560710730 instance=ExtResource("20_vc5cj")]
+position = Vector2(1544.3099, 143.19113)
+flip_h = true
+
+[node name="@Sprite2D@483" parent="Actors" unique_id=1209059951 instance=ExtResource("20_vc5cj")]
+position = Vector2(2223.2922, 391.7705)
+frame = 1
+
+[node name="@Sprite2D@484" parent="Actors" unique_id=681093360 instance=ExtResource("20_vc5cj")]
+position = Vector2(2136.3394, 296.06888)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@485" parent="Actors" unique_id=372553450 instance=ExtResource("20_vc5cj")]
+position = Vector2(1570.2478, 18.017986)
+flip_h = true
+
+[node name="@Sprite2D@486" parent="Actors" unique_id=542098072 instance=ExtResource("20_vc5cj")]
+position = Vector2(1429.3345, 739.752)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@487" parent="Actors" unique_id=650497203 instance=ExtResource("20_vc5cj")]
+position = Vector2(1408.5803, 498.12537)
+frame = 1
+
+[node name="@Sprite2D@488" parent="Actors" unique_id=52889147 instance=ExtResource("20_vc5cj")]
+position = Vector2(1772.178, 110.36539)
+frame = 2
+
+[node name="@Sprite2D@489" parent="Actors" unique_id=309955021 instance=ExtResource("20_vc5cj")]
+position = Vector2(1723.5739, 329.46796)
+frame = 1
+
+[node name="@Sprite2D@490" parent="Actors" unique_id=337770740 instance=ExtResource("20_vc5cj")]
+position = Vector2(1602.7516, 326.62958)
+frame = 1
+
+[node name="@Sprite2D@491" parent="Actors" unique_id=1034066973 instance=ExtResource("20_vc5cj")]
+position = Vector2(2106.4111, 587.3048)
+
+[node name="@Sprite2D@492" parent="Actors" unique_id=549098124 instance=ExtResource("20_vc5cj")]
+position = Vector2(1323.7394, 560.74396)
+frame = 1
+
+[node name="@Sprite2D@493" parent="Actors" unique_id=2145538310 instance=ExtResource("20_vc5cj")]
+position = Vector2(1984.882, 849.44824)
+flip_h = true
+
+[node name="@Sprite2D@494" parent="Actors" unique_id=1449454959 instance=ExtResource("20_vc5cj")]
+position = Vector2(1421.474, 74.54328)
+
+[node name="@Sprite2D@495" parent="Actors" unique_id=427868140 instance=ExtResource("20_vc5cj")]
+position = Vector2(1922.3958, 34.169693)
+frame = 1
+
+[node name="@Sprite2D@496" parent="Actors" unique_id=1370774593 instance=ExtResource("20_vc5cj")]
+position = Vector2(1720.0424, 96.77572)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@497" parent="Actors" unique_id=1974251368 instance=ExtResource("20_vc5cj")]
+position = Vector2(1782.5876, 147.82472)
+frame = 1
+
+[node name="@Sprite2D@498" parent="Actors" unique_id=534917650 instance=ExtResource("20_vc5cj")]
+position = Vector2(1824.1134, 820.97906)
+frame = 2
+
+[node name="@Sprite2D@499" parent="Actors" unique_id=1077245674 instance=ExtResource("20_vc5cj")]
+position = Vector2(2277.5813, 523.7923)
+frame = 2
+
+[node name="@Sprite2D@500" parent="Actors" unique_id=2133003350 instance=ExtResource("20_vc5cj")]
+position = Vector2(1662.1306, 130.33112)
+frame = 2
+
+[node name="@Sprite2D@501" parent="Actors" unique_id=263009201 instance=ExtResource("20_vc5cj")]
+position = Vector2(1477.8668, 570.725)
+frame = 2
+
+[node name="@Sprite2D@502" parent="Actors" unique_id=66762166 instance=ExtResource("20_vc5cj")]
+position = Vector2(2131.5127, 475.44522)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@503" parent="Actors" unique_id=111329035 instance=ExtResource("20_vc5cj")]
+position = Vector2(2136.521, 893.8932)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@504" parent="Actors" unique_id=1993333925 instance=ExtResource("20_vc5cj")]
+position = Vector2(2111.9697, 29.1749)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@505" parent="Actors" unique_id=1041980499 instance=ExtResource("20_vc5cj")]
+position = Vector2(1433.1521, 676.8025)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@506" parent="Actors" unique_id=1830396686 instance=ExtResource("20_vc5cj")]
+position = Vector2(1669.3575, 324.56137)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@507" parent="Actors" unique_id=259942768 instance=ExtResource("20_vc5cj")]
+position = Vector2(1656.632, 443.47046)
+frame = 2
+
+[node name="@Sprite2D@508" parent="Actors" unique_id=1800387691 instance=ExtResource("20_vc5cj")]
+position = Vector2(2254.2449, 705.4493)
+frame = 1
+
+[node name="@Sprite2D@509" parent="Actors" unique_id=39912580 instance=ExtResource("20_vc5cj")]
+position = Vector2(2057.7598, 937.0083)
+flip_h = true
+frame = 2
+
+[node name="@Sprite2D@510" parent="Actors" unique_id=895036802 instance=ExtResource("20_vc5cj")]
+position = Vector2(1901.1521, 785.1226)
+flip_h = true
+
+[node name="@Sprite2D@511" parent="Actors" unique_id=358829513 instance=ExtResource("20_vc5cj")]
+position = Vector2(1601.2114, 25.117918)
+flip_h = true
+
+[node name="@Sprite2D@512" parent="Actors" unique_id=67542564 instance=ExtResource("20_vc5cj")]
+position = Vector2(1432.4336, 898.3003)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@513" parent="Actors" unique_id=975192466 instance=ExtResource("20_vc5cj")]
+position = Vector2(1735.0687, 894.12213)
+frame = 1
+
+[node name="@Sprite2D@514" parent="Actors" unique_id=2009389293 instance=ExtResource("20_vc5cj")]
+position = Vector2(2073.0508, 225.91716)
+
+[node name="@Sprite2D@515" parent="Actors" unique_id=1273528154 instance=ExtResource("20_vc5cj")]
+position = Vector2(2203.2659, 468.04034)
+flip_h = true
+frame = 1
+
+[node name="@Sprite2D@516" parent="Actors" unique_id=480986586 instance=ExtResource("20_vc5cj")]
+position = Vector2(1369.8268, 881.5785)
+flip_h = true
+frame = 1
+
+[node name="LizardSpawner" type="Node2D" parent="." unique_id=924741490]
+script = ExtResource("21_nvyfr")
+scene = ExtResource("11_pibwh")
 group = "lizard"
-area = Rect2(40, 360, 1200, 580)
+count = 9
+area = Rect2(40, 360, 2224, 580)
 spawn_parent = NodePath("../Actors")
 
-[node name="FishSpawner" type="Node2D" parent="." unique_id=1005689161]
-script = ExtResource("spawner_script")
-scene = ExtResource("fish_scene")
+[node name="FishSpawner" type="Node2D" parent="." unique_id=1292379163]
+script = ExtResource("21_nvyfr")
+scene = ExtResource("22_ty1g6")
 group = "fish"
 count = 5
 min_player_distance = 0.0
 spawn_parent = NodePath("../Pond")
 
-[node name="Mist" type="CPUParticles2D" parent="." unique_id=1029562362]
+[node name="Mist" type="CPUParticles2D" parent="." unique_id=1301226321]
 position = Vector2(300, 343.69562)
 amount = 30
 lifetime = 1.6
@@ -1355,106 +2325,154 @@ gravity = Vector2(0, 8)
 initial_velocity_min = 6.0
 initial_velocity_max = 16.0
 scale_amount_max = 2.0
-color_ramp = SubResource("Gradient_5poiv")
+color_ramp = SubResource("Gradient_ro3en")
 
-[node name="Fog" type="ColorRect" parent="." unique_id=849429232]
-material = SubResource("ShaderMaterial_cjqg0")
-offset_right = 1280.0
+[node name="Fog" type="ColorRect" parent="." unique_id=1837820669]
+material = SubResource("ShaderMaterial_1epgm")
+offset_right = 2304.0
 offset_bottom = 960.0
 mouse_filter = 2
 
-[node name="Fireflies" type="CPUParticles2D" parent="." unique_id=1438395199]
-material = SubResource("CanvasItemMaterial_vchkt")
-position = Vector2(640, 480)
-amount = 70
-lifetime = 7.0
-preprocess = 7.0
-emission_shape = 3
-emission_rect_extents = Vector2(630, 470)
-direction = Vector2(0, -1)
-spread = 180.0
-gravity = Vector2(0, 0)
-initial_velocity_min = 2.0
-initial_velocity_max = 8.0
-scale_amount_max = 2.0
-color = Color(0.85, 1, 0.45, 1)
-color_ramp = SubResource("Gradient_txyw0")
+[node name="Fireflies" type="Node2D" parent="." unique_id=240837825]
+material = SubResource("CanvasItemMaterial_152kg")
+script = ExtResource("24_bjg73")
+area = Rect2(0, 0, 1300, 960)
 
-[node name="Moonbeam1" type="PointLight2D" parent="." unique_id=1397179018]
+[node name="FallingLeaves" type="CPUParticles2D" parent="." unique_id=1836732799]
+position = Vector2(650, 480)
+amount = 30
+texture = ExtResource("25_bu4jf")
+lifetime = 10.0
+preprocess = 10.0
+emission_shape = 3
+emission_rect_extents = Vector2(650, 480)
+direction = Vector2(0.3, 1)
+spread = 25.0
+gravity = Vector2(3, 5)
+initial_velocity_min = 3.0
+initial_velocity_max = 8.0
+angular_velocity_min = -70.0
+angular_velocity_max = 70.0
+angle_max = 360.0
+color_ramp = SubResource("Gradient_r4e17")
+color_initial_ramp = SubResource("Gradient_y57op")
+
+[node name="SteppeWind" type="CPUParticles2D" parent="." unique_id=436606179]
+position = Vector2(1802, 480)
+amount = 50
+lifetime = 6.0
+preprocess = 6.0
+emission_shape = 3
+emission_rect_extents = Vector2(502, 480)
+direction = Vector2(1, 0.15)
+spread = 10.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 18.0
+initial_velocity_max = 40.0
+color = Color(0.85, 0.78, 0.55, 1)
+color_ramp = SubResource("Gradient_mlv25")
+
+[node name="Moonbeam1" type="PointLight2D" parent="." unique_id=1422666396]
 position = Vector2(430, 610)
 rotation = -0.35
 scale = Vector2(0.4, 2.4)
 color = Color(0.55, 0.7, 1, 1)
 energy = 0.8
-texture = ExtResource("16_qkpxi")
+texture = ExtResource("26_o7ddy")
 
-[node name="Moonbeam2" type="PointLight2D" parent="." unique_id=498970721]
+[node name="Moonbeam2" type="PointLight2D" parent="." unique_id=703952377]
 position = Vector2(860, 780)
 rotation = -0.35
 scale = Vector2(0.4, 2.4)
 color = Color(0.55, 0.7, 1, 1)
 energy = 0.8
-texture = ExtResource("16_qkpxi")
+texture = ExtResource("26_o7ddy")
 
-[node name="Moonbeam3" type="PointLight2D" parent="." unique_id=422611159]
+[node name="Moonbeam3" type="PointLight2D" parent="." unique_id=1615764356]
 position = Vector2(170, 830)
 rotation = -0.35
 scale = Vector2(0.4, 2.4)
 color = Color(0.55, 0.7, 1, 1)
 energy = 0.8
-texture = ExtResource("16_qkpxi")
+texture = ExtResource("26_o7ddy")
 
-[node name="Moonbeam4" type="PointLight2D" parent="." unique_id=1007436467]
+[node name="Moonbeam4" type="PointLight2D" parent="." unique_id=782956652]
 position = Vector2(1010, 400)
 rotation = -0.35
 scale = Vector2(0.4, 2.4)
 color = Color(0.55, 0.7, 1, 1)
 energy = 0.8
-texture = ExtResource("16_qkpxi")
+texture = ExtResource("26_o7ddy")
 
-[node name="Moonbeam5" type="PointLight2D" parent="." unique_id=246211333]
+[node name="Moonbeam5" type="PointLight2D" parent="." unique_id=1630965167]
 position = Vector2(620, 150)
 rotation = -0.35
 scale = Vector2(0.4, 2.4)
 color = Color(0.55, 0.7, 1, 1)
 energy = 0.8
-texture = ExtResource("16_qkpxi")
+texture = ExtResource("26_o7ddy")
 
-[node name="PondGlow" type="PointLight2D" parent="." unique_id=1467793780]
+[node name="PondGlow" type="PointLight2D" parent="." unique_id=26592309]
 position = Vector2(300, 372)
 color = Color(0.35, 0.8, 0.9, 1)
 energy = 0.25
-texture = ExtResource("16_qkpxi")
+texture = ExtResource("26_o7ddy")
 texture_scale = 1.4
 
-[node name="FallsGlow" type="PointLight2D" parent="." unique_id=1574209557]
+[node name="FallsGlow" type="PointLight2D" parent="." unique_id=1790349467]
 position = Vector2(300, 305.69562)
 color = Color(0.6, 0.9, 1, 1)
 energy = 0.2
-texture = ExtResource("16_qkpxi")
+texture = ExtResource("26_o7ddy")
 texture_scale = 0.8
 
-[node name="Night" type="CanvasModulate" parent="." unique_id=1475956777]
+[node name="SteppeMoon1" type="PointLight2D" parent="." unique_id=359991723]
+position = Vector2(1560, 260)
+color = Color(0.62, 0.7, 0.95, 1)
+energy = 0.4
+texture = ExtResource("26_o7ddy")
+texture_scale = 5.0
+
+[node name="SteppeMoon2" type="PointLight2D" parent="." unique_id=63645988]
+position = Vector2(1760, 720)
+color = Color(0.62, 0.7, 0.95, 1)
+energy = 0.4
+texture = ExtResource("26_o7ddy")
+texture_scale = 5.0
+
+[node name="SteppeMoon3" type="PointLight2D" parent="." unique_id=1864854816]
+position = Vector2(2080, 300)
+color = Color(0.62, 0.7, 0.95, 1)
+energy = 0.4
+texture = ExtResource("26_o7ddy")
+texture_scale = 5.0
+
+[node name="SteppeMoon4" type="PointLight2D" parent="." unique_id=494669203]
+position = Vector2(2140, 820)
+color = Color(0.62, 0.7, 0.95, 1)
+energy = 0.4
+texture = ExtResource("26_o7ddy")
+texture_scale = 5.0
+
+[node name="Night" type="CanvasModulate" parent="." unique_id=180392372]
 color = Color(0.33, 0.38, 0.52, 1)
 
-[node name="Overlay" type="CanvasLayer" parent="." unique_id=58080129]
+[node name="Overlay" type="CanvasLayer" parent="." unique_id=1485018584]
 
-[node name="Vignette" type="ColorRect" parent="Overlay" unique_id=1060397661]
-material = SubResource("ShaderMaterial_vc5cj")
+[node name="Vignette" type="ColorRect" parent="Overlay" unique_id=1673478877]
+material = SubResource("ShaderMaterial_a82wo")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="Glow" type="WorldEnvironment" parent="." unique_id=545014884]
-environment = SubResource("Environment_nvyfr")
-
-[node name="HUD" type="Control" parent="Overlay" unique_id=1830723342]
+[node name="HUD" type="Control" parent="Overlay" unique_id=2125626581]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("hud_script")
+script = ExtResource("28_ids8r")
+
+[node name="Glow" type="WorldEnvironment" parent="." unique_id=1669768792]
+environment = SubResource("Environment_gdvew")
