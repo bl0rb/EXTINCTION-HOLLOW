@@ -26,12 +26,12 @@ texture = ExtResource("5_shadow")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -30)
 texture = ExtResource("3_sprite")
-hframes = 2
+hframes = 10
 
 [node name="Eyes" type="Sprite2D" parent="Sprite2D"]
 material = SubResource("CanvasItemMaterial_glow")
 texture = ExtResource("4_eyes")
-hframes = 2
+hframes = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_body")

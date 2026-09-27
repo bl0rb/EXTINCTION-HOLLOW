@@ -4,9 +4,12 @@ extends CharacterBody2D
 
 const PICK_TOLERANCE := 8.0 ## extra pixels so small animals are easy to click
 const SIZE_SCALE := 0.15 ## sprite growth per size upgrade
+const STRIDE := 11.0 ## pixels per walk frame
+const DETOUR_TIME := 0.4 ## seconds without getting closer to the target before giving up
 
 @export var base_speed := 90.0 ## pixels per second
 @export var base_sprint_speed := 140.0
+@export var acceleration := 700.0 ## pixels per second²
 @export var base_bite_range := 18.0 ## reach from the centre in pixels, added to the prey radius
 @export var base_max_health := 100.0
 @export var max_stamina := 100.0
@@ -29,12 +32,15 @@ var sprinting := false
 var target := Vector2.ZERO
 var moving := false
 var prey: Animal
-var _step := 0.0
+var anim := SpriteAnimator.new()
+var _detour := 0.0
+var _best_dist := INF
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var shadow: Sprite2D = $Shadow
 @onready var dust: CPUParticles2D = $Dust
 @onready var camera: GameCamera = $Camera2D
+@onready var _cave: Cave = get_tree().get_first_node_in_group("cave")
 @onready var _sprite_y := sprite.position.y
 
 
@@ -101,6 +107,8 @@ func click_at(point: Vector2, sprint := false) -> void:
 	# a new click always replaces the previous target
 	target = point
 	sprinting = sprint
+	_best_dist = INF
+	_detour = 0.0
 	# clicking an animal small enough to eat selects it as prey, anything else just walks there
 	prey = _prey_at(point)
 	var cave := get_tree().get_first_node_in_group("cave") as Cave
@@ -121,6 +129,8 @@ func take_damage(amount: float) -> void:
 		return
 	health -= amount
 	camera.shake(3.0, 0.25)
+	Fx.burst(Fx.BLOOD, get_parent(), global_position + Vector2(0, -12))
+	Fx.hit_stop(get_tree(), 0.08)
 	sprite.modulate = Color(1.0, 0.25, 0.2)
 	create_tween().tween_property(sprite, "modulate", Color.WHITE, 0.25)
 	if health <= 0.0:
@@ -170,31 +180,53 @@ func _physics_process(delta: float) -> void:
 		# keep chasing the selected prey wherever it runs
 		target = prey.global_position
 		moving = true
+		_best_dist = INF # a moving target: keep going
 	elif prey != null:
 		prey = null
 		moving = false
 	var sprint := sprinting and moving and stamina > 0.0
 	dust.emitting = sprint
-	if not moving:
+	if not moving or anim.busy():
 		velocity = Vector2.ZERO
-		sprite.frame = 0
+		_animate(Vector2.ZERO, 0.0, delta)
 		return
 
+	# speed up and ease into the target instead of starting and stopping dead
 	var speed := sprint_speed() if sprint else speed()
 	var to_target := target - global_position
-	_animate(to_target, delta * (12.0 if sprint else 8.0))
-	var arrived := to_target.length() <= speed * delta
-	velocity = to_target / delta if arrived else to_target.normalized() * speed
-	var before := global_position
-	move_and_slide() # slides along walls
-	if arrived or global_position.distance_to(before) < 0.01:
+	var dist := to_target.length()
+	velocity = velocity.move_toward(to_target.normalized() * speed * clampf(dist / 12.0, 0.3, 1.0), acceleration * delta)
+	_animate(to_target, velocity.length() * delta / STRIDE, delta)
+	if dist <= maxf(velocity.length() * delta, 0.5):
+		velocity = to_target / delta
+		move_and_slide()
+		velocity = Vector2.ZERO
 		moving = false
+	else:
+		var before := global_position
+		move_and_slide() # slides along walls
+		if global_position.distance_to(before) < 0.01:
+			# blocked head-on: slip around the obstacle
+			for side in [1.0, -1.0]:
+				velocity = to_target.normalized().rotated(side * PI / 2.5) * speed
+				move_and_slide()
+				if global_position.distance_to(before) > 0.3:
+					break
+		# give up once the target has not come closer for a moment
+		var left := global_position.distance_to(target)
+		if left < _best_dist - 0.5:
+			_best_dist = left
+			_detour = 0.0
+		else:
+			_detour += delta
+			if _detour > DETOUR_TIME:
+				moving = false
 
 	if prey and global_position.distance_to(prey.global_position) <= bite_range() + prey.radius:
-		_eat()
+		_bite()
 
 
-## Hunger drains over time (GAME_SPEC §7); stamina is spent by sprinting and recovers otherwise.
+## Hunger drains while moving outside the cave (GAME_SPEC §7); stamina is spent by sprinting and recovers otherwise.
 func _update_needs(delta: float) -> void:
 	if sprinting and moving and stamina > 0.0:
 		stamina = maxf(stamina - sprint_cost * delta, 0.0)
@@ -202,8 +234,10 @@ func _update_needs(delta: float) -> void:
 			sprinting = false
 	else:
 		stamina = minf(stamina + stamina_regen * delta, max_stamina)
-	hunger = maxf(hunger - hunger_rate * delta, 0.0)
-	if hunger == 0.0:
+	var in_cave := _cave.overlaps_body(self)
+	if moving and not in_cave:
+		hunger = maxf(hunger - hunger_rate * delta, 0.0)
+	if hunger == 0.0 and not in_cave:
 		health -= starve_damage * delta
 		if health <= 0.0:
 			_die()
@@ -211,17 +245,19 @@ func _update_needs(delta: float) -> void:
 		health = minf(health + regen * delta, max_health())
 
 
-func _animate(direction: Vector2, steps: float) -> void:
-	# 3/4 view: face left or right and alternate the walk frames
-	if absf(direction.x) > 0.5:
-		sprite.flip_h = direction.x < 0.0
-	_step += steps
-	sprite.frame = int(_step) % 2
+func _animate(direction: Vector2, steps: float, delta: float) -> void:
+	anim.update(sprite, direction, steps, delta)
 
 
-func _eat() -> void:
+## Snap, then stand and chew for a moment.
+func _bite() -> void:
 	carried_xp += prey.species.xp
 	hunger = minf(hunger + prey.species.food, max_hunger)
+	anim.update(sprite, prey.global_position - global_position, 0.0, 0.0)
+	anim.play("attack", 0.16)
+	anim.then("eat", 0.5)
+	Fx.burst(Fx.BLOOD, get_parent(), prey.global_position + Vector2(0, -4))
+	Fx.hit_stop(get_tree())
 	prey.queue_free()
 	prey = null
 	moving = false

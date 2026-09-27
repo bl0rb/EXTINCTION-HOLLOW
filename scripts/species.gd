@@ -6,6 +6,7 @@ extends Resource
 @export var size: int ## size class 1-5 (GAME_SPEC §8)
 @export var food: float ## hunger restored when eaten
 @export var stride: float ## pixels per walk frame
+@export var acceleration: float ## pixels per second², big animals get going slowly
 @export var speed: float ## wandering, pixels per second
 @export var flee_speed: float ## pixels per second
 @export var fear_radius: float

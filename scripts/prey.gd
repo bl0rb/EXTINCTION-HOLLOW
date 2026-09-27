@@ -10,7 +10,7 @@ var _threat: Node2D
 
 
 func _ready() -> void:
-	sprite.flip_h = randf() < 0.5
+	anim.set_facing(-1.0 if randf() < 0.5 else 1.0)
 	_rest()
 
 
@@ -50,7 +50,7 @@ func _physics_process(delta: float) -> void:
 	elif state == State.IDLE:
 		timer -= delta
 		if timer > 0.0:
-			sprite.frame = 0
+			_stand(delta)
 			return
 		target = global_position + Vector2.from_angle(randf() * TAU) * randf() * species.wander_radius
 		state = State.WANDER

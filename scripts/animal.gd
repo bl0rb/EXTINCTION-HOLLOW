@@ -1,11 +1,11 @@
 class_name Animal
 extends CharacterBody2D
-## Shared behaviour of NPC animals: species data, walking with collision, facing and walk frames.
+## Shared behaviour of NPC animals: species data, walking with inertia, turning around, walk and idle animation.
 
 @export var species: Species
 
 var target := Vector2.ZERO
-var _step := 0.0
+var anim := SpriteAnimator.new()
 
 @onready var radius: float = ($CollisionShape2D.shape as CircleShape2D).radius
 @onready var sprite: Sprite2D = $Sprite2D
@@ -17,20 +17,30 @@ func get_size() -> int:
 	return species.size
 
 
-## Walks towards target. Returns true once it is reached or the way is (mostly) blocked.
+## Walks towards target, speeding up and easing into it.
+## Returns true once it is reached or the way is (mostly) blocked.
 func _walk(speed: float, delta: float) -> bool:
 	var to_target := target - global_position
-	_animate(to_target, speed * delta / species.stride)
-	var arrived := to_target.length() <= speed * delta
-	velocity = to_target / delta if arrived else to_target.normalized() * speed
+	var dist := to_target.length()
+	var desired := to_target.normalized() * speed * clampf(dist / 10.0, 0.3, 1.0)
+	velocity = velocity.move_toward(desired, species.acceleration * delta)
+	_animate(to_target, velocity.length() * delta / species.stride, delta)
+	if dist <= maxf(velocity.length() * delta, 0.5):
+		velocity = to_target / delta
+		move_and_slide()
+		velocity = Vector2.ZERO
+		return true
+	var expected := velocity.length() * delta
 	var before := global_position
 	move_and_slide()
-	return arrived or global_position.distance_to(before) < speed * delta * 0.3
+	return global_position.distance_to(before) < expected * 0.3
 
 
-## 3/4 view: face left or right and alternate the walk frames.
-func _animate(direction: Vector2, steps: float) -> void:
-	if absf(direction.x) > 0.5:
-		sprite.flip_h = direction.x < 0.0
-	_step += steps
-	sprite.frame = int(_step) % 2
+## Standing still: breathe and finish turning around.
+func _stand(delta: float) -> void:
+	velocity = Vector2.ZERO
+	_animate(Vector2.ZERO, 0.0, delta)
+
+
+func _animate(direction: Vector2, steps: float, delta: float) -> void:
+	anim.update(sprite, direction, steps, delta)

@@ -23,7 +23,7 @@ texture = ExtResource("4_shadow")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -17)
 texture = ExtResource("2_sprite")
-hframes = 2
+hframes = 10
 
 [node name="Dust" type="CPUParticles2D" parent="."]
 emitting = false
@@ -52,7 +52,7 @@ texture_scale = 0.9
 position = Vector2(0, -12)
 limit_left = 0
 limit_top = 0
-limit_right = 1280
+limit_right = 2304
 limit_bottom = 960
 position_smoothing_enabled = true
 script = ExtResource("3_camera")

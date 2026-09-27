@@ -21,17 +21,20 @@ func _physics_process(delta: float) -> void:
 	elif state == State.IDLE:
 		timer -= delta
 		if timer > 0.0:
-			_animate(Vector2.ZERO, delta * 2.0)
+			_stand(delta)
 			return
 		target = pond.random_point()
 		state = State.WANDER
 
-	# fish swim freely inside the pond, without physics
+	# fish swim freely inside the pond, without physics, but with the same inertia
 	var to_target := target - global_position
-	_animate(to_target, speed * delta / species.stride)
-	if to_target.length() <= speed * delta:
+	var desired := to_target.normalized() * speed * clampf(to_target.length() / 10.0, 0.3, 1.0)
+	velocity = velocity.move_toward(desired, species.acceleration * delta)
+	_animate(to_target, velocity.length() * delta / species.stride, delta)
+	if to_target.length() <= maxf(velocity.length() * delta, 0.5):
 		global_position = target
+		velocity = Vector2.ZERO
 		if state == State.WANDER:
 			_rest()
 	else:
-		global_position += to_target.normalized() * speed * delta
+		global_position += velocity * delta
