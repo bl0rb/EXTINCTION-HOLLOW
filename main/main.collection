@@ -1,0 +1,82 @@
+name: "main"
+instances {
+  id: "world"
+  prototype: "/main/world.go"
+}
+instances {
+  id: "player"
+  prototype: "/main/player.go"
+  position {
+    x: 640.0
+    y: 480.0
+    z: 0.5
+  }
+}
+instances {
+  id: "cave"
+  prototype: "/main/cave.go"
+  position {
+    x: 640.0
+    y: 480.0
+    z: 0.3
+  }
+}
+instances {
+  id: "camera"
+  prototype: "/main/camera.go"
+}
+instances {
+  id: "lizard1"
+  prototype: "/main/lizard.go"
+  position {
+    x: 420.0
+    y: 320.0
+    z: 0.4
+  }
+}
+instances {
+  id: "lizard2"
+  prototype: "/main/lizard.go"
+  position {
+    x: 900.0
+    y: 380.0
+    z: 0.4
+  }
+}
+instances {
+  id: "lizard3"
+  prototype: "/main/lizard.go"
+  position {
+    x: 300.0
+    y: 600.0
+    z: 0.4
+  }
+}
+instances {
+  id: "lizard4"
+  prototype: "/main/lizard.go"
+  position {
+    x: 1040.0
+    y: 640.0
+    z: 0.4
+  }
+}
+instances {
+  id: "lizard5"
+  prototype: "/main/lizard.go"
+  position {
+    x: 680.0
+    y: 760.0
+    z: 0.4
+  }
+}
+instances {
+  id: "lizard6"
+  prototype: "/main/lizard.go"
+  position {
+    x: 560.0
+    y: 220.0
+    z: 0.4
+  }
+}
+scale_along_z: 0

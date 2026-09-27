@@ -1,0 +1,32 @@
+go.property("follow_speed", 5) -- higher values follow the player more tightly
+go.property("zoom", 1)
+
+-- with the default 1280x720 window these steps keep integer pixel scales (1x to 4x)
+local ZOOM_MIN = 0.5
+local ZOOM_MAX = 2
+local ZOOM_STEP = 0.5
+
+local TARGET = "/player"
+local ZOOM_IN = hash("zoom_in")
+local ZOOM_OUT = hash("zoom_out")
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	go.set_position(go.get_position(TARGET))
+end
+
+function update(self, dt)
+	-- frame rate independent smoothing towards the player
+	local t = 1 - math.exp(-self.follow_speed * dt)
+	local pos = vmath.lerp(t, go.get_position(), go.get_position(TARGET))
+	go.set_position(pos)
+	msg.post("@render:", "set_camera", { position = pos, zoom = self.zoom })
+end
+
+function on_input(self, action_id, action)
+	if action_id == ZOOM_IN then
+		self.zoom = math.min(self.zoom + ZOOM_STEP, ZOOM_MAX)
+	elseif action_id == ZOOM_OUT then
+		self.zoom = math.max(self.zoom - ZOOM_STEP, ZOOM_MIN)
+	end
+end
