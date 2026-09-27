@@ -9,3 +9,8 @@ extends Resource
 @export var calm_radius: float
 @export var wander_radius: float
 @export var idle_time: float ## average seconds between wander moves
+@export var chase_speed: float ## predators, pixels per second
+@export var vision_radius: float ## predators start chasing inside this distance
+@export var attack_range: float ## predators bite inside this distance
+@export var damage: int
+@export var attack_interval: float ## seconds between bites
