@@ -35,8 +35,9 @@ func busy() -> bool:
 	return not _queue.is_empty()
 
 
+## direction: the way the creature actually moves (its velocity) or looks; mostly vertical moves keep the facing.
 func update(sprite: Sprite2D, direction: Vector2, steps: float, delta: float) -> void:
-	if absf(direction.x) > 0.5:
+	if absf(direction.x) > 4.0 and absf(direction.x) > direction.length() * 0.25:
 		facing = signf(direction.x)
 	_turn = move_toward(_turn, facing, delta * 2.0 / TURN_TIME)
 	sprite.scale.x = absf(sprite.scale.y) * (signf(_turn) if _turn != 0.0 else facing) * maxf(absf(_turn), 0.2)

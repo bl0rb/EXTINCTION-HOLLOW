@@ -30,7 +30,7 @@ func _physics_process(delta: float) -> void:
 	var to_target := target - global_position
 	var desired := to_target.normalized() * speed * clampf(to_target.length() / 10.0, 0.3, 1.0)
 	velocity = velocity.move_toward(desired, species.acceleration * delta)
-	_animate(to_target, velocity.length() * delta / species.stride, delta)
+	_animate(velocity, velocity.length() * delta / species.stride, delta)
 	if to_target.length() <= maxf(velocity.length() * delta, 0.5):
 		global_position = target
 		velocity = Vector2.ZERO

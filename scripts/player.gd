@@ -5,7 +5,7 @@ extends CharacterBody2D
 const PICK_TOLERANCE := 8.0 ## extra pixels so small animals are easy to click
 const SIZE_SCALE := 0.15 ## sprite growth per size upgrade
 const STRIDE := 11.0 ## pixels per walk frame
-const DETOUR_TIME := 0.4 ## seconds without getting closer to the target before giving up
+const STUCK_TIME := 0.5 ## seconds without moving before giving up
 
 @export var base_speed := 90.0 ## pixels per second
 @export var base_sprint_speed := 140.0
@@ -36,13 +36,13 @@ var target := Vector2.ZERO
 var moving := false
 var prey: Animal
 var anim := SpriteAnimator.new()
-var _detour := 0.0
-var _best_dist := INF
+var _stuck := 0.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var shadow: Sprite2D = $Shadow
 @onready var dust: CPUParticles2D = $Dust
 @onready var camera: GameCamera = $Camera2D
+@onready var nav: NavigationAgent2D = $NavigationAgent2D
 @onready var _cave: Cave = get_tree().get_first_node_in_group("cave")
 @onready var _weather: Weather = get_tree().get_first_node_in_group("weather")
 @onready var _sprite_y := sprite.position.y
@@ -111,8 +111,7 @@ func click_at(point: Vector2, sprint := false) -> void:
 	# a new click always replaces the previous target
 	target = point
 	sprinting = sprint
-	_best_dist = INF
-	_detour = 0.0
+	_stuck = 0.0
 	# clicking an animal small enough to eat selects it as prey, anything else just walks there
 	prey = _prey_at(point)
 	var cave := get_tree().get_first_node_in_group("cave") as Cave
@@ -206,7 +205,6 @@ func _physics_process(delta: float) -> void:
 		# keep chasing the selected prey wherever it runs
 		target = prey.global_position
 		moving = true
-		_best_dist = INF # a moving target: keep going
 	elif prey != null:
 		prey = null
 		moving = false
@@ -217,36 +215,31 @@ func _physics_process(delta: float) -> void:
 		_animate(Vector2.ZERO, 0.0, delta)
 		return
 
-	# speed up and ease into the target instead of starting and stopping dead
+	# follow the navigation path around obstacles, speed up and ease into the target
 	var speed := (sprint_speed() if sprint else speed()) * move_factor()
-	var to_target := target - global_position
-	var dist := to_target.length()
-	velocity = velocity.move_toward(to_target.normalized() * speed * clampf(dist / 12.0, 0.3, 1.0), acceleration * delta)
-	_animate(to_target, velocity.length() * delta / STRIDE, delta)
+	nav.target_position = target
+	var to_next := nav.get_next_path_position() - global_position
+	if to_next.length() < 0.01:
+		to_next = target - global_position # no path yet: head straight for it
+	var dist := global_position.distance_to(target)
+	var desired := to_next.normalized() * speed * clampf(dist / 12.0, 0.3, 1.0)
+	# brake harder when turning back, and face the way the dino really moves
+	velocity = velocity.move_toward(desired, acceleration * (2.0 if velocity.dot(desired) < 0.0 else 1.0) * delta)
+	_animate(velocity, velocity.length() * delta / STRIDE, delta)
 	if dist <= maxf(velocity.length() * delta, 0.5):
-		velocity = to_target / delta
+		velocity = (target - global_position) / delta
 		move_and_slide()
 		velocity = Vector2.ZERO
 		moving = false
 	else:
 		var before := global_position
 		move_and_slide() # slides along walls
-		if global_position.distance_to(before) < 0.01:
-			# blocked head-on: slip around the obstacle
-			for side in [1.0, -1.0]:
-				velocity = to_target.normalized().rotated(side * PI / 2.5) * speed
-				move_and_slide()
-				if global_position.distance_to(before) > 0.3:
-					break
-		# give up once the target has not come closer for a moment
-		var left := global_position.distance_to(target)
-		if left < _best_dist - 0.5:
-			_best_dist = left
-			_detour = 0.0
-		else:
-			_detour += delta
-			if _detour > DETOUR_TIME:
-				moving = false
+		# an unreachable target (in the water, on a rock): stop as close as the path gets
+		if nav.is_navigation_finished() and nav.get_final_position().distance_to(target) > 2.0:
+			moving = false
+		_stuck = _stuck + delta if global_position.distance_to(before) < 0.05 else 0.0
+		if _stuck > STUCK_TIME:
+			moving = false
 
 	if prey and global_position.distance_to(prey.global_position) <= bite_range() + prey.radius:
 		_bite()
