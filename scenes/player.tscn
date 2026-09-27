@@ -3,21 +3,40 @@
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Texture2D" path="res://assets/player.png" id="2_sprite"]
 [ext_resource type="Script" path="res://scripts/game_camera.gd" id="3_camera"]
+[ext_resource type="Texture2D" path="res://assets/shadow.png" id="4_shadow"]
+[ext_resource type="Texture2D" path="res://world/light_radial.tres" id="5_light"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
-radius = 10.0
+radius = 7.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_player")
 
+[node name="Shadow" type="Sprite2D" parent="."]
+texture = ExtResource("4_shadow")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -17)
 texture = ExtResource("2_sprite")
+hframes = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_body")
 
+[node name="Light" type="PointLight2D" parent="."]
+position = Vector2(0, -12)
+color = Color(0.55, 0.7, 1, 1)
+energy = 0.45
+texture = ExtResource("5_light")
+texture_scale = 0.9
+
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -12)
+limit_left = 0
+limit_top = 0
+limit_right = 1280
+limit_bottom = 960
 position_smoothing_enabled = true
 script = ExtResource("3_camera")

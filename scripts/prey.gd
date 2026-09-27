@@ -9,6 +9,7 @@ enum State { IDLE, WANDER, FLEE }
 var state := State.IDLE
 var target := Vector2.ZERO
 var timer := 0.0
+var _step := 0.0
 
 @onready var radius: float = ($CollisionShape2D.shape as CircleShape2D).radius
 @onready var sprite: Sprite2D = $Sprite2D
@@ -16,7 +17,7 @@ var timer := 0.0
 
 
 func _ready() -> void:
-	sprite.rotation = randf() * TAU
+	sprite.flip_h = randf() < 0.5
 	_rest()
 
 
@@ -41,12 +42,16 @@ func _physics_process(delta: float) -> void:
 	elif state == State.IDLE:
 		timer -= delta
 		if timer > 0.0:
+			sprite.frame = 0
 			return
 		target = global_position + Vector2.from_angle(randf() * TAU) * randf() * species.wander_radius
 		state = State.WANDER
 
 	var to_target := target - global_position
-	sprite.rotation = rotate_toward(sprite.rotation, to_target.angle(), species.turn_speed * delta)
+	if absf(to_target.x) > 0.5:
+		sprite.flip_h = to_target.x < 0.0
+	_step += delta * speed * 0.3
+	sprite.frame = int(_step) % 2
 	var arrived := to_target.length() <= speed * delta
 	velocity = to_target / delta if arrived else to_target.normalized() * speed
 	var before := global_position

@@ -7,7 +7,6 @@ script = ExtResource("1_species")
 xp = 4
 speed = 30.0
 flee_speed = 75.0
-turn_speed = 10.0
 fear_radius = 70.0
 calm_radius = 140.0
 wander_radius = 80.0

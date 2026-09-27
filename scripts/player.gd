@@ -5,7 +5,6 @@ const SAVE_PATH := "user://savegame.cfg"
 const PICK_TOLERANCE := 8.0 ## extra pixels so small animals are easy to click
 
 @export var speed := 90.0 ## pixels per second
-@export var turn_speed := 12.0 ## radians per second
 @export var bite_range := 18.0 ## reach from the centre in pixels, added to the prey radius
 
 var carried_xp := 0 ## XP collected outside the cave, lost on death
@@ -14,6 +13,7 @@ var banked_xp := 0 ## XP brought to the cave, kept permanently
 var target := Vector2.ZERO
 var moving := false
 var prey: Prey
+var _step := 0.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -36,7 +36,7 @@ func click_at(point: Vector2) -> void:
 	# clicking an animal selects it as prey, clicking the ground just walks there
 	prey = _prey_at(point)
 	var cave := get_tree().get_first_node_in_group("cave") as Cave
-	if prey == null and cave and point.distance_to(cave.global_position) <= cave.radius:
+	if prey == null and cave and cave.is_clicked(point):
 		# clicking the cave walks right into its entrance
 		target = cave.global_position
 	moving = true
@@ -60,10 +60,11 @@ func _physics_process(delta: float) -> void:
 		prey = null
 		moving = false
 	if not moving:
+		sprite.frame = 0
 		return
 
 	var to_target := target - global_position
-	sprite.rotation = rotate_toward(sprite.rotation, to_target.angle(), turn_speed * delta)
+	_animate(to_target, delta)
 	var arrived := to_target.length() <= speed * delta
 	velocity = to_target / delta if arrived else to_target.normalized() * speed
 	var before := global_position
@@ -73,6 +74,14 @@ func _physics_process(delta: float) -> void:
 
 	if prey and global_position.distance_to(prey.global_position) <= bite_range + prey.radius:
 		_eat()
+
+
+func _animate(direction: Vector2, delta: float) -> void:
+	# 3/4 view: face left or right and alternate the walk frames
+	if absf(direction.x) > 0.5:
+		sprite.flip_h = direction.x < 0.0
+	_step += delta * 8.0
+	sprite.frame = int(_step) % 2
 
 
 func _eat() -> void:
@@ -86,7 +95,7 @@ func _prey_at(point: Vector2) -> Prey:
 	var best: Prey = null
 	var best_dist := INF
 	for animal: Prey in get_tree().get_nodes_in_group("prey"):
-		var dist := point.distance_to(animal.global_position)
+		var dist := point.distance_to(animal.sprite.global_position)
 		if dist <= animal.radius + PICK_TOLERANCE and dist < best_dist:
 			best = animal
 			best_dist = dist
