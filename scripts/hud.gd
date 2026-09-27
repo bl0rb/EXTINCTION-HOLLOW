@@ -8,6 +8,8 @@ const DIM := Color(0.56, 0.55, 0.52)
 const AMBER := Color(1.0, 0.72, 0.32)
 const PANEL := Color(0.02, 0.03, 0.05, 0.6)
 const BORDER := Color(0.62, 0.45, 0.25, 0.45)
+const COLD := Color(0.55, 0.75, 1.0)
+const HOT := Color(1.0, 0.55, 0.3)
 const ICONS := {
 	"health": [Color(0.86, 0.24, 0.2), [".XX.XX.", "XXXXXXX", "XXXXXXX", ".XXXXX.", "..XXX..", "...X..."]],
 	"stamina": [Color(0.92, 0.84, 0.32), ["....XX.", "...XX..", "..XXXX.", "...XX..", "..XX...", ".XX...."]],
@@ -17,11 +19,13 @@ const ICONS := {
 }
 
 var menu: PanelContainer
+var warning: Label
 var _title: Label
 var _rows := {} ## "player:health" -> [level label, buy button]
 
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 @onready var cave: Cave = get_tree().get_first_node_in_group("cave")
+@onready var weather: Weather = get_tree().get_first_node_in_group("weather")
 
 
 func _ready() -> void:
@@ -30,6 +34,29 @@ func _ready() -> void:
 	_build_menu()
 	cave.player_entered.connect(_open_menu)
 	cave.player_exited.connect(menu.hide)
+	warning = Label.new()
+	warning.add_theme_font_size_override("font_size", 16)
+	warning.add_theme_color_override("font_color", Color(0.9, 0.82, 0.7))
+	warning.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	warning.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	warning.size = Vector2(640, 20)
+	warning.position = Vector2(0, 70)
+	warning.modulate.a = 0.0
+	add_child(warning)
+	var disasters := get_tree().get_first_node_in_group("disasters")
+	if disasters:
+		disasters.warning.connect(show_warning)
+
+
+## Disaster warnings (GAME_SPEC §138): the text drifts in, lingers and fades away.
+func show_warning(text: String) -> void:
+	warning.text = text
+	warning.position.y = 74
+	var tween := create_tween()
+	tween.tween_property(warning, "modulate:a", 1.0, 0.9)
+	tween.parallel().tween_property(warning, "position:y", 70.0, 0.9)
+	tween.tween_interval(2.5)
+	tween.tween_property(warning, "modulate:a", 0.0, 1.5)
 
 
 func _process(_delta: float) -> void:
@@ -37,8 +64,8 @@ func _process(_delta: float) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(6, 6, 118, 60), PANEL)
-	draw_rect(Rect2(6.5, 6.5, 117, 59), BORDER, false, 1.0)
+	draw_rect(Rect2(6, 6, 118, 72), PANEL)
+	draw_rect(Rect2(6.5, 6.5, 117, 71), BORDER, false, 1.0)
 	_bar(11, "health", player.health / player.max_health(), Color(0.74, 0.18, 0.16), ceilf(player.health))
 	_bar(21, "stamina", player.stamina / player.max_stamina, Color(0.8, 0.74, 0.26), ceilf(player.stamina))
 	_bar(31, "hunger", player.hunger / player.max_hunger, Color(0.8, 0.46, 0.2), ceilf(player.hunger))
@@ -48,6 +75,10 @@ func _draw() -> void:
 	_text(Vector2(72, 48), str(player.banked_xp), TEXT)
 	_text(Vector2(11, 61), "SIZE %d" % player.get_size(), DIM)
 	_text(Vector2(62, 61), "CAVE LV %d" % cave.levels.level, DIM)
+	if weather:
+		_text(Vector2(11, 73), weather.look.name, DIM)
+		var temp_color := COLD if player.temperature < 5.0 else (HOT if player.temperature > 32.0 else DIM)
+		_text(Vector2(84, 73), "%d°" % roundi(player.temperature), temp_color)
 
 
 func _bar(y: float, icon: String, ratio: float, color: Color, value: float) -> void:

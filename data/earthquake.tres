@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Disaster" format=3]
+
+[ext_resource type="Script" path="res://scripts/disaster.gd" id="1_disaster"]
+
+[resource]
+script = ExtResource("1_disaster")
+type = &"earthquake"
+warning_text = "The ground begins to shake..."
+warning_time = 3.5
+duration = 7.0
+damage = 22.0
+radius = 700.0
+weight = 2.0

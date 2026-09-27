@@ -19,11 +19,11 @@ func _rest() -> void:
 	timer = species.idle_time * (0.5 + randf())
 
 
-## Nearest bigger hunter (predators or the player) inside the fear radius.
+## Nearest threat inside the fear radius: bigger hunters (predators, the player) and fire.
 func _find_threat() -> Node2D:
 	var best: Node2D = null
 	var best_dist := species.fear_radius
-	var hunters := get_tree().get_nodes_in_group("predator")
+	var hunters := get_tree().get_nodes_in_group("predator") + get_tree().get_nodes_in_group("fire")
 	if not player.dead:
 		hunters.append(player)
 	for hunter in hunters:
@@ -35,6 +35,9 @@ func _find_threat() -> Node2D:
 
 
 func _physics_process(delta: float) -> void:
+	if _flee_in_panic(species.flee_speed, delta):
+		state = State.FLEE
+		return
 	var threat := _find_threat()
 	if threat:
 		_threat = threat
