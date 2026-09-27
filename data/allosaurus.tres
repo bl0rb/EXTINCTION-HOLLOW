@@ -8,6 +8,7 @@ xp = 50
 size = 4
 food = 60.0
 stride = 9.0
+acceleration = 240.0
 speed = 25.0
 wander_radius = 160.0
 idle_time = 3.0

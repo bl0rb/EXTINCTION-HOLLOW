@@ -66,7 +66,8 @@ func _physics_process(delta: float) -> void:
 		target = victim.global_position
 		speed = species.chase_speed
 		if global_position.distance_to(target) <= species.attack_range:
-			_animate(target - global_position, 0.0)
+			_stand(delta)
+			_animate(target - global_position, 0.0, delta)
 			if _cooldown <= 0.0:
 				_cooldown = species.attack_interval
 				_bite()
@@ -74,9 +75,7 @@ func _physics_process(delta: float) -> void:
 	elif state == State.IDLE:
 		timer -= delta
 		if timer > 0.0:
-			_animate(Vector2.ZERO, 0.0)
-			sprite.frame = 0
-			eyes.frame = 0
+			_stand(delta)
 			return
 		target = global_position + Vector2.from_angle(randf() * TAU) * randf() * species.wander_radius
 		state = State.WANDER
@@ -98,7 +97,6 @@ func _bite() -> void:
 		_rest(DIGEST_TIME)
 
 
-func _animate(direction: Vector2, steps: float) -> void:
-	super(direction, steps)
-	eyes.flip_h = sprite.flip_h
-	eyes.frame = sprite.frame
+func _animate(direction: Vector2, steps: float, delta: float) -> void:
+	super(direction, steps, delta)
+	eyes.frame = sprite.frame # the eyes turn with the sprite they belong to

@@ -4,9 +4,13 @@ extends CharacterBody2D
 
 const PICK_TOLERANCE := 8.0 ## extra pixels so small animals are easy to click
 const SIZE_SCALE := 0.15 ## sprite growth per size upgrade
+const STRIDE := 11.0 ## pixels per walk frame
+const TURN_TIME := 0.12 ## seconds to turn around
+const BREATH_TIME := 0.7 ## seconds per idle breathing frame
 
 @export var base_speed := 90.0 ## pixels per second
 @export var base_sprint_speed := 140.0
+@export var acceleration := 700.0 ## pixels per second²
 @export var base_bite_range := 18.0 ## reach from the centre in pixels, added to the prey radius
 @export var base_max_health := 100.0
 @export var max_stamina := 100.0
@@ -30,11 +34,15 @@ var target := Vector2.ZERO
 var moving := false
 var prey: Animal
 var _step := 0.0
+var _idle := 0.0
+var _facing := 1.0
+var _turn := 1.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var shadow: Sprite2D = $Shadow
 @onready var dust: CPUParticles2D = $Dust
 @onready var camera: GameCamera = $Camera2D
+@onready var _cave: Cave = get_tree().get_first_node_in_group("cave")
 @onready var _sprite_y := sprite.position.y
 
 
@@ -177,24 +185,31 @@ func _physics_process(delta: float) -> void:
 	dust.emitting = sprint
 	if not moving:
 		velocity = Vector2.ZERO
-		sprite.frame = 0
+		_animate(Vector2.ZERO, 0.0, delta)
 		return
 
+	# speed up and ease into the target instead of starting and stopping dead
 	var speed := sprint_speed() if sprint else speed()
 	var to_target := target - global_position
-	_animate(to_target, delta * (12.0 if sprint else 8.0))
-	var arrived := to_target.length() <= speed * delta
-	velocity = to_target / delta if arrived else to_target.normalized() * speed
-	var before := global_position
-	move_and_slide() # slides along walls
-	if arrived or global_position.distance_to(before) < 0.01:
+	var dist := to_target.length()
+	velocity = velocity.move_toward(to_target.normalized() * speed * clampf(dist / 12.0, 0.3, 1.0), acceleration * delta)
+	_animate(to_target, velocity.length() * delta / STRIDE, delta)
+	if dist <= maxf(velocity.length() * delta, 0.5):
+		velocity = to_target / delta
+		move_and_slide()
+		velocity = Vector2.ZERO
 		moving = false
+	else:
+		var before := global_position
+		move_and_slide() # slides along walls
+		if global_position.distance_to(before) < 0.01:
+			moving = false
 
 	if prey and global_position.distance_to(prey.global_position) <= bite_range() + prey.radius:
 		_eat()
 
 
-## Hunger drains over time (GAME_SPEC §7); stamina is spent by sprinting and recovers otherwise.
+## Hunger drains while moving outside the cave (GAME_SPEC §7); stamina is spent by sprinting and recovers otherwise.
 func _update_needs(delta: float) -> void:
 	if sprinting and moving and stamina > 0.0:
 		stamina = maxf(stamina - sprint_cost * delta, 0.0)
@@ -202,8 +217,10 @@ func _update_needs(delta: float) -> void:
 			sprinting = false
 	else:
 		stamina = minf(stamina + stamina_regen * delta, max_stamina)
-	hunger = maxf(hunger - hunger_rate * delta, 0.0)
-	if hunger == 0.0:
+	var in_cave := _cave.overlaps_body(self)
+	if moving and not in_cave:
+		hunger = maxf(hunger - hunger_rate * delta, 0.0)
+	if hunger == 0.0 and not in_cave:
 		health -= starve_damage * delta
 		if health <= 0.0:
 			_die()
@@ -211,12 +228,19 @@ func _update_needs(delta: float) -> void:
 		health = minf(health + regen * delta, max_health())
 
 
-func _animate(direction: Vector2, steps: float) -> void:
-	# 3/4 view: face left or right and alternate the walk frames
+## 3/4 view: turning squeezes the sprite through its side view; frames 0-1 breathe, 2-5 walk.
+func _animate(direction: Vector2, steps: float, delta: float) -> void:
 	if absf(direction.x) > 0.5:
-		sprite.flip_h = direction.x < 0.0
-	_step += steps
-	sprite.frame = int(_step) % 2
+		_facing = signf(direction.x)
+	_turn = move_toward(_turn, _facing, delta * 2.0 / TURN_TIME)
+	sprite.scale.x = absf(sprite.scale.y) * (signf(_turn) if _turn != 0.0 else _facing) * maxf(absf(_turn), 0.2)
+	if steps > 0.0:
+		_step += steps
+		_idle = 0.0
+		sprite.frame = 2 + int(_step) % 4
+	else:
+		_idle += delta
+		sprite.frame = int(_idle / BREATH_TIME) % 2
 
 
 func _eat() -> void:

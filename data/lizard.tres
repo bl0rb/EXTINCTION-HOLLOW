@@ -8,6 +8,7 @@ xp = 4
 size = 1
 food = 20.0
 stride = 5.0
+acceleration = 500.0
 speed = 30.0
 flee_speed = 60.0
 fear_radius = 70.0
