@@ -4,13 +4,13 @@
 
 [resource]
 script = ExtResource("1_species")
-xp = 4
+xp = 2
 size = 1
-food = 20.0
-stride = 5.0
-speed = 30.0
-flee_speed = 60.0
-fear_radius = 70.0
-calm_radius = 140.0
-wander_radius = 80.0
-idle_time = 2.0
+food = 12.0
+stride = 6.0
+speed = 16.0
+flee_speed = 34.0
+fear_radius = 42.0
+calm_radius = 80.0
+wander_radius = 60.0
+idle_time = 1.5

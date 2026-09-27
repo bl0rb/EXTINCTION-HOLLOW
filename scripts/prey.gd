@@ -1,19 +1,12 @@
 class_name Prey
-extends CharacterBody2D
-## Small prey animal: idles, wanders and flees from the player.
+extends Animal
+## Small prey animal: idles, wanders and flees from bigger hunters.
 
 enum State { IDLE, WANDER, FLEE }
 
-@export var species: Species
-
 var state := State.IDLE
-var target := Vector2.ZERO
 var timer := 0.0
-var _step := 0.0
-
-@onready var radius: float = ($CollisionShape2D.shape as CircleShape2D).radius
-@onready var sprite: Sprite2D = $Sprite2D
-@onready var player: Node2D = get_tree().get_first_node_in_group("player")
+var _threat: Node2D
 
 
 func _ready() -> void:
@@ -26,18 +19,33 @@ func _rest() -> void:
 	timer = species.idle_time * (0.5 + randf())
 
 
+## Nearest bigger hunter (predators or the player) inside the fear radius.
+func _find_threat() -> Node2D:
+	var best: Node2D = null
+	var best_dist := species.fear_radius
+	var hunters := get_tree().get_nodes_in_group("predator")
+	if not player.dead:
+		hunters.append(player)
+	for hunter in hunters:
+		var dist := global_position.distance_to(hunter.global_position)
+		if hunter.get_size() > get_size() and dist < best_dist:
+			best = hunter
+			best_dist = dist
+	return best
+
+
 func _physics_process(delta: float) -> void:
-	var away := global_position - player.global_position
-	var dist := away.length()
-	if dist < species.fear_radius:
+	var threat := _find_threat()
+	if threat:
+		_threat = threat
 		state = State.FLEE
-	elif state == State.FLEE and dist > species.calm_radius:
+	elif state == State.FLEE and (not is_instance_valid(_threat) or global_position.distance_to(_threat.global_position) > species.calm_radius):
 		_rest()
 
 	var speed := species.speed
 	if state == State.FLEE:
-		# run straight away from the player
-		target = global_position + away.normalized() * 32.0
+		# run straight away from the threat
+		target = global_position + (global_position - _threat.global_position).normalized() * 32.0
 		speed = species.flee_speed
 	elif state == State.IDLE:
 		timer -= delta
@@ -47,14 +55,5 @@ func _physics_process(delta: float) -> void:
 		target = global_position + Vector2.from_angle(randf() * TAU) * randf() * species.wander_radius
 		state = State.WANDER
 
-	var to_target := target - global_position
-	if absf(to_target.x) > 0.5:
-		sprite.flip_h = to_target.x < 0.0
-	_step += delta * speed * 0.3
-	sprite.frame = int(_step) % 2
-	var arrived := to_target.length() <= speed * delta
-	velocity = to_target / delta if arrived else to_target.normalized() * speed
-	var before := global_position
-	move_and_slide()
-	if state == State.WANDER and (arrived or global_position.distance_to(before) < 0.01):
+	if _walk(speed, delta) and state == State.WANDER:
 		_rest()

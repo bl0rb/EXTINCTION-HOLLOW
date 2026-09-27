@@ -13,10 +13,11 @@ var carried_xp := 0 ## XP collected outside the cave, lost on death
 var banked_xp := 0 ## XP brought to the cave, kept permanently
 var health := max_health
 var dead := false
+var size_level := 2 ## size class (GAME_SPEC §8), the player starts small
 
 var target := Vector2.ZERO
 var moving := false
-var prey: Prey
+var prey: Animal
 var _step := 0.0
 
 @onready var sprite: Sprite2D = $Sprite2D
@@ -36,12 +37,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+func get_size() -> int:
+	return size_level
+
+
 func click_at(point: Vector2) -> void:
 	if dead:
 		return
 	# a new click always replaces the previous target
 	target = point
-	# clicking an animal selects it as prey, clicking the ground just walks there
+	# clicking an animal small enough to eat selects it as prey, anything else just walks there
 	prey = _prey_at(point)
 	var cave := get_tree().get_first_node_in_group("cave") as Cave
 	if prey == null and cave and cave.is_clicked(point):
@@ -104,6 +109,7 @@ func _physics_process(delta: float) -> void:
 		prey = null
 		moving = false
 	if not moving:
+		velocity = Vector2.ZERO
 		sprite.frame = 0
 		return
 
@@ -135,12 +141,12 @@ func _eat() -> void:
 	moving = false
 
 
-func _prey_at(point: Vector2) -> Prey:
-	var best: Prey = null
+func _prey_at(point: Vector2) -> Animal:
+	var best: Animal = null
 	var best_dist := INF
-	for animal: Prey in get_tree().get_nodes_in_group("prey"):
+	for animal: Animal in get_tree().get_nodes_in_group("prey") + get_tree().get_nodes_in_group("predator"):
 		var dist := point.distance_to(animal.sprite.global_position)
-		if dist <= animal.radius + PICK_TOLERANCE and dist < best_dist:
+		if animal.get_size() < get_size() and dist <= animal.radius + PICK_TOLERANCE and dist < best_dist:
 			best = animal
 			best_dist = dist
 	return best

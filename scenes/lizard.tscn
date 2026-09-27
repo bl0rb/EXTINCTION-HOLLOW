@@ -8,7 +8,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 5.0
 
-[node name="Lizard" type="CharacterBody2D" groups=["prey"]]
+[node name="Lizard" type="CharacterBody2D" groups=["prey", "lizard"]]
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_prey")

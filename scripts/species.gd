@@ -3,6 +3,9 @@ extends Resource
 ## Data for one animal species (GAME_SPEC §57).
 
 @export var xp: int
+@export var size: int ## size class 1-5 (GAME_SPEC §8)
+@export var food: float ## hunger restored when eaten
+@export var stride: float ## pixels per walk frame
 @export var speed: float ## wandering, pixels per second
 @export var flee_speed: float ## pixels per second
 @export var fear_radius: float

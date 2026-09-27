@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" path="res://assets/waterfall.png" id="6_jscy8"]
 [ext_resource type="PackedScene" path="res://scenes/cave.tscn" id="7_pm3ni"]
 [ext_resource type="PackedScene" path="res://scenes/predator.tscn" id="predator_scene"]
+[ext_resource type="Script" path="res://scripts/pond.gd" id="pond_script"]
+[ext_resource type="Script" path="res://scripts/spawner.gd" id="spawner_script"]
+[ext_resource type="PackedScene" path="res://scenes/fish.tscn" id="fish_scene"]
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="8_y6deb"]
 [ext_resource type="PackedScene" path="res://scenes/lizard.tscn" id="9_og1vs"]
 [ext_resource type="PackedScene" path="res://scenes/tree.tscn" id="10_2wyq8"]
@@ -102,6 +105,7 @@ texture = ExtResource("3_0ld40")
 centered = false
 
 [node name="Pond" type="Sprite2D" parent="." unique_id=1609209947]
+script = ExtResource("pond_script")
 material = SubResource("ShaderMaterial_dgi5k")
 position = Vector2(300, 372)
 texture = ExtResource("4_gqmmt")
@@ -1321,6 +1325,21 @@ frame = 1
 
 [node name="Predator" parent="Actors" unique_id=2090436975 instance=ExtResource("predator_scene")]
 position = Vector2(900, 830)
+
+[node name="LizardSpawner" type="Node2D" parent="." unique_id=1163248245]
+script = ExtResource("spawner_script")
+scene = ExtResource("9_og1vs")
+group = "lizard"
+area = Rect2(40, 360, 1200, 580)
+spawn_parent = NodePath("../Actors")
+
+[node name="FishSpawner" type="Node2D" parent="." unique_id=1005689161]
+script = ExtResource("spawner_script")
+scene = ExtResource("fish_scene")
+group = "fish"
+count = 5
+min_player_distance = 0.0
+spawn_parent = NodePath("../Pond")
 
 [node name="Mist" type="CPUParticles2D" parent="." unique_id=1029562362]
 position = Vector2(300, 343.69562)
