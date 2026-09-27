@@ -23,7 +23,7 @@ texture = ExtResource("4_shadow")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -17)
 texture = ExtResource("2_sprite")
-hframes = 6
+hframes = 10
 
 [node name="Dust" type="CPUParticles2D" parent="."]
 emitting = false

@@ -5,8 +5,7 @@ extends CharacterBody2D
 const PICK_TOLERANCE := 8.0 ## extra pixels so small animals are easy to click
 const SIZE_SCALE := 0.15 ## sprite growth per size upgrade
 const STRIDE := 11.0 ## pixels per walk frame
-const TURN_TIME := 0.12 ## seconds to turn around
-const BREATH_TIME := 0.7 ## seconds per idle breathing frame
+const DETOUR_TIME := 0.4 ## seconds without getting closer to the target before giving up
 
 @export var base_speed := 90.0 ## pixels per second
 @export var base_sprint_speed := 140.0
@@ -33,10 +32,9 @@ var sprinting := false
 var target := Vector2.ZERO
 var moving := false
 var prey: Animal
-var _step := 0.0
-var _idle := 0.0
-var _facing := 1.0
-var _turn := 1.0
+var anim := SpriteAnimator.new()
+var _detour := 0.0
+var _best_dist := INF
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var shadow: Sprite2D = $Shadow
@@ -109,6 +107,8 @@ func click_at(point: Vector2, sprint := false) -> void:
 	# a new click always replaces the previous target
 	target = point
 	sprinting = sprint
+	_best_dist = INF
+	_detour = 0.0
 	# clicking an animal small enough to eat selects it as prey, anything else just walks there
 	prey = _prey_at(point)
 	var cave := get_tree().get_first_node_in_group("cave") as Cave
@@ -129,6 +129,8 @@ func take_damage(amount: float) -> void:
 		return
 	health -= amount
 	camera.shake(3.0, 0.25)
+	Fx.burst(Fx.BLOOD, get_parent(), global_position + Vector2(0, -12))
+	Fx.hit_stop(get_tree(), 0.08)
 	sprite.modulate = Color(1.0, 0.25, 0.2)
 	create_tween().tween_property(sprite, "modulate", Color.WHITE, 0.25)
 	if health <= 0.0:
@@ -178,12 +180,13 @@ func _physics_process(delta: float) -> void:
 		# keep chasing the selected prey wherever it runs
 		target = prey.global_position
 		moving = true
+		_best_dist = INF # a moving target: keep going
 	elif prey != null:
 		prey = null
 		moving = false
 	var sprint := sprinting and moving and stamina > 0.0
 	dust.emitting = sprint
-	if not moving:
+	if not moving or anim.busy():
 		velocity = Vector2.ZERO
 		_animate(Vector2.ZERO, 0.0, delta)
 		return
@@ -203,10 +206,24 @@ func _physics_process(delta: float) -> void:
 		var before := global_position
 		move_and_slide() # slides along walls
 		if global_position.distance_to(before) < 0.01:
-			moving = false
+			# blocked head-on: slip around the obstacle
+			for side in [1.0, -1.0]:
+				velocity = to_target.normalized().rotated(side * PI / 2.5) * speed
+				move_and_slide()
+				if global_position.distance_to(before) > 0.3:
+					break
+		# give up once the target has not come closer for a moment
+		var left := global_position.distance_to(target)
+		if left < _best_dist - 0.5:
+			_best_dist = left
+			_detour = 0.0
+		else:
+			_detour += delta
+			if _detour > DETOUR_TIME:
+				moving = false
 
 	if prey and global_position.distance_to(prey.global_position) <= bite_range() + prey.radius:
-		_eat()
+		_bite()
 
 
 ## Hunger drains while moving outside the cave (GAME_SPEC §7); stamina is spent by sprinting and recovers otherwise.
@@ -228,24 +245,19 @@ func _update_needs(delta: float) -> void:
 		health = minf(health + regen * delta, max_health())
 
 
-## 3/4 view: turning squeezes the sprite through its side view; frames 0-1 breathe, 2-5 walk.
 func _animate(direction: Vector2, steps: float, delta: float) -> void:
-	if absf(direction.x) > 0.5:
-		_facing = signf(direction.x)
-	_turn = move_toward(_turn, _facing, delta * 2.0 / TURN_TIME)
-	sprite.scale.x = absf(sprite.scale.y) * (signf(_turn) if _turn != 0.0 else _facing) * maxf(absf(_turn), 0.2)
-	if steps > 0.0:
-		_step += steps
-		_idle = 0.0
-		sprite.frame = 2 + int(_step) % 4
-	else:
-		_idle += delta
-		sprite.frame = int(_idle / BREATH_TIME) % 2
+	anim.update(sprite, direction, steps, delta)
 
 
-func _eat() -> void:
+## Snap, then stand and chew for a moment.
+func _bite() -> void:
 	carried_xp += prey.species.xp
 	hunger = minf(hunger + prey.species.food, max_hunger)
+	anim.update(sprite, prey.global_position - global_position, 0.0, 0.0)
+	anim.play("attack", 0.16)
+	anim.then("eat", 0.5)
+	Fx.burst(Fx.BLOOD, get_parent(), prey.global_position + Vector2(0, -4))
+	Fx.hit_stop(get_tree())
 	prey.queue_free()
 	prey = null
 	moving = false

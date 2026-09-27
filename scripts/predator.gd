@@ -66,7 +66,7 @@ func _physics_process(delta: float) -> void:
 		target = victim.global_position
 		speed = species.chase_speed
 		if global_position.distance_to(target) <= species.attack_range:
-			_stand(delta)
+			velocity = Vector2.ZERO
 			_animate(target - global_position, 0.0, delta)
 			if _cooldown <= 0.0:
 				_cooldown = species.attack_interval
@@ -90,10 +90,13 @@ func _physics_process(delta: float) -> void:
 
 
 func _bite() -> void:
+	anim.play("attack", 0.22)
 	if victim == player:
 		player.take_damage(species.damage)
 	else:
+		Fx.burst(Fx.BLOOD, get_parent(), victim.global_position + Vector2(0, -4))
 		victim.queue_free()
+		anim.then("eat", 1.4)
 		_rest(DIGEST_TIME)
 
 

@@ -2,16 +2,10 @@ class_name Animal
 extends CharacterBody2D
 ## Shared behaviour of NPC animals: species data, walking with inertia, turning around, walk and idle animation.
 
-const TURN_TIME := 0.14 ## seconds to turn around
-const BREATH_TIME := 0.7 ## seconds per idle breathing frame
-
 @export var species: Species
 
 var target := Vector2.ZERO
-var _step := 0.0
-var _idle := 0.0
-var _facing := 1.0
-var _turn := 1.0
+var anim := SpriteAnimator.new()
 
 @onready var radius: float = ($CollisionShape2D.shape as CircleShape2D).radius
 @onready var sprite: Sprite2D = $Sprite2D
@@ -48,16 +42,5 @@ func _stand(delta: float) -> void:
 	_animate(Vector2.ZERO, 0.0, delta)
 
 
-## 3/4 view: turning squeezes the sprite through its side view; frames 0-1 breathe, 2-5 walk.
 func _animate(direction: Vector2, steps: float, delta: float) -> void:
-	if absf(direction.x) > 0.5:
-		_facing = signf(direction.x)
-	_turn = move_toward(_turn, _facing, delta * 2.0 / TURN_TIME)
-	sprite.scale.x = absf(sprite.scale.y) * (signf(_turn) if _turn != 0.0 else _facing) * maxf(absf(_turn), 0.2)
-	if steps > 0.0:
-		_step += steps
-		_idle = 0.0
-		sprite.frame = 2 + int(_step) % 4
-	else:
-		_idle += delta
-		sprite.frame = int(_idle / BREATH_TIME) % 2
+	anim.update(sprite, direction, steps, delta)
