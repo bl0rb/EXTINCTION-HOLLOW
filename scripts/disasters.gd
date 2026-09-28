@@ -18,6 +18,7 @@ var active: Disaster ## the running disaster, null while calm or warning
 var pending: Disaster ## the disaster that has been announced
 var _timer := 0.0
 var _spawn := 0.0
+var _rumble: AudioStreamPlayer ## the ground groans while it shakes (T097)
 
 @onready var _player: Player = get_tree().get_first_node_in_group("player")
 @onready var _weather: Weather = get_tree().get_first_node_in_group("weather")
@@ -27,6 +28,7 @@ var _spawn := 0.0
 
 func _ready() -> void:
 	_timer = randf_range(min_interval, max_interval)
+	_rumble = Sound.loop(self, "quake")
 
 
 func trigger(disaster: Disaster) -> void:
@@ -45,6 +47,9 @@ func trigger(disaster: Disaster) -> void:
 
 func _process(delta: float) -> void:
 	_timer -= delta
+	# a low groan warns of what is coming, the ground roars while it shakes
+	var rumble := 0.0 if pending == null else (0.3 if active == null else 1.0) * _falloff()
+	Sound.fade(_rumble, rumble, delta)
 	if pending == null:
 		if _timer <= 0.0:
 			trigger(EARTHQUAKE if randf() * (EARTHQUAKE.weight + ERUPTION.weight) < EARTHQUAKE.weight else ERUPTION)
@@ -89,11 +94,14 @@ func _source(disaster: Disaster) -> Vector2:
 
 
 func _shake(strength: float) -> void:
-	# eruptions are felt less far away from the volcano
-	var falloff := 1.0
+	_player.camera.shake(strength * _falloff(), 0.1)
+
+
+## Eruptions are felt less far away from the volcano.
+func _falloff() -> float:
 	if pending.type == &"eruption":
-		falloff = clampf(1.2 - _player.global_position.distance_to(_volcano.global_position) / 1400.0, 0.25, 1.0)
-	_player.camera.shake(strength * falloff, 0.1)
+		return clampf(1.2 - _player.global_position.distance_to(_volcano.global_position) / 1400.0, 0.25, 1.0)
+	return 1.0
 
 
 func _drop_rock() -> void:

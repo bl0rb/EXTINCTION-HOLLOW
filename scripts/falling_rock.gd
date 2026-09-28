@@ -26,6 +26,7 @@ func _process(delta: float) -> void:
 
 func _land() -> void:
 	Fx.burst(DUST, get_parent(), global_position)
+	Sound.play(get_parent(), "rock", global_position, -4.0)
 	var player := get_tree().get_first_node_in_group("player") as Player
 	var cave := get_tree().get_first_node_in_group("cave") as Cave
 	var dist := player.global_position.distance_to(global_position)

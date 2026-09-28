@@ -2,6 +2,7 @@ class_name Weather
 extends Node
 ## Weather (GAME_SPEC §30-§34, §149.15-16): long stable phases that blend into each other.
 ## Rain darkens the night and thickens the fog, heavy rain slows the dino, snow settles on the ground, ash follows eruptions.
+## It also sets the soundscape (T094-T095): the rain, and the jungle's birds, insects and frogs.
 
 enum Kind { CLEAR, RAIN, HEAVY_RAIN, SNOW, ASH }
 
@@ -31,6 +32,8 @@ var _time_left := 0.0
 var _blend := 1.0
 var _from := {}
 var _emitters := {} ## Kind -> particle emitters
+var _rain_sound: AudioStreamPlayer
+var _jungle_sound: AudioStreamPlayer
 
 @onready var _night: CanvasModulate = get_node("../Night")
 @onready var _fog: ShaderMaterial = get_node("../Fog").material
@@ -41,6 +44,8 @@ var _emitters := {} ## Kind -> particle emitters
 
 func _ready() -> void:
 	_build_emitters()
+	_rain_sound = Sound.loop(self, "rain")
+	_jungle_sound = Sound.loop(self, "jungle")
 	look = LOOKS[Kind.CLEAR].duplicate()
 	set_weather(Kind.CLEAR, randf_range(min_duration, max_duration), true)
 
@@ -94,6 +99,11 @@ func _process(delta: float) -> void:
 		for emitter: CPUParticles2D in list:
 			emitter.global_position = center
 			emitter.visible = not underground
+	# rain drowns out the jungle; deep underground neither can be heard
+	var rain := {Kind.RAIN: 0.55, Kind.HEAVY_RAIN: 1.0}.get(kind, 0.0) as float
+	var jungle := {Biomes.JUNGLE: 0.8, Biomes.SWAMP: 0.5, Biomes.RIVER: 0.4}.get(Biomes.at(_player.global_position), 0.0) as float
+	Sound.fade(_rain_sound, 0.0 if underground else rain, delta, 1.0 / TRANSITION)
+	Sound.fade(_jungle_sound, 0.0 if underground else jungle * (1.0 - 0.6 * rain), delta, 0.25)
 
 
 func _pick() -> Kind:
