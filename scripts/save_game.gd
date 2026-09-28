@@ -20,4 +20,11 @@ static func store(player: Player, cave: Cave) -> void:
 	file.set_value("player", "bag", player.bag)
 	file.set_value("player", "equipped", player.equipped)
 	file.set_value("cave", "levels", cave.levels)
+	var story := player.get_tree().get_first_node_in_group("story") as Story
+	if story:
+		file.set_value("story", "time", story.time)
+		file.set_value("story", "found", story.found)
+	var hud := player.get_tree().get_first_node_in_group("hud")
+	if hud:
+		file.set_value("map", "explored", hud.automap.explored.get_data())
 	file.save(PATH)

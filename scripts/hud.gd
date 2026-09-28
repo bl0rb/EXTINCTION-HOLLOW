@@ -24,6 +24,12 @@ var menu: PanelContainer
 var warning: Label
 var inventory: Control
 var skill_tree: Control
+var automap: Control
+var narration: Label
+var chapter: Label
+var flash: ColorRect
+var end_screen: Control
+var _narration_tween: Tween
 var _title: Label
 var _rows := {} ## "player:health" -> [level label, buy button]
 
@@ -33,8 +39,12 @@ var _rows := {} ## "player:health" -> [level label, buy button]
 
 
 func _ready() -> void:
+	add_to_group("hud")
 	mouse_filter = MOUSE_FILTER_IGNORE
 	theme = _make_theme()
+	automap = Control.new()
+	automap.set_script(load("res://scripts/automap.gd"))
+	add_child(automap)
 	_build_menu()
 	cave.player_entered.connect(_open_menu)
 	cave.player_exited.connect(menu.hide)
@@ -58,6 +68,22 @@ func _ready() -> void:
 	skill_tree.set_script(load("res://scripts/talent_panel.gd"))
 	skill_tree.position = Vector2(640 - 158, 96)
 	add_child(skill_tree)
+	chapter = _story_label(16, Fx.GOLD, 116)
+	narration = _story_label(8, TEXT, 136)
+	narration.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	narration.size = Vector2(360, 40)
+	narration.position.x = 140
+	flash = ColorRect.new()
+	flash.set_anchors_preset(PRESET_FULL_RECT)
+	flash.mouse_filter = MOUSE_FILTER_IGNORE
+	flash.color = Color(1, 0.95, 0.85, 0)
+	add_child(flash)
+	_build_end_screen()
+	var story := get_tree().get_first_node_in_group("story") as Story
+	if story:
+		story.chapter_started.connect(func(i: int) -> void: narrate(Story.CHAPTERS[i].title, Story.CHAPTERS[i].text))
+		story.impact_started.connect(_on_impact)
+		story.ended.connect(_on_ended)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -65,6 +91,83 @@ func _unhandled_input(event: InputEvent) -> void:
 		inventory.visible = not inventory.visible
 	elif event.is_action_pressed("talents"):
 		skill_tree.visible = not skill_tree.visible
+	elif event.is_action_pressed("map"):
+		automap.toggle()
+
+
+func _story_label(font_size: int, color: Color, y: float) -> Label:
+	var label := Label.new()
+	label.label_settings = LabelSettings.new()
+	label.label_settings.font = FONT
+	label.label_settings.font_size = font_size
+	label.label_settings.font_color = color
+	label.label_settings.outline_size = 4
+	label.label_settings.outline_color = Color(0.01, 0.01, 0.02, 0.85)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.size = Vector2(640, font_size + 6)
+	label.position = Vector2(0, y)
+	label.mouse_filter = MOUSE_FILTER_IGNORE
+	label.modulate.a = 0.0
+	add_child(label)
+	return label
+
+
+## Storytelling (GAME_SPEC §149.29): a chapter title and a few words that write themselves out, linger and fade.
+func narrate(title: String, text: String) -> void:
+	chapter.text = title
+	narration.text = text
+	narration.visible_ratio = 0.0
+	if _narration_tween:
+		_narration_tween.kill()
+	_narration_tween = create_tween()
+	_narration_tween.tween_property(chapter, "modulate:a", 1.0 if title != "" else 0.0, 0.8)
+	_narration_tween.parallel().tween_property(narration, "modulate:a", 1.0, 0.8)
+	_narration_tween.tween_property(narration, "visible_ratio", 1.0, 0.05 * text.length())
+	_narration_tween.tween_interval(4.0)
+	_narration_tween.tween_property(chapter, "modulate:a", 0.0, 1.5)
+	_narration_tween.parallel().tween_property(narration, "modulate:a", 0.0, 1.5)
+
+
+## The impact (GAME_SPEC §126): a blinding flash, a moment of silence, then dust and darkness.
+func _on_impact() -> void:
+	var tween := create_tween()
+	tween.tween_property(flash, "color", Color(1, 0.95, 0.85, 1.0), 0.15)
+	tween.tween_interval(1.2)
+	tween.tween_property(flash, "color", Color(0.06, 0.04, 0.03, 0.9), 2.4)
+
+
+func _on_ended(survived: bool) -> void:
+	var title: Label = end_screen.get_node("Title")
+	title.text = "SURVIVED" if survived else "EXTINCT"
+	title.label_settings.font_color = Fx.GOLD if survived else Fx.HURT
+	end_screen.get_node("Text").text = "The dust settles after a long, cold age.\nThe hollow endured, and so did you." if survived \
+		else "The hollow was not deep enough.\nThe cave collapses, and the age ends."
+	end_screen.show()
+
+
+func _build_end_screen() -> void:
+	end_screen = Control.new()
+	end_screen.set_anchors_preset(PRESET_FULL_RECT)
+	end_screen.mouse_filter = MOUSE_FILTER_STOP
+	end_screen.visible = false
+	add_child(end_screen)
+	var dark := ColorRect.new()
+	dark.set_anchors_preset(PRESET_FULL_RECT)
+	dark.color = Color(0.02, 0.015, 0.015, 0.94)
+	dark.mouse_filter = MOUSE_FILTER_IGNORE
+	end_screen.add_child(dark)
+	for spec in [["Title", 32, 120], ["Text", 8, 170], ["Hint", 8, 230]]:
+		var label := _story_label(spec[1], TEXT, spec[2])
+		label.name = spec[0]
+		label.modulate.a = 1.0
+		label.size.y = 40
+		remove_child(label)
+		end_screen.add_child(label)
+	end_screen.get_node("Hint").text = "click to begin a new age"
+	end_screen.get_node("Hint").label_settings.font_color = DIM
+	end_screen.gui_input.connect(func(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.pressed:
+			(get_tree().get_first_node_in_group("story") as Story).new_age())
 
 
 ## Disaster warnings (GAME_SPEC §138): the text drifts in, lingers and fades away.
@@ -100,6 +203,10 @@ func _draw() -> void:
 		_text(Vector2(84, 73), "%d°" % roundi(player.temperature), temp_color)
 	_text(Vector2(11, 85), Biomes.name_at(player.global_position), TEXT)
 	_draw_skill_bar()
+	var story := get_tree().get_first_node_in_group("story") as Story
+	if story and story.warning() and int(Time.get_ticks_msec() / 400) % 3 != 0:
+		var left := ceili(story.time_left())
+		draw_string(FONT, Vector2(0, 22), "IMPACT  %d:%02d" % [left / 60, left % 60], HORIZONTAL_ALIGNMENT_CENTER, 640, 16, Fx.HURT)
 
 
 ## Skills on the keys 1-4 with their cooldowns, the level and the XP towards the next one (GAME_SPEC §150).
@@ -154,7 +261,7 @@ func _build_menu() -> void:
 	menu = PanelContainer.new()
 	menu.visible = false
 	add_child(menu)
-	menu.position = Vector2(640 - 196, 60)
+	menu.position = Vector2(640 - 196, 76)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 1)
 	menu.add_child(box)
@@ -199,7 +306,7 @@ func _buy(owner_id: String, id: String) -> void:
 
 
 func _refresh() -> void:
-	_title.text = "THE CAVE  -  %d XP" % player.banked_xp
+	_title.text = "THE CAVE  -  %d XP   SHELTER %d/%d" % [player.banked_xp, cave.shelter(), Story.SHELTER_NEEDED]
 	for key: String in _rows:
 		var is_player := key.begins_with("player:")
 		var id := key.get_slice(":", 1)

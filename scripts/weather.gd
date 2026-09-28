@@ -25,6 +25,7 @@ var kind := Kind.CLEAR
 var snow_cover := 0.0 ## 0..1, grows while it snows and melts afterwards
 var quake := 0.0 ## extra wind while the ground shakes
 var look := {} ## current blend of the weather looks
+var meteor_glow := 0.0 ## 0..1, the meteor tints the night orange-red (GAME_SPEC §149.30)
 var _time_left := 0.0
 var _blend := 1.0
 var _from := {}
@@ -73,7 +74,7 @@ func _process(delta: float) -> void:
 		look[key] = lerpf(_from[key], to[key], _blend)
 	for key in ["light", "fog_color"]:
 		look[key] = (_from[key] as Color).lerp(to[key], _blend)
-	_night.color = look.light
+	_night.color = (look.light as Color).lerp(Story.METEOR_LIGHT, meteor_glow)
 	_fog.set_shader_parameter("density", 0.3 * look.fog)
 	_fog.set_shader_parameter("fog_color", look.fog_color)
 	RenderingServer.global_shader_parameter_set("wind", look.wind + quake)
