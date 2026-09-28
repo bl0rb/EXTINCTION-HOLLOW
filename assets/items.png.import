@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du8ba8pv0gwyb"
-path="res://.godot/imported/swamp_water.png-02f40a62aeee282077061dd27fa51972.ctex"
+uid="uid://ccj4tt6trokah"
+path="res://.godot/imported/items.png-47d902c7b073dc8ecbdcf38de461db0f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/swamp_water.png"
-dest_files=["res://.godot/imported/swamp_water.png-02f40a62aeee282077061dd27fa51972.ctex"]
+source_file="res://assets/items.png"
+dest_files=["res://.godot/imported/items.png-47d902c7b073dc8ecbdcf38de461db0f.ctex"]
 
 [params]
 

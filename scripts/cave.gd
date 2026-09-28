@@ -36,6 +36,11 @@ func upgrade_max(id: String) -> int:
 	return Upgrades.CAVE.level.max if id == "level" else levels.level
 
 
+## How well the cave shelters against the meteor (GAME_SPEC §45): its level counts double, every stat once.
+func shelter() -> int:
+	return levels.level * 2 + levels.strength + levels.depth + levels.heat + levels.quake + levels.cold
+
+
 func can_upgrade(id: String, xp: int) -> bool:
 	return levels[id] < upgrade_max(id) and xp >= upgrade_cost(id)
 

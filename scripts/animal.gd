@@ -6,6 +6,13 @@ extends CharacterBody2D
 
 var target := Vector2.ZERO
 var anim := SpriteAnimator.new()
+var health := 1.0
+var max_health := 1.0
+var bar_time := 0.0 ## seconds the health bar stays visible after a hit
+var power := 1.0 ## multiplies its bites: elites and bosses hit harder
+var rank := 0 ## 0 normal, 1 elite, 2 boss: more XP and better loot (GAME_SPEC §150)
+var title := "" ## shown above elites and bosses
+var hostile := false ## dungeon beasts go for the dino whatever its size
 var _panic_from := Vector2.ZERO
 var _panic_left := 0.0
 
@@ -14,10 +21,34 @@ var _panic_left := 0.0
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 
 
+func _enter_tree() -> void:
+	max_health = species.health
+	health = max_health
+
+
+## Takes a bite (GAME_SPEC §150): shows the damage, flashes and dies at zero health. Returns true on death.
+func hit(amount: float, from: Node2D, crit := false) -> bool:
+	health -= amount
+	bar_time = 4.0
+	Fx.number(self, sprite.global_position + Vector2(0, -10), amount, Fx.WHITE, crit)
+	sprite.modulate = Color(1.8, 0.7, 0.6)
+	create_tween().tween_property(sprite, "modulate", Color.WHITE, 0.2)
+	if health <= 0.0:
+		queue_free()
+		return true
+	_hurt(from)
+	return false
+
+
+## A wounded animal runs for it; predators fight back instead.
+func _hurt(from: Node2D) -> void:
+	panic(from.global_position, 2.0)
+
+
 ## No two animals look quite alike: a little bigger or smaller, a slightly different colour.
 func _vary() -> void:
 	var s := randf_range(0.88, 1.14)
-	sprite.scale = Vector2(s, s)
+	sprite.scale = Vector2(s, s) * Art.SCALE
 	sprite.self_modulate = Color(randf_range(0.86, 1.1), randf_range(0.86, 1.08), randf_range(0.86, 1.08))
 
 

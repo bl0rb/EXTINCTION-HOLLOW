@@ -16,7 +16,8 @@ const LOOKS := {
 const CHANCES := {Kind.CLEAR: 5.0, Kind.RAIN: 3.0, Kind.HEAVY_RAIN: 1.0}
 const TRANSITION := 6.0 ## seconds to blend into new weather
 const BASE_TEMPERATURE := 24.0
-const VOLCANO := Vector2(2690, 250) ## warms its surroundings
+const DUNGEON_TEMPERATURE := 14.0
+const DUNGEON_LIGHT := Color(0.13, 0.12, 0.16) ## underground only what glows can be seen
 
 @export var min_duration := 70.0
 @export var max_duration := 160.0
@@ -25,6 +26,7 @@ var kind := Kind.CLEAR
 var snow_cover := 0.0 ## 0..1, grows while it snows and melts afterwards
 var quake := 0.0 ## extra wind while the ground shakes
 var look := {} ## current blend of the weather looks
+var meteor_glow := 0.0 ## 0..1, the meteor tints the night orange-red (GAME_SPEC §149.30)
 var _time_left := 0.0
 var _blend := 1.0
 var _from := {}
@@ -34,6 +36,7 @@ var _emitters := {} ## Kind -> particle emitters
 @onready var _fog: ShaderMaterial = get_node("../Fog").material
 @onready var _cover: ShaderMaterial = get_node("../SnowCover").material
 @onready var _player: Player = get_tree().get_first_node_in_group("player")
+@onready var _volcano: Node2D = get_tree().get_first_node_in_group("volcano")
 
 
 func _ready() -> void:
@@ -57,9 +60,13 @@ func speed_factor() -> float:
 
 
 func temperature_at(pos: Vector2) -> float:
+	if Biomes.at(pos) == Biomes.DUNGEON:
+		return DUNGEON_TEMPERATURE # deep underground the weather does not reach
 	# every region has its own climate: the open steppe is cold at night, the snowfields freeze
 	var t: float = BASE_TEMPERATURE + look.temp + Biomes.TEMPERATURE[Biomes.at(pos)]
-	return t + 14.0 * clampf(1.0 - pos.distance_to(VOLCANO) / 420.0, 0.0, 1.0)
+	# the volcano warms its surroundings
+	var crater := _volcano.global_position + Vector2(0, -50) if _volcano else Vector2(INF, INF)
+	return t + 14.0 * clampf(1.0 - pos.distance_to(crater) / 420.0, 0.0, 1.0)
 
 
 func _process(delta: float) -> void:
@@ -73,7 +80,8 @@ func _process(delta: float) -> void:
 		look[key] = lerpf(_from[key], to[key], _blend)
 	for key in ["light", "fog_color"]:
 		look[key] = (_from[key] as Color).lerp(to[key], _blend)
-	_night.color = look.light
+	var underground := Biomes.at(_player.global_position) == Biomes.DUNGEON
+	_night.color = DUNGEON_LIGHT if underground else (look.light as Color).lerp(Story.METEOR_LIGHT, meteor_glow)
 	_fog.set_shader_parameter("density", 0.3 * look.fog)
 	_fog.set_shader_parameter("fog_color", look.fog_color)
 	RenderingServer.global_shader_parameter_set("wind", look.wind + quake)
@@ -85,6 +93,7 @@ func _process(delta: float) -> void:
 	for list: Array in _emitters.values():
 		for emitter: CPUParticles2D in list:
 			emitter.global_position = center
+			emitter.visible = not underground
 
 
 func _pick() -> Kind:
@@ -129,7 +138,8 @@ func _emitter(texture: Texture2D, amount: int, lifetime: float, direction: Vecto
 	p.gravity = Vector2.ZERO
 	p.initial_velocity_min = speed_min
 	p.initial_velocity_max = speed_max
-	p.scale_amount_max = max_scale
+	p.scale_amount_min = Art.SCALE # HD: half-size streaks and flakes
+	p.scale_amount_max = max_scale * Art.SCALE
 	p.color = color
 	p.z_index = 50
 	if material == null:

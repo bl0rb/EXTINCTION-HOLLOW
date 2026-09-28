@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3j52uato4vkb"
-path="res://.godot/imported/river.png-ac509548476d59454fe944d067f25673.ctex"
+uid="uid://ijakhclkk24w"
+path="res://.godot/imported/lore.png-eaeca04dfdeeaf34fa2f33d4e7cab150.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/river.png"
-dest_files=["res://.godot/imported/river.png-ac509548476d59454fe944d067f25673.ctex"]
+source_file="res://assets/lore.png"
+dest_files=["res://.godot/imported/lore.png-eaeca04dfdeeaf34fa2f33d4e7cab150.ctex"]
 
 [params]
 

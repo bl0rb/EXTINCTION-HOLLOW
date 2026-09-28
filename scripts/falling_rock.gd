@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 	_time += delta
 	var k := minf(_time / FALL_TIME, 1.0)
 	rock.position.y = -8.0 - HEIGHT * (1.0 - k * k)
-	shadow.scale = Vector2.ONE * (0.3 + 0.5 * k)
+	shadow.scale = Vector2.ONE * (0.3 + 0.5 * k) * Art.SCALE
 	if k >= 1.0:
 		_land()
 

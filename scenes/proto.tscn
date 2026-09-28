@@ -15,10 +15,11 @@ script = ExtResource("1_prey")
 species = ExtResource("2_species")
 
 [node name="Shadow" type="Sprite2D" parent="."]
-scale = Vector2(1.2, 0.9)
+scale = Vector2(0.6, 0.45)
 texture = ExtResource("4_shadow")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 position = Vector2(0, -14)
 texture = ExtResource("3_sprite")
 hframes = 6

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj4dl55mwggc8"
-path="res://.godot/imported/creek.png-dce0b392c827bb9718c49dfdf14a6bdc.ctex"
+uid="uid://c1jejglfpmaxu"
+path="res://.godot/imported/dungeon_entrance.png-2ef7722b9eaa54a5c62c9fdc0581960e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/creek.png"
-dest_files=["res://.godot/imported/creek.png-dce0b392c827bb9718c49dfdf14a6bdc.ctex"]
+source_file="res://assets/dungeon_entrance.png"
+dest_files=["res://.godot/imported/dungeon_entrance.png-2ef7722b9eaa54a5c62c9fdc0581960e.ctex"]
 
 [params]
 

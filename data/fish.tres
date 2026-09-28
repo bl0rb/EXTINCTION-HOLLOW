@@ -15,3 +15,4 @@ fear_radius = 42.0
 calm_radius = 80.0
 wander_radius = 60.0
 idle_time = 1.5
+health = 4.0

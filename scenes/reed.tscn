@@ -8,7 +8,8 @@ shader = ExtResource("2_sway")
 shader_parameter/amount = 1.0
 
 [node name="Reed" type="Sprite2D"]
+scale = Vector2(0.5, 0.5)
 material = SubResource("ShaderMaterial_sway")
 texture = ExtResource("1_sprite")
-offset = Vector2(0, -15)
+offset = Vector2(0, -30)
 hframes = 3

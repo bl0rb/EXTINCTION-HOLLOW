@@ -28,9 +28,10 @@ collision_mask = 2
 script = ExtResource("1_fire")
 
 [node name="Flames" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 material = SubResource("CanvasItemMaterial_bright")
 texture = ExtResource("2_flames")
-offset = Vector2(0, -12)
+offset = Vector2(0, -24)
 hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -68,5 +69,7 @@ spread = 20.0
 gravity = Vector2(3, -2)
 initial_velocity_min = 8.0
 initial_velocity_max = 16.0
-scale_amount_max = 2.5
+scale_amount_max = 1.25
 color_ramp = SubResource("Gradient_smoke")
+scale_amount_min = 0.5
+

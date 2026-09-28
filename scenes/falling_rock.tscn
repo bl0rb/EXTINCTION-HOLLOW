@@ -8,9 +8,10 @@
 script = ExtResource("1_rock")
 
 [node name="Shadow" type="Sprite2D" parent="."]
-scale = Vector2(0.3, 0.3)
+scale = Vector2(0.15, 0.15)
 texture = ExtResource("3_shadow")
 
 [node name="Rock" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 position = Vector2(0, -188)
 texture = ExtResource("2_sprite")

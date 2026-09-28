@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/lore_site.gd" id="1_lore"]
+[ext_resource type="Texture2D" path="res://assets/lore.png" id="2_sprite"]
+[ext_resource type="Texture2D" path="res://assets/shadow.png" id="3_shadow"]
+[ext_resource type="Texture2D" path="res://world/light_radial.tres" id="4_light"]
+[ext_resource type="Script" path="res://scripts/flicker.gd" id="5_flicker"]
+
+[node name="LoreSite" type="Node2D"]
+script = ExtResource("1_lore")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+scale = Vector2(0.45, 0.3)
+texture = ExtResource("3_shadow")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+position = Vector2(0, -12)
+texture = ExtResource("2_sprite")
+hframes = 3
+
+[node name="Glow" type="PointLight2D" parent="."]
+position = Vector2(0, -8)
+color = Color(0.75, 0.85, 1, 1)
+energy = 0.5
+texture = ExtResource("4_light")
+texture_scale = 0.8
+script = ExtResource("5_flicker")

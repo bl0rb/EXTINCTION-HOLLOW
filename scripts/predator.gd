@@ -13,6 +13,7 @@ var state := State.IDLE
 var timer := 0.0
 var victim: Node2D
 var _cooldown := 0.0
+var _provoked := 0.0 ## seconds it keeps going for the player who bit it, whatever their size
 
 @onready var eyes: Sprite2D = $Sprite2D/Eyes
 @onready var cave: Cave = get_tree().get_first_node_in_group("cave")
@@ -36,7 +37,7 @@ func _can_hunt(animal) -> bool:
 		return false
 	if animal == player:
 		# the cave is a safe place
-		return not player.dead and player.get_size() < get_size() and not cave.overlaps_body(player)
+		return not player.dead and (player.get_size() < get_size() or _provoked > 0.0 or hostile) and not cave.overlaps_body(player)
 	return animal is Prey and not animal is Fish and animal.get_size() < get_size()
 
 
@@ -53,8 +54,16 @@ func _find_victim() -> Node2D:
 	return best
 
 
+func _hurt(_from: Node2D) -> void:
+	_provoked = 6.0
+	victim = player
+	state = State.CHASE
+	eyes.modulate = EYES_HUNTING
+
+
 func _physics_process(delta: float) -> void:
 	_cooldown -= delta
+	_provoked -= delta
 	for fire: Node2D in get_tree().get_nodes_in_group("fire"):
 		if fire.global_position.distance_to(global_position) < FIRE_FEAR:
 			panic(fire.global_position, 1.5)
@@ -101,7 +110,7 @@ func _physics_process(delta: float) -> void:
 func _bite() -> void:
 	anim.play("attack", 0.22)
 	if victim == player:
-		player.take_damage(species.damage)
+		player.take_damage(species.damage * power)
 	else:
 		Fx.burst(Fx.BLOOD, get_parent(), victim.global_position + Vector2(0, -4))
 		victim.queue_free()

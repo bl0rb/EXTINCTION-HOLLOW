@@ -28,7 +28,7 @@ func _process(delta: float) -> void:
 	global_position = start.lerp(target, k) # drawn in order by where it is above the ground
 	bomb.position.y = -start_height * (1.0 - k) - arc * 4.0 * k * (1.0 - k)
 	shadow.position = target - global_position
-	shadow.scale = Vector2.ONE * (0.2 + 0.6 * k)
+	shadow.scale = Vector2.ONE * (0.2 + 0.6 * k) * Art.SCALE
 	if k >= 1.0:
 		_land()
 

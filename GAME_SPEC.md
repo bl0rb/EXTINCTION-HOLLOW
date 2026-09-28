@@ -4772,3 +4772,75 @@ Art später
 ### Neues Hauptziel
 
 > **Extinction Hollow soll aussehen wie ein hochwertiges atmosphärisches Pixel-Art-Indiespiel und nicht wie ein einfacher Retro-Prototyp.**
+
+---
+
+# 150. Plan-Update – Dino-ARPG
+
+Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diablo, Torchlight).
+
+### Beibehalten
+
+- Spieler-Dino, Welt, Biome, Wetter, Katastrophen, Meteor-Ziel
+- Höhle als sicherer Ort (wie eine Stadt): XP abgeben, speichern, Höhle und Größe aufwerten
+- Hunger, Temperatur, getragene XP gehen beim Tod verloren
+- Click-to-Move, 3/4-Top-Down-Pixel-Art
+
+### Neu
+
+- **Kampf mit Lebenspunkten:** Jede Tierart hat Lebenspunkte. Bisse verursachen Schaden, es gibt Schadenszahlen, Lebensbalken und kritische Treffer. Kleine Beute stirbt mit einem Biss, große Tiere brauchen viele. Der Dino darf jedes Tier angreifen; gebissene Raubtiere wehren sich unabhängig von der Größe.
+- **Skills auf den Tasten 1–4:** Schwanzschlag (Flächenschaden), Brüllen (verscheucht alles in der Nähe), Ansturm (rammt Richtung Mauszeiger), Raserei (schnelle, heilende Bisse). Skills kosten Ausdauer und haben einen Cooldown.
+- **Level und Skillbaum:** Jede XP zählt auch für das Charakter-Level (wird nie verloren). Jedes Level bringt +5 Leben und einen Talentpunkt. Drei Stufen im Skillbaum (ab Level 1, 3 und 6) mit Skills und passiven Talenten (Schaden, Rüstung, Crit, Ausdauer). Taste K.
+- **Loot und Ausrüstung:** Getötete Tiere lassen Trophäen fallen – Zähne, Klauen, Haut, Bernstein – in vier Seltenheiten (Common, Magic, Rare, Legendary) mit zufälligen Werten. Je größer das Tier, desto öfter und besser. Aufheben durch Drüberlaufen, Inventar mit 4 Slots und 12 Taschenplätzen (Taste I). Unnötige Items lassen sich gegen XP zerlegen.
+
+### Milestone 8b – ARPG-Kern
+
+| ID | Bereich | Task | Status |
+|---|---|---|---|
+| ARPG001 | Kampf | Lebenspunkte für alle Tierarten | Erledigt |
+| ARPG002 | Kampf | Schadenszahlen, Lebensbalken, kritische Treffer | Erledigt |
+| ARPG003 | Kampf | Raubtiere wehren sich, verwundete Beute flieht | Erledigt |
+| ARPG004 | Skills | vier Skills auf Tasten 1–4 mit Cooldown und Ausdauerkosten | Erledigt |
+| ARPG005 | Progression | Charakter-Level aus XP, Talentpunkte | Erledigt |
+| ARPG006 | Progression | Skillbaum mit drei Stufen | Erledigt |
+| ARPG007 | Loot | Item-Drops mit Seltenheiten und zufälligen Werten | Erledigt |
+| ARPG008 | Loot | Inventar, Ausrüstung, Zerlegen | Erledigt |
+| ARPG009 | Speichern | Level, Talente und Items speichern | Erledigt |
+| ARPG010 | Gegner | Elite-Tiere und Bosse pro Biom | Erledigt |
+| ARPG011 | Welt | zufällig erzeugte Höhlen als Dungeons | Erledigt |
+| ARPG012 | Karte | Automap mit Nebel: Minimap und große Karte (Taste M) | Erledigt |
+| ARPG013 | Welt | zufällige Oberwelt bei jedem neuen Zeitalter | Erledigt |
+
+### Zufällige Welt
+
+- Die Oberwelt wird beim Start gebaut. Das erste Zeitalter spielt in der klassischen Welt, jedes weitere würfelt eine neue: Biom-Grenzen, Verlauf des Flusses und seine Furten, Klippe mit Höhle, Rampe, Teich mit Wasserfall und Bach, Wege, Vulkan, Skelett, Eisflächen und alle Pflanzen, Felsen, Dungeon-Eingänge und Lore-Orte.
+- Der Boden wird von einem Shader aus diesen Werten gemalt (gleiche Paletten, Dithering und Details wie die übrige Pixel-Art), Kollisionen und Navigation entstehen passend dazu.
+- Die Automap zeichnet ihr Bild aus derselben Welt; der Welt-Seed wird gespeichert, damit ein laufendes Zeitalter gleich bleibt.
+
+### Dungeons
+
+- Vier Eingänge (Dschungel, Sumpf, Vulkan, Schnee) mit eigenem Aussehen und Schwierigkeitsstufe.
+- Jeder Besuch erzeugt ein neues Höhlensystem: Räume, verbundene Gänge mit Schleifen, Licht nur von leuchtenden Pilzen und dem Dino selbst.
+- In jedem Raum Tiere, die den Dino unabhängig von der Größe angreifen; manchmal ein Elite-Tier (mehr Leben, härtere Bisse, besserer Loot).
+- Im entferntesten Raum wartet der Boss (Cave Tyrant) mit großer Lebensleiste; besiegt öffnet er einen zweiten Ausgang und lässt mindestens drei seltene Items fallen.
+- Ein Trophäenhort, eine eigene Dungeon-Karte, die sich beim Erkunden aufdeckt, und die letzte Lore-Stelle („star“).
+- Wer unten stirbt, erwacht in der Höhle; was unten liegen bleibt, ist verloren.
+
+### Story – der Meteor-Bogen
+
+- Ein Zeitalter dauert 50 Minuten in fünf Phasen (Frühe Welt, Unruhe, Feuer, Vorzeichen, Letzte Tage), jede mit Kapiteltext; Katastrophen werden häufiger.
+- Der Meteor wächst am Himmel vom Lichtpunkt zum glühenden Körper mit Schweif und färbt die Nacht rot.
+- In den letzten drei Minuten fallen Meteoriten, Tiere fliehen, ein Countdown läuft.
+- Einschlag: Lichtblitz, Stille, Staub. Nur in einer Höhle mit genug Schutz (Höhlenlevel doppelt, jeder Wert einfach, mindestens 12) überlebt der Dino.
+- Danach beginnt ein neues Zeitalter: Level, Talente und Items bleiben; beim Aussterben gehen Höhle und gesparte XP verloren.
+- Acht Lore-Stellen (Fossilien, Kratzspuren, Steinkreise) erzählen die Vorgeschichte.
+
+---
+
+# 151. Auflösung – HD-Pixel-Art (entscheidet UPDATE004, §149.38)
+
+- Zielausgabe **2560 × 1440** (Vollbild, F11 wechselt ins Fenster); ganzzahlige Skalierung, auf 4K entsprechend 6-fach.
+- Die Spielwelt und das UI-Layout bleiben in 640 × 360 Einheiten (Kamera-Ausschnitt, Positionen, Geschwindigkeiten unverändert).
+- **Alle Sprites haben die doppelte Pixeldichte**: sie werden mit doppelter Auflösung erzeugt (glattere Konturen, feinere Schattierung, feineres Dithering, feinere Details) und mit halber Größe angezeigt. Auf 2560 × 1440 ist ein Texel damit 2 × 2 Bildschirmpixel statt 4 × 4.
+- Boden, Dungeons, Nebel und Schneedecke werden ebenfalls mit doppelter Dichte gemalt; Partikel (Regen, Blätter, Schnee, Asche, Glut) sind feiner.
+- Die Pixel-Schrift des UI bleibt bewusst gröber.
