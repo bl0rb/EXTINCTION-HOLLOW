@@ -30,6 +30,8 @@ func _enter_tree() -> void:
 func hit(amount: float, from: Node2D, crit := false) -> bool:
 	health -= amount
 	bar_time = 4.0
+	if not self is Fish: # fish stay silent
+		Sound.play(get_parent(), "cry", global_position, -8.0, 1.5 - 0.18 * species.size) # bigger animals cry lower
 	Fx.number(self, sprite.global_position + Vector2(0, -10), amount, Fx.WHITE, crit)
 	sprite.modulate = Color(1.8, 0.7, 0.6)
 	create_tween().tween_property(sprite, "modulate", Color.WHITE, 0.2)

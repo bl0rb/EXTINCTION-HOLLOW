@@ -38,6 +38,7 @@ func _land() -> void:
 	fire.position = target
 	get_parent().add_child(fire)
 	Fx.burst(DUST, get_parent(), target)
+	Sound.play(get_parent(), "boom", target, -4.0)
 	var player := get_tree().get_first_node_in_group("player") as Player
 	var cave := get_tree().get_first_node_in_group("cave") as Cave
 	if player.global_position.distance_to(target) < hit_radius and not cave.overlaps_body(player):

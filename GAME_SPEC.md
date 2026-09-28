@@ -1261,6 +1261,8 @@ Mögliche Richtung:
 
 # 54. Sound
 
+> **Umgesetzt in §153:** Dschungel, Regen, Dinosaurier, Angriffe, Vulkan, Erdbeben und Meteor (T094–T099).
+
 Geplante Soundkategorien:
 
 * Dschungel,
@@ -1446,124 +1448,126 @@ Zunächst nicht notwendig:
 
 # 62. Entwicklungs-Tasks
 
-| ID   | Bereich       | Task                                  | Priorität | Abhängigkeit | Status |
-| ---- | ------------- | ------------------------------------- | --------- | ------------ | ------ |
-| T001 | Projekt       | Grundprojekt erstellen                | Hoch      | –            | Offen  |
-| T002 | Player        | Spielerobjekt erstellen               | Hoch      | T001         | Offen  |
-| T003 | Input         | Mausklick erkennen                    | Hoch      | T002         | Offen  |
-| T004 | Movement      | Click-to-Move implementieren          | Hoch      | T003         | Offen  |
-| T005 | Movement      | Neue Klickposition ersetzt altes Ziel | Hoch      | T004         | Offen  |
-| T006 | Movement      | Spieler stoppt am Ziel                | Hoch      | T004         | Offen  |
-| T007 | Movement      | Weiche Drehung zur Bewegungsrichtung  | Mittel    | T004         | Offen  |
-| T008 | Kamera        | Kamera folgt Spieler                  | Hoch      | T002         | Offen  |
-| T009 | Kamera        | Weiches Kamerafolgen                  | Mittel    | T008         | Offen  |
-| T010 | Kamera        | Maus-Zoom                             | Niedrig   | T008         | Offen  |
-| T011 | Welt          | Kleine Testmap erstellen              | Hoch      | T001         | Offen  |
-| T012 | Welt          | Kollisionsbereiche                    | Hoch      | T011         | Offen  |
-| T013 | Beute         | Kleines Beutetier erstellen           | Hoch      | T011         | Offen  |
-| T014 | KI            | Wander-Verhalten                      | Hoch      | T013         | Offen  |
-| T015 | KI            | Flucht vor Spieler                    | Hoch      | T014         | Offen  |
-| T016 | Interaktion   | Beute per Klick auswählen             | Hoch      | T013         | Offen  |
-| T017 | Jagd          | Beute automatisch verfolgen           | Hoch      | T016         | Offen  |
-| T018 | Fressen       | Beute fressen                         | Hoch      | T017         | Offen  |
-| T019 | XP            | XP-Wert pro Tier                      | Hoch      | T018         | Offen  |
-| T020 | XP            | Carried XP implementieren             | Hoch      | T019         | Offen  |
-| T021 | Höhle         | Höhlenobjekt erstellen                | Hoch      | T011         | Offen  |
-| T022 | Höhle         | Höhleneingang erkennen                | Hoch      | T021         | Offen  |
-| T023 | Höhle         | Höhle per Klick ansteuern             | Mittel    | T021         | Offen  |
-| T024 | XP            | Carried XP in Banked XP umwandeln     | Hoch      | T022, T020   | Offen  |
-| T025 | Save          | Speichern in Höhle                    | Mittel    | T024         | Offen  |
-| T026 | Gegner        | Großen Raubdino erstellen             | Hoch      | T011         | Offen  |
-| T027 | KI            | Raubdino erkennt Spieler              | Hoch      | T026         | Offen  |
-| T028 | KI            | Raubdino verfolgt Spieler             | Hoch      | T027         | Offen  |
-| T029 | Kampf         | Raubdino verursacht Schaden           | Hoch      | T028         | Offen  |
-| T030 | Player        | Spielertod                            | Hoch      | T029         | Offen  |
-| T031 | XP            | Carried XP bei Tod verlieren          | Hoch      | T030         | Offen  |
-| T032 | Nahrungskette | Größenklassen erstellen               | Hoch      | T013, T026   | Offen  |
-| T033 | Nahrungskette | Essbarkeit nach Größe prüfen          | Hoch      | T032         | Offen  |
-| T034 | KI            | NPC jagt NPC                          | Mittel    | T032         | Offen  |
-| T035 | KI            | Flee-State für NPCs                   | Mittel    | T034         | Offen  |
-| T036 | Wasser        | Wassergebiet erstellen                | Mittel    | T011         | Offen  |
-| T037 | Fisch         | Fisch-NPC erstellen                   | Mittel    | T036         | Offen  |
-| T038 | Fisch         | Fischbewegung                         | Mittel    | T037         | Offen  |
-| T039 | Fisch         | Fisch flieht vor Spieler              | Mittel    | T038         | Offen  |
-| T040 | Fisch         | Fisch fangen und fressen              | Mittel    | T039         | Offen  |
-| T041 | Player        | Hunger-System                         | Mittel    | T018         | Offen  |
-| T042 | Player        | Stamina-System                        | Mittel    | T004         | Offen  |
-| T043 | Player        | Sprint-System                         | Niedrig   | T042         | Offen  |
-| T044 | Upgrades      | Upgrade-System Grundstruktur          | Hoch      | T024         | Offen  |
-| T045 | Upgrades      | Health Upgrade                        | Mittel    | T044         | Offen  |
-| T046 | Upgrades      | Speed Upgrade                         | Mittel    | T044         | Offen  |
-| T047 | Upgrades      | Bite Upgrade                          | Mittel    | T044         | Offen  |
-| T048 | Upgrades      | Size Upgrade                          | Hoch      | T044, T032   | Offen  |
-| T049 | Höhle         | Cave-Level-System                     | Hoch      | T024         | Offen  |
-| T050 | Höhle         | Cave Strength                         | Hoch      | T049         | Offen  |
-| T051 | Höhle         | Cave Depth                            | Mittel    | T049         | Offen  |
-| T052 | Höhle         | Heat Resistance                       | Mittel    | T049         | Offen  |
-| T053 | Höhle         | Earthquake Resistance                 | Mittel    | T049         | Offen  |
-| T054 | Höhle         | Cold Resistance                       | Niedrig   | T049         | Offen  |
-| T055 | UI            | Health-Anzeige                        | Hoch      | T002         | Offen  |
-| T056 | UI            | Stamina-Anzeige                       | Mittel    | T042         | Offen  |
-| T057 | UI            | Hunger-Anzeige                        | Mittel    | T041         | Offen  |
-| T058 | UI            | Carried-XP-Anzeige                    | Hoch      | T020         | Offen  |
-| T059 | UI            | Banked-XP-Anzeige                     | Hoch      | T024         | Offen  |
-| T060 | UI            | Cave-Level-Anzeige                    | Mittel    | T049         | Offen  |
-| T061 | Wetter        | Weather-System Grundstruktur          | Hoch      | T011         | Offen  |
-| T062 | Wetter        | Clear State                           | Mittel    | T061         | Offen  |
-| T063 | Wetter        | Regen                                 | Hoch      | T061         | Offen  |
-| T064 | Wetter        | Starkregen                            | Niedrig   | T063         | Offen  |
-| T065 | Wetter        | Schnee                                | Mittel    | T061         | Offen  |
-| T066 | Wetter        | Asche                                 | Mittel    | T061         | Offen  |
-| T067 | Kälte         | Temperatur-System                     | Niedrig   | T065         | Offen  |
-| T068 | Katastrophe   | Disaster-System Grundstruktur         | Hoch      | T011         | Offen  |
-| T069 | Erdbeben      | Erdbeben-Event                        | Hoch      | T068         | Offen  |
-| T070 | Erdbeben      | Kamera-Shake                          | Mittel    | T069         | Offen  |
-| T071 | Erdbeben      | Schaden durch Erdbeben                | Mittel    | T069         | Offen  |
-| T072 | Erdbeben      | NPC-Flucht                            | Mittel    | T069, T035   | Offen  |
-| T073 | Vulkan        | Vulkanregion                          | Mittel    | T011         | Offen  |
-| T074 | Vulkan        | Vulkanwarnung                         | Mittel    | T073         | Offen  |
-| T075 | Vulkan        | Eruption                              | Mittel    | T074         | Offen  |
-| T076 | Feuer         | Feuerzonen                            | Mittel    | T075         | Offen  |
-| T077 | Feuer         | Feuerschaden                          | Mittel    | T076         | Offen  |
-| T078 | Feuer         | NPC-Reaktion auf Feuer                | Niedrig   | T076, T035   | Offen  |
-| T079 | Biome         | Dschungel-Biom                        | Hoch      | T011         | Offen  |
-| T080 | Biome         | Fluss-Biom                            | Mittel    | T036         | Offen  |
-| T081 | Biome         | Sumpf-Biom                            | Niedrig   | T036         | Offen  |
-| T082 | Biome         | Ebene                                 | Niedrig   | T011         | Offen  |
-| T083 | Biome         | Vulkan-Biom                           | Mittel    | T073         | Offen  |
-| T084 | Biome         | Schnee-Biom                           | Mittel    | T065         | Offen  |
-| T085 | Progression   | Weltphasen-System                     | Hoch      | T061, T068   | Offen  |
-| T086 | Progression   | Gefahren mit Zeit erhöhen             | Mittel    | T085         | Offen  |
-| T087 | Meteor        | Meteor-Vorzeichen                     | Hoch      | T085         | Offen  |
-| T088 | Meteor        | Meteor sichtbar machen                | Mittel    | T087         | Offen  |
-| T089 | Meteor        | Finale Warnphase                      | Hoch      | T087         | Offen  |
-| T090 | Meteor        | Meteoreinschlag                       | Hoch      | T089         | Offen  |
-| T091 | Meteor        | Höhlenprüfung                         | Hoch      | T090, T049   | Offen  |
-| T092 | Meteor        | Erfolgsende                           | Hoch      | T091         | Offen  |
-| T093 | Meteor        | Game-Over-Ende                        | Hoch      | T091         | Offen  |
-| T094 | Audio         | Dschungel-Ambiente                    | Niedrig   | T079         | Offen  |
-| T095 | Audio         | Regen-Sound                           | Niedrig   | T063         | Offen  |
-| T096 | Audio         | Tier-Sounds                           | Niedrig   | T013         | Offen  |
-| T097 | Audio         | Erdbeben-Sound                        | Niedrig   | T069         | Offen  |
-| T098 | Audio         | Vulkan-Sound                          | Niedrig   | T075         | Offen  |
-| T099 | Audio         | Meteor-Sound                          | Niedrig   | T090         | Offen  |
-| T100 | Polish        | Cursor-Zustände                       | Niedrig   | T016         | Offen  |
-| T101 | Polish        | XP-Partikel bei Höhle                 | Niedrig   | T024         | Offen  |
-| T102 | Polish        | Höhlenvisual verändert sich           | Mittel    | T049         | Offen  |
-| T103 | Polish        | Dino wächst sichtbar                  | Mittel    | T048         | Offen  |
-| T104 | Performance   | Spawn-Limits                          | Mittel    | T034         | Offen  |
-| T105 | Performance   | NPC-Despawn                           | Mittel    | T104         | Offen  |
-| T106 | Performance   | vereinfachte Fern-KI                  | Niedrig   | T104         | Offen  |
-| T107 | Balancing     | XP-Werte balancieren                  | Mittel    | T044         | Offen  |
-| T108 | Balancing     | Tiergeschwindigkeiten balancieren     | Mittel    | T034         | Offen  |
-| T109 | Balancing     | Höhlenkosten balancieren              | Mittel    | T049         | Offen  |
-| T110 | Balancing     | Meteor-Anforderungen balancieren      | Mittel    | T091         | Offen  |
+| ID   | Bereich       | Task                                  | Priorität | Abhängigkeit | Status   |
+| ---- | ------------- | ------------------------------------- | --------- | ------------ | -------- |
+| T001 | Projekt       | Grundprojekt erstellen                | Hoch      | –            | Erledigt |
+| T002 | Player        | Spielerobjekt erstellen               | Hoch      | T001         | Erledigt |
+| T003 | Input         | Mausklick erkennen                    | Hoch      | T002         | Erledigt |
+| T004 | Movement      | Click-to-Move implementieren          | Hoch      | T003         | Erledigt |
+| T005 | Movement      | Neue Klickposition ersetzt altes Ziel | Hoch      | T004         | Erledigt |
+| T006 | Movement      | Spieler stoppt am Ziel                | Hoch      | T004         | Erledigt |
+| T007 | Movement      | Weiche Drehung zur Bewegungsrichtung  | Mittel    | T004         | Erledigt |
+| T008 | Kamera        | Kamera folgt Spieler                  | Hoch      | T002         | Erledigt |
+| T009 | Kamera        | Weiches Kamerafolgen                  | Mittel    | T008         | Erledigt |
+| T010 | Kamera        | Maus-Zoom                             | Niedrig   | T008         | Erledigt |
+| T011 | Welt          | Kleine Testmap erstellen              | Hoch      | T001         | Erledigt |
+| T012 | Welt          | Kollisionsbereiche                    | Hoch      | T011         | Erledigt |
+| T013 | Beute         | Kleines Beutetier erstellen           | Hoch      | T011         | Erledigt |
+| T014 | KI            | Wander-Verhalten                      | Hoch      | T013         | Erledigt |
+| T015 | KI            | Flucht vor Spieler                    | Hoch      | T014         | Erledigt |
+| T016 | Interaktion   | Beute per Klick auswählen             | Hoch      | T013         | Erledigt |
+| T017 | Jagd          | Beute automatisch verfolgen           | Hoch      | T016         | Erledigt |
+| T018 | Fressen       | Beute fressen                         | Hoch      | T017         | Erledigt |
+| T019 | XP            | XP-Wert pro Tier                      | Hoch      | T018         | Erledigt |
+| T020 | XP            | Carried XP implementieren             | Hoch      | T019         | Erledigt |
+| T021 | Höhle         | Höhlenobjekt erstellen                | Hoch      | T011         | Erledigt |
+| T022 | Höhle         | Höhleneingang erkennen                | Hoch      | T021         | Erledigt |
+| T023 | Höhle         | Höhle per Klick ansteuern             | Mittel    | T021         | Erledigt |
+| T024 | XP            | Carried XP in Banked XP umwandeln     | Hoch      | T022, T020   | Erledigt |
+| T025 | Save          | Speichern in Höhle                    | Mittel    | T024         | Erledigt |
+| T026 | Gegner        | Großen Raubdino erstellen             | Hoch      | T011         | Erledigt |
+| T027 | KI            | Raubdino erkennt Spieler              | Hoch      | T026         | Erledigt |
+| T028 | KI            | Raubdino verfolgt Spieler             | Hoch      | T027         | Erledigt |
+| T029 | Kampf         | Raubdino verursacht Schaden           | Hoch      | T028         | Erledigt |
+| T030 | Player        | Spielertod                            | Hoch      | T029         | Erledigt |
+| T031 | XP            | Carried XP bei Tod verlieren          | Hoch      | T030         | Erledigt |
+| T032 | Nahrungskette | Größenklassen erstellen               | Hoch      | T013, T026   | Erledigt |
+| T033 | Nahrungskette | Essbarkeit nach Größe prüfen          | Hoch      | T032         | Erledigt |
+| T034 | KI            | NPC jagt NPC                          | Mittel    | T032         | Erledigt |
+| T035 | KI            | Flee-State für NPCs                   | Mittel    | T034         | Erledigt |
+| T036 | Wasser        | Wassergebiet erstellen                | Mittel    | T011         | Erledigt |
+| T037 | Fisch         | Fisch-NPC erstellen                   | Mittel    | T036         | Erledigt |
+| T038 | Fisch         | Fischbewegung                         | Mittel    | T037         | Erledigt |
+| T039 | Fisch         | Fisch flieht vor Spieler              | Mittel    | T038         | Erledigt |
+| T040 | Fisch         | Fisch fangen und fressen              | Mittel    | T039         | Erledigt |
+| T041 | Player        | Hunger-System                         | Mittel    | T018         | Erledigt |
+| T042 | Player        | Stamina-System                        | Mittel    | T004         | Erledigt |
+| T043 | Player        | Sprint-System                         | Niedrig   | T042         | Erledigt |
+| T044 | Upgrades      | Upgrade-System Grundstruktur          | Hoch      | T024         | Erledigt |
+| T045 | Upgrades      | Health Upgrade                        | Mittel    | T044         | Erledigt |
+| T046 | Upgrades      | Speed Upgrade                         | Mittel    | T044         | Erledigt |
+| T047 | Upgrades      | Bite Upgrade                          | Mittel    | T044         | Erledigt |
+| T048 | Upgrades      | Size Upgrade                          | Hoch      | T044, T032   | Erledigt |
+| T049 | Höhle         | Cave-Level-System                     | Hoch      | T024         | Erledigt |
+| T050 | Höhle         | Cave Strength                         | Hoch      | T049         | Erledigt |
+| T051 | Höhle         | Cave Depth                            | Mittel    | T049         | Erledigt |
+| T052 | Höhle         | Heat Resistance                       | Mittel    | T049         | Erledigt |
+| T053 | Höhle         | Earthquake Resistance                 | Mittel    | T049         | Erledigt |
+| T054 | Höhle         | Cold Resistance                       | Niedrig   | T049         | Erledigt |
+| T055 | UI            | Health-Anzeige                        | Hoch      | T002         | Erledigt |
+| T056 | UI            | Stamina-Anzeige                       | Mittel    | T042         | Erledigt |
+| T057 | UI            | Hunger-Anzeige                        | Mittel    | T041         | Erledigt |
+| T058 | UI            | Carried-XP-Anzeige                    | Hoch      | T020         | Erledigt |
+| T059 | UI            | Banked-XP-Anzeige                     | Hoch      | T024         | Erledigt |
+| T060 | UI            | Cave-Level-Anzeige                    | Mittel    | T049         | Erledigt |
+| T061 | Wetter        | Weather-System Grundstruktur          | Hoch      | T011         | Erledigt |
+| T062 | Wetter        | Clear State                           | Mittel    | T061         | Erledigt |
+| T063 | Wetter        | Regen                                 | Hoch      | T061         | Erledigt |
+| T064 | Wetter        | Starkregen                            | Niedrig   | T063         | Erledigt |
+| T065 | Wetter        | Schnee                                | Mittel    | T061         | Erledigt |
+| T066 | Wetter        | Asche                                 | Mittel    | T061         | Erledigt |
+| T067 | Kälte         | Temperatur-System                     | Niedrig   | T065         | Erledigt |
+| T068 | Katastrophe   | Disaster-System Grundstruktur         | Hoch      | T011         | Erledigt |
+| T069 | Erdbeben      | Erdbeben-Event                        | Hoch      | T068         | Erledigt |
+| T070 | Erdbeben      | Kamera-Shake                          | Mittel    | T069         | Erledigt |
+| T071 | Erdbeben      | Schaden durch Erdbeben                | Mittel    | T069         | Erledigt |
+| T072 | Erdbeben      | NPC-Flucht                            | Mittel    | T069, T035   | Erledigt |
+| T073 | Vulkan        | Vulkanregion                          | Mittel    | T011         | Erledigt |
+| T074 | Vulkan        | Vulkanwarnung                         | Mittel    | T073         | Erledigt |
+| T075 | Vulkan        | Eruption                              | Mittel    | T074         | Erledigt |
+| T076 | Feuer         | Feuerzonen                            | Mittel    | T075         | Erledigt |
+| T077 | Feuer         | Feuerschaden                          | Mittel    | T076         | Erledigt |
+| T078 | Feuer         | NPC-Reaktion auf Feuer                | Niedrig   | T076, T035   | Erledigt |
+| T079 | Biome         | Dschungel-Biom                        | Hoch      | T011         | Erledigt |
+| T080 | Biome         | Fluss-Biom                            | Mittel    | T036         | Erledigt |
+| T081 | Biome         | Sumpf-Biom                            | Niedrig   | T036         | Erledigt |
+| T082 | Biome         | Ebene                                 | Niedrig   | T011         | Erledigt |
+| T083 | Biome         | Vulkan-Biom                           | Mittel    | T073         | Erledigt |
+| T084 | Biome         | Schnee-Biom                           | Mittel    | T065         | Erledigt |
+| T085 | Progression   | Weltphasen-System                     | Hoch      | T061, T068   | Erledigt |
+| T086 | Progression   | Gefahren mit Zeit erhöhen             | Mittel    | T085         | Erledigt |
+| T087 | Meteor        | Meteor-Vorzeichen                     | Hoch      | T085         | Erledigt |
+| T088 | Meteor        | Meteor sichtbar machen                | Mittel    | T087         | Erledigt |
+| T089 | Meteor        | Finale Warnphase                      | Hoch      | T087         | Erledigt |
+| T090 | Meteor        | Meteoreinschlag                       | Hoch      | T089         | Erledigt |
+| T091 | Meteor        | Höhlenprüfung                         | Hoch      | T090, T049   | Erledigt |
+| T092 | Meteor        | Erfolgsende                           | Hoch      | T091         | Erledigt |
+| T093 | Meteor        | Game-Over-Ende                        | Hoch      | T091         | Erledigt |
+| T094 | Audio         | Dschungel-Ambiente                    | Niedrig   | T079         | Erledigt |
+| T095 | Audio         | Regen-Sound                           | Niedrig   | T063         | Erledigt |
+| T096 | Audio         | Tier-Sounds                           | Niedrig   | T013         | Erledigt |
+| T097 | Audio         | Erdbeben-Sound                        | Niedrig   | T069         | Erledigt |
+| T098 | Audio         | Vulkan-Sound                          | Niedrig   | T075         | Erledigt |
+| T099 | Audio         | Meteor-Sound                          | Niedrig   | T090         | Erledigt |
+| T100 | Polish        | Cursor-Zustände                       | Niedrig   | T016         | Offen    |
+| T101 | Polish        | XP-Partikel bei Höhle                 | Niedrig   | T024         | Offen    |
+| T102 | Polish        | Höhlenvisual verändert sich           | Mittel    | T049         | Erledigt |
+| T103 | Polish        | Dino wächst sichtbar                  | Mittel    | T048         | Erledigt |
+| T104 | Performance   | Spawn-Limits                          | Mittel    | T034         | Erledigt |
+| T105 | Performance   | NPC-Despawn                           | Mittel    | T104         | Offen    |
+| T106 | Performance   | vereinfachte Fern-KI                  | Niedrig   | T104         | Offen    |
+| T107 | Balancing     | XP-Werte balancieren                  | Mittel    | T044         | Offen    |
+| T108 | Balancing     | Tiergeschwindigkeiten balancieren     | Mittel    | T034         | Offen    |
+| T109 | Balancing     | Höhlenkosten balancieren              | Mittel    | T049         | Offen    |
+| T110 | Balancing     | Meteor-Anforderungen balancieren      | Mittel    | T091         | Offen    |
 
 ---
 
 # 63. Empfohlene Meilensteine
 
 > **Aktualisiert durch §149.40 und §149.42:** Vor Milestone 1 wird **Milestone 0 – Visual Identity** eingefügt. Neue Reihenfolge: Grundbewegung → Visual Vertical Slice → Gameplay Core → weitere Art-Produktion → Weltaufbau.
+>
+> **Stand:** Milestone 0 bis 9 und 8b sind erledigt, Milestone 10 ist in Arbeit (siehe §152).
 
 ## Milestone 1 – Movement Prototype
 
@@ -3538,51 +3542,51 @@ Alle übrigen Grafiken können zunächst Placeholder sein.
 
 | ID | Bereich | Task | Priorität | Abhängigkeit | Status |
 |---|---|---|---|---|---|
-| ART001 | Style | Pixel-Art-Styleguide definieren | Hoch | – | Offen |
-| ART002 | Tech | Basisauflösung festlegen | Hoch | ART001 | Offen |
-| ART003 | Tech | Nearest-Neighbor aktivieren | Hoch | ART002 | Offen |
-| ART004 | Tech | Pixel-Snapping testen | Hoch | ART002 | Offen |
-| ART005 | Tiles | 32x32 Tile-Standard festlegen | Hoch | ART001 | Offen |
-| ART006 | Player | Placeholder-Dino erstellen | Hoch | ART001 | Offen |
-| ART007 | Player | finalen Player-Sprite entwerfen | Hoch | ART006 | Offen |
-| ART008 | Player | Idle-Animation | Hoch | ART007 | Offen |
-| ART009 | Player | Walk-Animation | Hoch | ART007 | Offen |
-| ART010 | Player | Run-Animation | Mittel | ART009 | Offen |
-| ART011 | Player | Eat-Animation | Mittel | ART007 | Offen |
-| ART012 | Player | Hurt-Animation | Mittel | ART007 | Offen |
-| ART013 | Player | Death-Animation | Mittel | ART007 | Offen |
-| ART014 | Animals | kleines Beutetier | Hoch | ART001 | Offen |
-| ART015 | Animals | Beutetier-Animationen | Hoch | ART014 | Offen |
-| ART016 | Animals | großer Raubdino | Hoch | ART001 | Offen |
-| ART017 | Animals | Raubdino-Animationen | Hoch | ART016 | Offen |
-| ART018 | Fish | Fisch-Sprite | Mittel | ART001 | Offen |
-| ART019 | Fish | Fisch-Animation | Mittel | ART018 | Offen |
-| ART020 | Cave | Höhleneingang Level 1 | Hoch | ART001 | Offen |
-| ART021 | Cave | Höhlen-Level-Varianten | Mittel | ART020 | Offen |
-| ART022 | Jungle | Dschungel-Bodentiles | Hoch | ART005 | Offen |
-| ART023 | Jungle | Pflanzen-Set | Hoch | ART022 | Offen |
-| ART024 | Jungle | Baum-Set | Mittel | ART022 | Offen |
-| ART025 | Water | Wasser-Tiles | Hoch | ART005 | Offen |
-| ART026 | Water | Wasseranimation | Mittel | ART025 | Offen |
-| ART027 | Rocks | Felsen-Set | Mittel | ART005 | Offen |
-| ART028 | Weather | Regen-Effekt | Hoch | ART001 | Offen |
-| ART029 | Weather | Schnee-Effekt | Mittel | ART001 | Offen |
-| ART030 | Weather | Asche-Effekt | Mittel | ART001 | Offen |
-| ART031 | Volcano | Lava-Tiles | Mittel | ART005 | Offen |
-| ART032 | Volcano | Feueranimation | Mittel | ART001 | Offen |
-| ART033 | Volcano | Rauch und Funken | Niedrig | ART032 | Offen |
-| ART034 | Disaster | Erdbeben-Partikel | Mittel | ART001 | Offen |
-| ART035 | Meteor | Meteor-Frühphase | Mittel | ART001 | Offen |
-| ART036 | Meteor | Meteor-Endphase | Hoch | ART035 | Offen |
-| ART037 | Meteor | Einschlagssequenz | Hoch | ART036 | Offen |
-| ART038 | UI | Pixel-UI-Styleguide | Mittel | ART001 | Offen |
-| ART039 | UI | HUD | Hoch | ART038 | Offen |
+| ART001 | Style | Pixel-Art-Styleguide definieren | Hoch | – | Erledigt |
+| ART002 | Tech | Basisauflösung festlegen | Hoch | ART001 | Erledigt |
+| ART003 | Tech | Nearest-Neighbor aktivieren | Hoch | ART002 | Erledigt |
+| ART004 | Tech | Pixel-Snapping testen | Hoch | ART002 | Erledigt |
+| ART005 | Tiles | 32x32 Tile-Standard festlegen | Hoch | ART001 | Erledigt |
+| ART006 | Player | Placeholder-Dino erstellen | Hoch | ART001 | Erledigt |
+| ART007 | Player | finalen Player-Sprite entwerfen | Hoch | ART006 | Erledigt |
+| ART008 | Player | Idle-Animation | Hoch | ART007 | Erledigt |
+| ART009 | Player | Walk-Animation | Hoch | ART007 | Erledigt |
+| ART010 | Player | Run-Animation | Mittel | ART009 | Teilweise |
+| ART011 | Player | Eat-Animation | Mittel | ART007 | Erledigt |
+| ART012 | Player | Hurt-Animation | Mittel | ART007 | Teilweise |
+| ART013 | Player | Death-Animation | Mittel | ART007 | Teilweise |
+| ART014 | Animals | kleines Beutetier | Hoch | ART001 | Erledigt |
+| ART015 | Animals | Beutetier-Animationen | Hoch | ART014 | Erledigt |
+| ART016 | Animals | großer Raubdino | Hoch | ART001 | Erledigt |
+| ART017 | Animals | Raubdino-Animationen | Hoch | ART016 | Erledigt |
+| ART018 | Fish | Fisch-Sprite | Mittel | ART001 | Erledigt |
+| ART019 | Fish | Fisch-Animation | Mittel | ART018 | Erledigt |
+| ART020 | Cave | Höhleneingang Level 1 | Hoch | ART001 | Erledigt |
+| ART021 | Cave | Höhlen-Level-Varianten | Mittel | ART020 | Erledigt |
+| ART022 | Jungle | Dschungel-Bodentiles | Hoch | ART005 | Erledigt |
+| ART023 | Jungle | Pflanzen-Set | Hoch | ART022 | Erledigt |
+| ART024 | Jungle | Baum-Set | Mittel | ART022 | Erledigt |
+| ART025 | Water | Wasser-Tiles | Hoch | ART005 | Erledigt |
+| ART026 | Water | Wasseranimation | Mittel | ART025 | Erledigt |
+| ART027 | Rocks | Felsen-Set | Mittel | ART005 | Erledigt |
+| ART028 | Weather | Regen-Effekt | Hoch | ART001 | Erledigt |
+| ART029 | Weather | Schnee-Effekt | Mittel | ART001 | Erledigt |
+| ART030 | Weather | Asche-Effekt | Mittel | ART001 | Erledigt |
+| ART031 | Volcano | Lava-Tiles | Mittel | ART005 | Erledigt |
+| ART032 | Volcano | Feueranimation | Mittel | ART001 | Erledigt |
+| ART033 | Volcano | Rauch und Funken | Niedrig | ART032 | Erledigt |
+| ART034 | Disaster | Erdbeben-Partikel | Mittel | ART001 | Erledigt |
+| ART035 | Meteor | Meteor-Frühphase | Mittel | ART001 | Erledigt |
+| ART036 | Meteor | Meteor-Endphase | Hoch | ART035 | Erledigt |
+| ART037 | Meteor | Einschlagssequenz | Hoch | ART036 | Erledigt |
+| ART038 | UI | Pixel-UI-Styleguide | Mittel | ART001 | Erledigt |
+| ART039 | UI | HUD | Hoch | ART038 | Erledigt |
 | ART040 | UI | Cursor-Set | Mittel | ART038 | Offen |
 | ART041 | FX | XP-Partikel | Mittel | ART001 | Offen |
-| ART042 | FX | Laufstaub | Niedrig | ART001 | Offen |
-| ART043 | FX | Wasserspritzer | Niedrig | ART025 | Offen |
-| ART044 | FX | Blut-Effekt | Niedrig | ART001 | Offen |
-| ART045 | Polish | Umgebungsanimationen | Niedrig | ART023 | Offen |
+| ART042 | FX | Laufstaub | Niedrig | ART001 | Erledigt |
+| ART043 | FX | Wasserspritzer | Niedrig | ART025 | Teilweise |
+| ART044 | FX | Blut-Effekt | Niedrig | ART001 | Erledigt |
+| ART045 | Polish | Umgebungsanimationen | Niedrig | ART023 | Erledigt |
 
 ---
 
@@ -4641,36 +4645,36 @@ Die visuelle Identität muss jedoch früh validiert werden.
 
 | ID | Bereich | Task | Priorität | Status |
 |---|---|---|---|---|
-| UPDATE001 | Engine | Projekt auf Godot 4.x umstellen | Kritisch | Offen |
-| UPDATE002 | Engine | GDScript als Hauptsprache festlegen | Kritisch | Offen |
-| UPDATE003 | Rendering | 3/4-Top-Down-Perspektive testen | Kritisch | Offen |
-| UPDATE004 | Rendering | interne Renderauflösung evaluieren | Hoch | Offen |
-| UPDATE005 | Rendering | Pixel-Perfect-Darstellung konfigurieren | Hoch | Offen |
-| UPDATE006 | Rendering | 2D-Light-Test erstellen | Kritisch | Offen |
-| UPDATE007 | Rendering | 2D-Schatten testen | Hoch | Offen |
-| UPDATE008 | Rendering | Glow-/Highlight-Test | Mittel | Offen |
-| UPDATE009 | Art | neuen HD-Pixel-Art-Styleguide erstellen | Kritisch | Offen |
-| UPDATE010 | Art | Spieler-Dino im neuen Stil erstellen | Kritisch | Offen |
-| UPDATE011 | Environment | Dschungel-Bodenset erstellen | Hoch | Offen |
-| UPDATE012 | Environment | Farne und Pflanzen erstellen | Hoch | Offen |
-| UPDATE013 | Environment | Felsen und Klippen erstellen | Hoch | Offen |
-| UPDATE014 | Environment | Höhenebenen testen | Hoch | Offen |
-| UPDATE015 | Environment | Höhleneingang erstellen | Hoch | Offen |
-| UPDATE016 | Water | hochwertiges Wasser testen | Hoch | Offen |
-| UPDATE017 | Water | Wasserfall-Prototyp erstellen | Mittel | Offen |
-| UPDATE018 | FX | atmosphärische Partikel erstellen | Hoch | Offen |
-| UPDATE019 | FX | Regen-Prototyp erstellen | Mittel | Offen |
-| UPDATE020 | FX | Feuer-/Glow-Prototyp erstellen | Mittel | Offen |
-| UPDATE021 | Atmosphere | Nebel/Dunst testen | Mittel | Offen |
-| UPDATE022 | Lighting | warm/kalt Farbkontrast testen | Hoch | Offen |
-| UPDATE023 | Camera | Kamera für neue Perspektive abstimmen | Hoch | Offen |
-| UPDATE024 | Gameplay | Click-to-Move in neuer Perspektive testen | Kritisch | Offen |
-| UPDATE025 | Gameplay | Navigation auf Höhenebenen testen | Hoch | Offen |
-| UPDATE026 | Polish | Player Visibility im dichten Dschungel testen | Hoch | Offen |
-| UPDATE027 | Vertical Slice | komplette Testszene zusammensetzen | Kritisch | Offen |
-| UPDATE028 | Vertical Slice | Qualitätsbewertung durchführen | Kritisch | Offen |
-| UPDATE029 | Planning | endgültige Sprite-/Tilegrößen festlegen | Hoch | Offen |
-| UPDATE030 | Planning | bestehende Art-Tasks entsprechend aktualisieren | Hoch | Offen |
+| UPDATE001 | Engine | Projekt auf Godot 4.x umstellen | Kritisch | Erledigt |
+| UPDATE002 | Engine | GDScript als Hauptsprache festlegen | Kritisch | Erledigt |
+| UPDATE003 | Rendering | 3/4-Top-Down-Perspektive testen | Kritisch | Erledigt |
+| UPDATE004 | Rendering | interne Renderauflösung evaluieren | Hoch | Erledigt |
+| UPDATE005 | Rendering | Pixel-Perfect-Darstellung konfigurieren | Hoch | Erledigt |
+| UPDATE006 | Rendering | 2D-Light-Test erstellen | Kritisch | Erledigt |
+| UPDATE007 | Rendering | 2D-Schatten testen | Hoch | Erledigt |
+| UPDATE008 | Rendering | Glow-/Highlight-Test | Mittel | Erledigt |
+| UPDATE009 | Art | neuen HD-Pixel-Art-Styleguide erstellen | Kritisch | Erledigt |
+| UPDATE010 | Art | Spieler-Dino im neuen Stil erstellen | Kritisch | Erledigt |
+| UPDATE011 | Environment | Dschungel-Bodenset erstellen | Hoch | Erledigt |
+| UPDATE012 | Environment | Farne und Pflanzen erstellen | Hoch | Erledigt |
+| UPDATE013 | Environment | Felsen und Klippen erstellen | Hoch | Erledigt |
+| UPDATE014 | Environment | Höhenebenen testen | Hoch | Erledigt |
+| UPDATE015 | Environment | Höhleneingang erstellen | Hoch | Erledigt |
+| UPDATE016 | Water | hochwertiges Wasser testen | Hoch | Erledigt |
+| UPDATE017 | Water | Wasserfall-Prototyp erstellen | Mittel | Erledigt |
+| UPDATE018 | FX | atmosphärische Partikel erstellen | Hoch | Erledigt |
+| UPDATE019 | FX | Regen-Prototyp erstellen | Mittel | Erledigt |
+| UPDATE020 | FX | Feuer-/Glow-Prototyp erstellen | Mittel | Erledigt |
+| UPDATE021 | Atmosphere | Nebel/Dunst testen | Mittel | Erledigt |
+| UPDATE022 | Lighting | warm/kalt Farbkontrast testen | Hoch | Erledigt |
+| UPDATE023 | Camera | Kamera für neue Perspektive abstimmen | Hoch | Erledigt |
+| UPDATE024 | Gameplay | Click-to-Move in neuer Perspektive testen | Kritisch | Erledigt |
+| UPDATE025 | Gameplay | Navigation auf Höhenebenen testen | Hoch | Erledigt |
+| UPDATE026 | Polish | Player Visibility im dichten Dschungel testen | Hoch | Erledigt |
+| UPDATE027 | Vertical Slice | komplette Testszene zusammensetzen | Kritisch | Erledigt |
+| UPDATE028 | Vertical Slice | Qualitätsbewertung durchführen | Kritisch | Erledigt |
+| UPDATE029 | Planning | endgültige Sprite-/Tilegrößen festlegen | Hoch | Erledigt |
+| UPDATE030 | Planning | bestehende Art-Tasks entsprechend aktualisieren | Hoch | Erledigt |
 
 ---
 
@@ -4844,3 +4848,79 @@ Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diab
 - **Alle Sprites haben die doppelte Pixeldichte**: sie werden mit doppelter Auflösung erzeugt (glattere Konturen, feinere Schattierung, feineres Dithering, feinere Details) und mit halber Größe angezeigt. Auf 2560 × 1440 ist ein Texel damit 2 × 2 Bildschirmpixel statt 4 × 4.
 - Boden, Dungeons, Nebel und Schneedecke werden ebenfalls mit doppelter Dichte gemalt; Partikel (Regen, Blätter, Schnee, Asche, Glut) sind feiner.
 - Die Pixel-Schrift des UI bleibt bewusst gröber.
+
+---
+
+# 152. Stand der Umsetzung
+
+## 152.1 Meilensteine
+
+| Milestone | Inhalt | Status |
+|---|---|---|
+| 0 | Visual Identity (§149.42) | Erledigt |
+| 1 | Movement Prototype | Erledigt |
+| 2 | Hunt Prototype | Erledigt |
+| 3 | Cave Loop | Erledigt |
+| 4 | Predator | Erledigt |
+| 5 | Ecosystem | Erledigt |
+| 6 | Progression | Erledigt |
+| 7 | Weather & Disaster | Erledigt |
+| 8 | Biomes | Erledigt |
+| 8b | ARPG-Kern (§150) | Erledigt |
+| 9 | Extinction | Erledigt |
+| 10 | Polish | In Arbeit: Audio erledigt (T094–T099); offen sind T100, T101 und T105–T110 |
+
+Die Multiplayer-Tasks (§96, MP001–MP030) bleiben „Geplant“ und gehören nicht zum aktuellen Plan.
+
+## 152.2 Über den ursprünglichen Plan hinaus
+
+Diese Punkte standen anfangs unter „Nicht Teil des MVP“ (§61) oder gar nicht im Plan und sind inzwischen umgesetzt:
+
+- **Action-RPG-Kern** (§150): Lebenspunkte, Skills auf 1–4, Charakter-Level, Skillbaum, Loot und Ausrüstung, Elite-Tiere und Bosse.
+- **Prozedurale Welt** (§150): jedes neue Zeitalter würfelt eine neue Oberwelt.
+- **Dungeons** (§150): vier Eingänge, jedes Mal ein neues Höhlensystem mit Boss.
+- **Automap mit Nebel** (§150): Minimap und große Karte (Taste M), eigene Karte in Dungeons.
+- **Story-Bogen mit Lore-Stellen** (§150): fünf Kapitel bis zum Meteoreinschlag, danach ein neues Zeitalter.
+- **HD-Pixel-Art** für 2560 × 1440 (§151).
+- **Neun Tierarten** statt einer Beute und eines Raubdinos (§152.3).
+- **Prozedurale Klänge** (§153).
+
+## 152.3 Tierarten
+
+| Art | Größe | Rolle | Leben |
+|---|---|---|---|
+| Fisch | 1 | Beute in Teich und Fluss, wird vom Ufer aus geschnappt | 4 |
+| Compy | 1 | Beute, zu dritt unterwegs | 6 |
+| Eidechse | 1 | Beute im Dschungel | 8 |
+| Diplo | 1 | Beute, paarweise | 14 |
+| Snowrunner | 1 | flinke Beute im Schnee | 20 |
+| Proto | 2 | Beute, Herden zu dritt | 55 |
+| Ankylo | 2 | gepanzerte Beute, schlägt zurück (12 Schaden) | 110 |
+| Raptor | 3 | Jäger im Rudel zu zweit (14 Schaden) | 60 |
+| Allosaurus | 4 | großer Raubdino (34 Schaden); in Dungeons der Boss „Cave Tyrant“ | 240 |
+
+Jedes Tier ist etwas größer oder kleiner und leicht anders gefärbt. In Dungeons greifen alle Tiere den Dino unabhängig von der Größe an.
+
+---
+
+# 153. Sound (T094–T099)
+
+- Alle Klänge werden wie die Grafik prozedural erzeugt (Synthese aus Rauschen, Oszillatoren und Filtern, 22 kHz mono) und liegen in `assets/audio`.
+- **Schleifen** wiederholen sich ohne hörbare Naht und blenden je nach Lage ein und aus:
+
+| Klang | Wann |
+|---|---|
+| Dschungel: Blätter, Zikaden, Vögel, Frösche, ein fernes Rufen | im Dschungel voll, am Sumpf und Fluss leiser; Regen übertönt ihn; unter der Erde still |
+| Regen | bei Regen, bei Starkregen lauter; unter der Erde still |
+| Erdbeben: Grollen, mahlender Fels, Risse | leise während der Warnung, voll während des Bebens; ein Ausbruch ist fern vom Vulkan schwächer zu spüren |
+| Vulkan: tiefes Grollen, blubbernde Lava, zischender Dampf | in der Nähe des Vulkans, lauter bei Warnung und Ausbruch |
+| Meteor: tiefes, schwebendes Brummen und ein Rauschen hoch oben | schwillt ab etwa der Hälfte des Zeitalters an, unter der Erde gedämpft, verstummt mit dem Einschlag |
+
+- **Einzelklänge** erklingen an ihrem Ort in der Welt, werden mit dem Abstand zur Bildmitte leiser und klingen jedes Mal etwas anders:
+  - Biss des Dinos und der Raubtiere
+  - Schmerzschrei verwundeter Tiere; größere Tiere schreien tiefer, Fische bleiben stumm
+  - Brüllen, wenn ein Raubtier die Jagd auf den Dino beginnt oder gebissen wird; kleinere Jäger kreischen höher, jedes Tier höchstens alle 8 Sekunden
+  - herabstürzende Felsen beim Erdbeben, einschlagende Lavabomben und Meteoriten
+  - Ausbruch des Vulkans, weit hörbar
+  - der Meteoreinschlag
+- Noch offen aus §54: Schritte, Wasser, Wind, Schnee, Feuer, Fressen, Höhle und Musik.

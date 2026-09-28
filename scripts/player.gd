@@ -258,6 +258,7 @@ func use_skill(id: String, aim: Vector2) -> bool:
 func strike(animal: Animal, amount: float, crit := false) -> bool:
 	health = minf(health + life_on_hit(), max_health())
 	Fx.burst(Fx.BLOOD, get_parent(), animal.global_position + Vector2(0, -4))
+	Sound.play(get_parent(), "bite", animal.global_position, -2.0)
 	var species := animal.species
 	var pos := animal.global_position
 	var size := animal.get_size()

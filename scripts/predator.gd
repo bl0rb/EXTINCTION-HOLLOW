@@ -14,6 +14,7 @@ var timer := 0.0
 var victim: Node2D
 var _cooldown := 0.0
 var _provoked := 0.0 ## seconds it keeps going for the player who bit it, whatever their size
+var _roared := 0.0 ## seconds until it roars again
 
 @onready var eyes: Sprite2D = $Sprite2D/Eyes
 @onready var cave: Cave = get_tree().get_first_node_in_group("cave")
@@ -57,6 +58,7 @@ func _find_victim() -> Node2D:
 func _hurt(_from: Node2D) -> void:
 	_provoked = 6.0
 	victim = player
+	_roar()
 	state = State.CHASE
 	eyes.modulate = EYES_HUNTING
 
@@ -64,6 +66,7 @@ func _hurt(_from: Node2D) -> void:
 func _physics_process(delta: float) -> void:
 	_cooldown -= delta
 	_provoked -= delta
+	_roared -= delta
 	for fire: Node2D in get_tree().get_nodes_in_group("fire"):
 		if fire.global_position.distance_to(global_position) < FIRE_FEAR:
 			panic(fire.global_position, 1.5)
@@ -76,6 +79,8 @@ func _physics_process(delta: float) -> void:
 		if victim:
 			state = State.CHASE
 			eyes.modulate = EYES_HUNTING
+			if victim == player:
+				_roar()
 	elif not _can_hunt(victim) or global_position.distance_to(victim.global_position) > species.vision_radius * 1.7:
 		_rest()
 
@@ -107,8 +112,16 @@ func _physics_process(delta: float) -> void:
 			move_and_slide()
 
 
+## The hunt starts with a roar (T096); smaller hunters screech higher.
+func _roar() -> void:
+	if _roared <= 0.0:
+		_roared = 8.0
+		Sound.play(get_parent(), "roar", global_position, -3.0, 1.9 - 0.25 * species.size, 700.0)
+
+
 func _bite() -> void:
 	anim.play("attack", 0.22)
+	Sound.play(get_parent(), "bite", global_position, -2.0, 0.8)
 	if victim == player:
 		player.take_damage(species.damage * power)
 	else:

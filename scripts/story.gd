@@ -40,6 +40,7 @@ var state := &"running" ## running, impact, over
 var survived := false
 var _shower := 0.0
 var _impact_time := 0.0
+var _hum: AudioStreamPlayer ## the meteor fills the sky with a drone (T099)
 
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 @onready var cave: Cave = get_tree().get_first_node_in_group("cave")
@@ -52,6 +53,7 @@ func _ready() -> void:
 	found = SaveGame.read("story", "found", {})
 	phase = phase_at(time)
 	_pace_disasters()
+	_hum = Sound.loop(self, "meteor")
 	# the opening words of the age, once the HUD is listening
 	(func() -> void: chapter_started.emit(phase)).call_deferred()
 
@@ -87,6 +89,9 @@ func discover(id: String) -> bool:
 
 
 func _process(delta: float) -> void:
+	# the hum swells as the meteor comes closer and falls silent with the impact
+	var hum := clampf((progress() - 0.45) / 0.55, 0.0, 1.0) * (0.35 if Biomes.at(player.global_position) == Biomes.DUNGEON else 1.0)
+	Sound.fade(_hum, hum if state == &"running" else 0.0, delta, 0.3 if state == &"running" else 2.0)
 	if state == &"over":
 		return
 	if state == &"impact":
@@ -144,6 +149,7 @@ func _impact() -> void:
 	_impact_time = 0.0
 	survived = cave.overlaps_body(player) and cave.shelter() >= SHELTER_NEEDED and not player.dead
 	player.camera.shake(8.0, 3.0)
+	Sound.play(player.get_parent(), "impact", player.global_position, 6.0, 1.0, 5000.0)
 	impact_started.emit()
 
 
