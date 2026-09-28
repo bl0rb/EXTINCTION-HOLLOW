@@ -70,7 +70,7 @@ func _draw() -> void:
 		var edge := Fx.GOLD if player.can_learn(id) else (Color(0.55, 0.45, 0.3) if rank > 0 else Color(0.3, 0.24, 0.16))
 		draw_rect(Rect2(rect.position + Vector2(0.5, 0.5), rect.size - Vector2.ONE), edge.lightened(0.3) if id == _hover else edge, false, 1.0)
 		var tint := Color.WHITE if rank > 0 else (Color(0.55, 0.55, 0.55) if open else Color(0.25, 0.25, 0.25))
-		draw_texture_rect_region(ICONS, Rect2(rect.position + Vector2(2, 2), Vector2(16, 16)), Rect2(ids.find(id) * 16, 0, 16, 16), tint)
+		draw_texture_rect_region(ICONS, Rect2(rect.position + Vector2(2, 2), Vector2(16, 16)), Rect2(ids.find(id) * 32, 0, 32, 32), tint)
 		_text(rect.position + Vector2(23, 14), "%d/%d" % [rank, Talents.MAX_RANK] if open else "LV%d" % Talents.TIER_LEVEL[Talents.DEFS[id].tier], TEXT if rank > 0 else DIM)
 	var points := player.talent_points()
 	_text(Vector2(8, 128), "POINTS %d" % points, Fx.GOLD if points > 0 else DIM)

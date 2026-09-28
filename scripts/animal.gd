@@ -48,7 +48,7 @@ func _hurt(from: Node2D) -> void:
 ## No two animals look quite alike: a little bigger or smaller, a slightly different colour.
 func _vary() -> void:
 	var s := randf_range(0.88, 1.14)
-	sprite.scale = Vector2(s, s)
+	sprite.scale = Vector2(s, s) * Art.SCALE
 	sprite.self_modulate = Color(randf_range(0.86, 1.1), randf_range(0.86, 1.08), randf_range(0.86, 1.08))
 
 

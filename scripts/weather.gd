@@ -138,7 +138,8 @@ func _emitter(texture: Texture2D, amount: int, lifetime: float, direction: Vecto
 	p.gravity = Vector2.ZERO
 	p.initial_velocity_min = speed_min
 	p.initial_velocity_max = speed_max
-	p.scale_amount_max = max_scale
+	p.scale_amount_min = Art.SCALE # HD: half-size streaks and flakes
+	p.scale_amount_max = max_scale * Art.SCALE
 	p.color = color
 	p.z_index = 50
 	if material == null:

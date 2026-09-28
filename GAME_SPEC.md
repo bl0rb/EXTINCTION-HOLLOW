@@ -4834,3 +4834,13 @@ Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diab
 - Einschlag: Lichtblitz, Stille, Staub. Nur in einer Höhle mit genug Schutz (Höhlenlevel doppelt, jeder Wert einfach, mindestens 12) überlebt der Dino.
 - Danach beginnt ein neues Zeitalter: Level, Talente und Items bleiben; beim Aussterben gehen Höhle und gesparte XP verloren.
 - Acht Lore-Stellen (Fossilien, Kratzspuren, Steinkreise) erzählen die Vorgeschichte.
+
+---
+
+# 151. Auflösung – HD-Pixel-Art (entscheidet UPDATE004, §149.38)
+
+- Zielausgabe **2560 × 1440** (Vollbild, F11 wechselt ins Fenster); ganzzahlige Skalierung, auf 4K entsprechend 6-fach.
+- Die Spielwelt und das UI-Layout bleiben in 640 × 360 Einheiten (Kamera-Ausschnitt, Positionen, Geschwindigkeiten unverändert).
+- **Alle Sprites haben die doppelte Pixeldichte**: sie werden mit doppelter Auflösung erzeugt (glattere Konturen, feinere Schattierung, feineres Dithering, feinere Details) und mit halber Größe angezeigt. Auf 2560 × 1440 ist ein Texel damit 2 × 2 Bildschirmpixel statt 4 × 4.
+- Boden, Dungeons, Nebel und Schneedecke werden ebenfalls mit doppelter Dichte gemalt; Partikel (Regen, Blätter, Schnee, Asche, Glut) sind feiner.
+- Die Pixel-Schrift des UI bleibt bewusst gröber.

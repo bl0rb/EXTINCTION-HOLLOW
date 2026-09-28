@@ -21,6 +21,7 @@ uniform int path_count = 0;
 uniform float wash_x = 1900.0; // the dry riverbed across the steppe
 uniform vec4 ice_ponds[3];
 
+const float DENSITY = 2.0; // HD pixel art: two painted pixels per world pixel
 const float BAYER[16] = { 0.0, 8.0, 2.0, 10.0, 12.0, 4.0, 14.0, 6.0, 3.0, 11.0, 1.0, 9.0, 15.0, 7.0, 13.0, 5.0 };
 const vec3 COLORS[86] = {
 	vec3(0.0941, 0.1490, 0.1098),
@@ -189,57 +190,65 @@ float edge(float x) {
 	return edge_a.x + edge_a.y * sin(x / edge_a.z + edge_a.w) + edge_b.x * sin(x / edge_b.y + edge_b.z);
 }
 
-// Small marks scattered over the ground, at most one per 6x6 cell: 1 = the mark, 2 = its shadow pixel.
-int mark(vec2 px, float density, float seed, int shape) {
-	vec2 cell = floor(px / 6.0);
+// Small marks scattered over the ground, at most one per 12x12 cell of fine pixels: 1 = the mark, 2 = its shadow.
+int mark(vec2 fp, float density, float seed, int shape) {
+	vec2 cell = floor(fp / 12.0);
 	if (hash(cell + seed) >= density) {
 		return 0;
 	}
-	vec2 anchor = cell * 6.0 + floor(vec2(hash(cell + seed + 1.7), hash(cell + seed + 4.3)) * 4.0) + 1.0;
-	vec2 o = px - anchor;
+	vec2 anchor = cell * 12.0 + floor(vec2(hash(cell + seed + 1.7), hash(cell + seed + 4.3)) * 6.0) + 3.0;
+	vec2 o = fp - anchor;
 	float h = hash(cell + seed + 9.1);
-	if (shape == 0) { // tuft of grass
-		if (o == vec2(0.0, 0.0) || o == vec2(0.0, -1.0) || (h < 0.45 && (o == vec2(1.0, -1.0) || o == vec2(-1.0, -2.0)))) {
+	if (shape == 0) { // tuft of grass: a stem and two blades
+		if (o.x == 0.0 && o.y <= 0.0 && o.y >= -3.0) {
 			return 1;
 		}
-		return o == vec2(0.0, 1.0) ? 2 : 0;
+		if (h < 0.6 && (o == vec2(-1.0, -2.0) || o == vec2(-2.0, -3.0))) {
+			return 1;
+		}
+		if (h > 0.25 && (o == vec2(1.0, -1.0) || o == vec2(2.0, -2.0))) {
+			return 1;
+		}
+		return (o.y == 1.0 && abs(o.x) <= 1.0) ? 2 : 0;
 	} else if (shape == 1) { // pebble
-		if (o == vec2(0.0, 0.0)) {
-			return 1;
-		}
-		return o == vec2(0.0, 1.0) ? 2 : 0;
-	} else if (shape == 2) { // leaf
-		return (o == vec2(0.0, 0.0) || o == (h < 0.5 ? vec2(1.0, 0.0) : vec2(1.0, 1.0))) ? 1 : 0;
-	} else if (shape == 3) { // twig
-		return (o.x >= 0.0 && o.x < 2.0 + floor(h * 3.0) && o.y == floor(o.x * (h - 0.5))) ? 1 : 0;
-	} else if (shape == 4) { // stone
-		if (o.y == 0.0 && o.x >= 0.0 && o.x <= 1.0) {
+		if ((o.y == 0.0 && o.x >= 0.0 && o.x <= 1.0) || (h < 0.5 && o == vec2(0.0, -1.0))) {
 			return 1;
 		}
 		return (o.y == 1.0 && o.x >= 0.0 && o.x <= 1.0) ? 2 : 0;
+	} else if (shape == 2) { // leaf
+		float side = h < 0.5 ? 1.0 : -1.0;
+		return (o == vec2(0.0, 0.0) || o == vec2(1.0, 0.0) || o == vec2(1.0, side) || o == vec2(2.0, side)) ? 1 : 0;
+	} else if (shape == 3) { // twig
+		return (o.x >= -2.0 && o.x < 3.0 + floor(h * 3.0) && o.y == floor(o.x * (h - 0.5) * 0.8)) ? 1 : 0;
+	} else if (shape == 4) { // stone
+		if (o.y >= -1.0 && o.y <= 0.0 && o.x >= 0.0 && o.x <= 2.0 && !(o.y == -1.0 && (o.x == 0.0 || o.x == 2.0))) {
+			return 1;
+		}
+		return (o.y == 1.0 && o.x >= 0.0 && o.x <= 2.0) ? 2 : 0;
 	}
-	return (o == vec2(0.0, 0.0) || (h < 0.3 && o == vec2(1.0, 0.0))) ? 1 : 0; // glint of snow
+	return (o == vec2(0.0, 0.0) || (h < 0.3 && o == vec2(1.0, 0.0)) || (h > 0.8 && o == vec2(0.0, -1.0))) ? 1 : 0; // glint of snow
 }
 
-vec3 three(vec3 a, vec3 b, vec3 c, vec2 px, float seed) {
-	float h = hash(floor(px / 6.0) + seed + 5.5);
+vec3 three(vec3 a, vec3 b, vec3 c, vec2 fp, float seed) {
+	float h = hash(floor(fp / 12.0) + seed + 5.5);
 	return h < 0.34 ? a : (h < 0.67 ? b : c);
 }
 
-vec3 water(vec2 px, float depth, vec3 shallow, vec3 deep, vec3 glint) {
+vec3 water(vec2 px, vec2 fp, float depth, vec3 shallow, vec3 deep, vec3 glint) {
 	vec3 col = mix(shallow, deep, depth);
 	float wave = sin(px.y * 0.9 + sin(px.x * 0.13 + TIME * 0.8) * 2.5 - TIME * 1.2);
-	float h = hash(floor(px / vec2(4.0, 1.0)));
+	float h = hash(floor(fp / vec2(8.0, 1.0)));
 	float glints = step(0.25, sin(px.x * 0.045 + TIME * 0.25) * sin(px.y * 0.11 - TIME * 0.18));
 	col = mix(col, glint, step(0.97, wave) * step(0.5, h) * glints * (1.0 - depth * 0.5));
 	return mix(col, shallow * 1.5, step(depth, 0.06) * 0.6);
 }
 
 void fragment() {
-	vec2 px = floor(UV * world_size);
+	vec2 fine = floor(UV * world_size * DENSITY);
+	vec2 px = (fine + 0.5) / DENSITY - 0.5; // world position of this fine pixel
 	float x = px.x;
 	float y = px.y;
-	float b = BAYER[int(mod(y, 4.0)) * 4 + int(mod(x, 4.0))] / 16.0 - 0.47;
+	float b = BAYER[int(mod(fine.y, 4.0)) * 4 + int(mod(fine.x, 4.0))] / 16.0 - 0.47;
 	float n = st(texture(noise_big, px / 1024.0).r);
 	float n2 = st(texture(noise_fine, px / 256.0).r);
 	float n3 = st(texture(noise_fine, px / 96.0 + 0.37).r);
@@ -320,7 +329,7 @@ void fragment() {
 			col = hex(168.0, 56.0, 14.0);
 		}
 	}
-	if (!east_r && x + jit > borders.y - 30.0 && y < borders.z && hash(px) < 0.5) {
+	if (!east_r && x + jit > borders.y - 30.0 && y < borders.z && hash(fine) < 0.5) {
 		col = COLORS[BASALT + 3];
 	}
 	bool icy = false;
@@ -357,7 +366,7 @@ void fragment() {
 	bool path = d < width && !face && rd > 8.0;
 	if (path) {
 		col = pick(PATH, PATH_N, 0.25 + 0.5 * n2 + 0.25 * (n - 0.5), b);
-	} else if (d < width + 3.0 && !face && rd > 8.0 && hash(px + 3.1) < 0.45) {
+	} else if (d < width + 3.0 && !face && rd > 8.0 && hash(fine + 3.1) < 0.45) {
 		col = COLORS[PATH];
 	}
 	// the ramp up the cliff, the rock face with ledges, cracks, moss and vines
@@ -370,7 +379,7 @@ void fragment() {
 		float streak = texture(noise_fine, vec2(px.x / 40.0, px.y / 240.0) + 0.19).r;
 		float cv = 0.72 - 0.42 * t + 0.35 * (streak - 0.5);
 		float ledge = mod(y + 5.0 * sin(x / 23.0) + 3.0 * sin(x / 7.0), 15.0);
-		cv += ledge < 1.0 ? 0.14 : (ledge < 3.0 ? -0.12 : 0.0);
+		cv += ledge < 0.5 ? 0.16 : (ledge < 2.0 ? -0.12 : 0.0);
 		float column = x + 9.0 * sin(x * 0.037);
 		float relx = fract(column / 19.0);
 		cv += 0.2 * (0.5 - relx);
@@ -387,7 +396,7 @@ void fragment() {
 			col = COLORS[MOSS];
 		}
 	}
-	if (y >= top_y - 1.0 && y < top_y && !ramp_x && x < cliff_end) {
+	if (y >= top_y - 0.5 && y < top_y && !ramp_x && x < cliff_end) {
 		col = COLORS[MOSS + 3];
 	}
 	// shade at the foot of the cliff, the pond's muddy shore
@@ -405,44 +414,44 @@ void fragment() {
 	bool dry = steppe && !path && !clay && !wash && !wild;
 	int m;
 	if (dry) {
-		m = mark(px, 0.1, 11.0, 0);
-		col = m == 1 ? three(hex(122.0, 109.0, 64.0), hex(138.0, 122.0, 72.0), hex(106.0, 94.0, 56.0), px, 11.0) : (m == 2 ? hex(34.0, 31.0, 21.0) : col);
+		m = mark(fine, 0.1, 11.0, 0);
+		col = m == 1 ? three(hex(122.0, 109.0, 64.0), hex(138.0, 122.0, 72.0), hex(106.0, 94.0, 56.0), fine, 11.0) : (m == 2 ? hex(34.0, 31.0, 21.0) : col);
 	}
 	if ((wash || clay) && steppe && !wild) {
-		m = mark(px, 0.12, 23.0, 1);
-		col = m == 1 ? three(hex(122.0, 110.0, 90.0), hex(106.0, 96.0, 78.0), hex(138.0, 126.0, 104.0), px, 23.0) : (m == 2 ? hex(34.0, 28.0, 22.0) : col);
+		m = mark(fine, 0.12, 23.0, 1);
+		col = m == 1 ? three(hex(122.0, 110.0, 90.0), hex(106.0, 96.0, 78.0), hex(138.0, 126.0, 104.0), fine, 23.0) : (m == 2 ? hex(34.0, 28.0, 22.0) : col);
 	}
 	if (grassy) {
-		m = mark(px, 0.075, 37.0, 0);
-		col = m == 1 ? three(hex(79.0, 116.0, 69.0), hex(93.0, 132.0, 80.0), hex(63.0, 96.0, 57.0), px, 37.0) : (m == 2 ? hex(22.0, 34.0, 26.0) : col);
-		if (mark(px, 0.004, 41.0, 1) == 1) {
-			col = three(hex(138.0, 134.0, 168.0), hex(163.0, 144.0, 112.0), hex(138.0, 134.0, 168.0), px, 41.0);
+		m = mark(fine, 0.075, 37.0, 0);
+		col = m == 1 ? three(hex(79.0, 116.0, 69.0), hex(93.0, 132.0, 80.0), hex(63.0, 96.0, 57.0), fine, 37.0) : (m == 2 ? hex(22.0, 34.0, 26.0) : col);
+		if (mark(fine, 0.004, 41.0, 1) == 1) {
+			col = three(hex(138.0, 134.0, 168.0), hex(163.0, 144.0, 112.0), hex(138.0, 134.0, 168.0), fine, 41.0);
 		}
 	}
-	if ((low || plateau || path) && pd > 1.1 && !steppe && !wild && !face && mark(px, 0.025, 53.0, 2) == 1) {
-		col = three(hex(90.0, 61.0, 36.0), hex(107.0, 74.0, 44.0), hex(122.0, 58.0, 42.0), px, 53.0);
+	if ((low || plateau || path) && pd > 1.1 && !steppe && !wild && !face && mark(fine, 0.025, 53.0, 2) == 1) {
+		col = three(hex(90.0, 61.0, 36.0), hex(107.0, 74.0, 44.0), hex(122.0, 58.0, 42.0), fine, 53.0);
 	}
 	if (path) {
-		m = mark(px, 0.15, 67.0, 1);
-		col = m == 1 ? three(hex(110.0, 98.0, 82.0), hex(93.0, 82.0, 68.0), hex(110.0, 98.0, 82.0), px, 67.0) : (m == 2 ? hex(31.0, 26.0, 20.0) : col);
+		m = mark(fine, 0.15, 67.0, 1);
+		col = m == 1 ? three(hex(110.0, 98.0, 82.0), hex(93.0, 82.0, 68.0), hex(110.0, 98.0, 82.0), fine, 67.0) : (m == 2 ? hex(31.0, 26.0, 20.0) : col);
 	}
 	if (delta && !path) {
-		m = mark(px, 0.2, 71.0, 0);
-		col = m == 1 ? three(hex(79.0, 116.0, 69.0), hex(93.0, 132.0, 80.0), hex(63.0, 96.0, 57.0), px, 71.0) : (m == 2 ? hex(16.0, 26.0, 20.0) : col);
+		m = mark(fine, 0.2, 71.0, 0);
+		col = m == 1 ? three(hex(79.0, 116.0, 69.0), hex(93.0, 132.0, 80.0), hex(63.0, 96.0, 57.0), fine, 71.0) : (m == 2 ? hex(16.0, 26.0, 20.0) : col);
 	}
-	if (swamp && mark(px, 0.06, 79.0, 3) == 1) {
-		col = three(hex(46.0, 38.0, 24.0), hex(58.0, 47.0, 30.0), hex(36.0, 29.0, 18.0), px, 79.0);
+	if (swamp && mark(fine, 0.06, 79.0, 3) == 1) {
+		col = three(hex(46.0, 38.0, 24.0), hex(58.0, 47.0, 30.0), hex(36.0, 29.0, 18.0), fine, 79.0);
 	}
 	if (banks || ford) {
-		m = mark(px, 0.36, 83.0, 4);
-		col = m == 1 ? three(hex(138.0, 130.0, 114.0), hex(110.0, 103.0, 90.0), hex(154.0, 146.0, 130.0), px, 83.0) : (m == 2 ? hex(28.0, 26.0, 22.0) : col);
+		m = mark(fine, 0.36, 83.0, 4);
+		col = m == 1 ? three(hex(138.0, 130.0, 114.0), hex(110.0, 103.0, 90.0), hex(154.0, 146.0, 130.0), fine, 83.0) : (m == 2 ? hex(28.0, 26.0, 22.0) : col);
 	}
 	if (volc && !path) {
-		m = mark(px, 0.05, 89.0, 1);
-		col = m == 1 ? three(hex(90.0, 82.0, 80.0), hex(106.0, 58.0, 36.0), hex(58.0, 52.0, 50.0), px, 89.0) : (m == 2 ? hex(12.0, 10.0, 10.0) : col);
+		m = mark(fine, 0.05, 89.0, 1);
+		col = m == 1 ? three(hex(90.0, 82.0, 80.0), hex(106.0, 58.0, 36.0), hex(58.0, 52.0, 50.0), fine, 89.0) : (m == 2 ? hex(12.0, 10.0, 10.0) : col);
 	}
-	if (snowr && !icy && !path && mark(px, 0.08, 97.0, 5) == 1) {
-		col = three(hex(232.0, 238.0, 246.0), hex(176.0, 188.0, 204.0), hex(86.0, 96.0, 110.0), px, 97.0);
+	if (snowr && !icy && !path && mark(fine, 0.08, 97.0, 5) == 1) {
+		col = three(hex(232.0, 238.0, 246.0), hex(176.0, 188.0, 204.0), hex(86.0, 96.0, 110.0), fine, 97.0);
 	}
 
 	// water: the river (shallow and patchy at the fords), dark pools in the swamp, the creek on the plateau
@@ -450,12 +459,12 @@ void fragment() {
 		float depth = pow(clamp(-rd / rh, 0.0, 1.0), 0.6);
 		bool gravel = ford && b + 0.47 < 0.45 + 0.3 * (n3 - 0.5);
 		if (!gravel) {
-			col = water(px, ford ? depth * 0.08 : depth, RIVER_SHALLOW, RIVER_DEEP, RIVER_GLINT);
+			col = water(px, fine, ford ? depth * 0.08 : depth, RIVER_SHALLOW, RIVER_DEEP, RIVER_GLINT);
 		}
 	}
 	float pools = st(texture(noise_big, px / 600.0 + 0.9).r) - 0.04;
 	if (swamp && pools > 0.6) {
-		col = water(px, pow(clamp((pools - 0.6) / 0.15, 0.0, 1.0), 0.7), SWAMP_SHALLOW, SWAMP_DEEP, SWAMP_GLINT);
+		col = water(px, fine, pow(clamp((pools - 0.6) / 0.15, 0.0, 1.0), 0.7), SWAMP_SHALLOW, SWAMP_DEEP, SWAMP_GLINT);
 	}
 	if (plateau) {
 		float cd = 1e9;
@@ -464,7 +473,7 @@ void fragment() {
 		}
 		float cw = 6.0 + 2.0 * vn;
 		if (cd < cw) {
-			col = water(px, pow(1.0 - cd / cw, 0.7), RIVER_SHALLOW, RIVER_DEEP, RIVER_GLINT);
+			col = water(px, fine, pow(1.0 - cd / cw, 0.7), RIVER_SHALLOW, RIVER_DEEP, RIVER_GLINT);
 		}
 	}
 	COLOR = vec4(col, 1.0);

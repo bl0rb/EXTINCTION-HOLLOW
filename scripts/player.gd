@@ -382,9 +382,9 @@ func _respawn() -> void:
 
 func _apply_size() -> void:
 	var s: float = 1.0 + SIZE_SCALE * upgrades.size
-	sprite.scale = Vector2(s, s)
+	sprite.scale = Vector2(s, s) * Art.SCALE
 	sprite.position.y = _sprite_y * s
-	shadow.scale = Vector2(s, s)
+	shadow.scale = Vector2(s, s) * Art.SCALE
 
 
 func _physics_process(delta: float) -> void:

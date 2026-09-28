@@ -588,12 +588,12 @@ func _fill_the_air() -> void:
 		Color(1, 0.5, 0.15), _fade([Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)], [0.0, 0.2, 1.0])).material = _glow()
 	var snowfall := _particles(air, "Snowfall", Vector2(fire_x, (ridge + H) / 2.0), Vector2((W - east) / 2.0, (H - ridge) / 2.0), 110, 7.0, Vector2(-0.3, 1),
 		Vector2(8, 18), Color(0.9, 0.94, 1.0), _fade([Color(1, 1, 1, 0), Color(1, 1, 1, 0.9), Color(1, 1, 1, 0)], [0.0, 0.2, 1.0]))
-	snowfall.scale_amount_max = 2.0
+	snowfall.scale_amount_max = 2.0 * Art.SCALE
 	var mist := _particles(air, "SwampMist", Vector2(west / 2.0, 1300), Vector2(west / 2.0, 220), 26, 9.0, Vector2(1, -0.1), Vector2(3, 7),
 		Color(0.55, 0.65, 0.5), _fade([Color(1, 1, 1, 0), Color(1, 1, 1, 0.35), Color(1, 1, 1, 0)], [0.0, 0.5, 1.0]))
 	mist.texture = load("res://assets/smoke.png")
-	mist.scale_amount_min = 2.0
-	mist.scale_amount_max = 3.5
+	mist.scale_amount_min = 2.0 * Art.SCALE
+	mist.scale_amount_max = 3.5 * Art.SCALE
 	for i in params.beams.size():
 		var beam := _light(air, "Moonbeam%d" % (i + 1), params.beams[i], Color(0.55, 0.7, 1.0), 0.8, 1.0)
 		beam.scale = Vector2(0.4, 2.4)
@@ -643,6 +643,8 @@ func _particles(parent: Node, what: String, center: Vector2, extents: Vector2, a
 	p.gravity = Vector2.ZERO
 	p.initial_velocity_min = speed.x
 	p.initial_velocity_max = speed.y
+	p.scale_amount_min = Art.SCALE # HD: half-size leaves, flakes and embers
+	p.scale_amount_max = Art.SCALE
 	p.color = color
 	p.color_ramp = ramp
 	parent.add_child(p)

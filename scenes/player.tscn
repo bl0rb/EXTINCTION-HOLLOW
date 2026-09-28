@@ -18,9 +18,11 @@ motion_mode = 1
 script = ExtResource("1_player")
 
 [node name="Shadow" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_shadow")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 position = Vector2(0, -17)
 texture = ExtResource("2_sprite")
 hframes = 10

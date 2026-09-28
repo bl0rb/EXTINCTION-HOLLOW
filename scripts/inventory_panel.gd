@@ -82,9 +82,9 @@ func _draw() -> void:
 		var edge: Color = Loot.COLORS[item.rarity] if not item.is_empty() else Color(0.3, 0.24, 0.16)
 		draw_rect(Rect2(rect.position + Vector2(0.5, 0.5), rect.size - Vector2.ONE), edge if i != _hover else edge.lightened(0.4), false, 1.0)
 		if not item.is_empty():
-			draw_texture_rect_region(ICONS, Rect2(rect.position + Vector2(4, 4), Vector2(12, 12)), Rect2(Loot.SLOTS.find(item.slot) * 12, 0, 12, 12))
+			draw_texture_rect_region(ICONS, Rect2(rect.position + Vector2(4, 4), Vector2(12, 12)), Rect2(Loot.SLOTS.find(item.slot) * 24, 0, 24, 24))
 		elif i < 4:
-			draw_texture_rect_region(ICONS, Rect2(rect.position + Vector2(4, 4), Vector2(12, 12)), Rect2(i * 12, 0, 12, 12), Color(1, 1, 1, 0.15))
+			draw_texture_rect_region(ICONS, Rect2(rect.position + Vector2(4, 4), Vector2(12, 12)), Rect2(i * 24, 0, 24, 24), Color(1, 1, 1, 0.15))
 		if i < 4:
 			_text(rect.position + Vector2(-4, 30), Loot.SLOT_NAMES[Loot.SLOTS[i]].to_upper(), DIM)
 	_text(Vector2(8, 118), "DMG %d   CRIT %d%%" % [roundi(player.damage()), roundi(player.crit_chance() * 100.0)], TEXT)

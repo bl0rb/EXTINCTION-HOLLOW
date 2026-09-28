@@ -144,63 +144,66 @@ glow_bloom = 0.05
 glow_blend_mode = 0
 glow_hdr_threshold = 0.8
 
-[node name="Main" type="Node2D" unique_id=1833463977]
+[node name="Main" type="Node2D" unique_id=1229635276]
 
-[node name="World" type="Node2D" parent="." unique_id=172152858]
+[node name="World" type="Node2D" parent="." unique_id=1198376922]
 script = ExtResource("1_dgi5k")
 
-[node name="Ground" type="ColorRect" parent="." unique_id=1452845329]
+[node name="Ground" type="ColorRect" parent="." unique_id=1038521568]
 material = SubResource("ShaderMaterial_gdvew")
 offset_right = 3072.0
 offset_bottom = 1536.0
 mouse_filter = 2
 
-[node name="SnowCover" type="ColorRect" parent="." unique_id=1360654191]
+[node name="SnowCover" type="ColorRect" parent="." unique_id=529242687]
 material = SubResource("ShaderMaterial_xljpf")
 offset_right = 3072.0
 offset_bottom = 1536.0
 mouse_filter = 2
 
-[node name="Skeleton" type="Sprite2D" parent="." unique_id=416314012]
+[node name="Skeleton" type="Sprite2D" parent="." unique_id=914985154]
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_fuf3a")
 
-[node name="Volcano" parent="." unique_id=707992657 groups=["nav_obstacles"] instance=ExtResource("5_pibwh")]
+[node name="Volcano" parent="." unique_id=719689059 groups=["nav_obstacles"] instance=ExtResource("5_pibwh")]
 
-[node name="Pond" type="Sprite2D" parent="." unique_id=1299175148]
+[node name="Pond" type="Sprite2D" parent="." unique_id=560372545]
 material = SubResource("ShaderMaterial_j4bwh")
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_5he1u")
 script = ExtResource("8_5poiv")
 
-[node name="River" type="Sprite2D" parent="." unique_id=988928240]
+[node name="River" type="Sprite2D" parent="." unique_id=868867604]
 script = ExtResource("9_2cjbq")
 
-[node name="Waterfall" type="Sprite2D" parent="." unique_id=303497978]
+[node name="Waterfall" type="Sprite2D" parent="." unique_id=1384654471]
 material = SubResource("ShaderMaterial_ksmap")
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("11_cjqg0")
 
-[node name="Terrain" type="StaticBody2D" parent="." unique_id=821181705 groups=["nav_obstacles"]]
+[node name="Terrain" type="StaticBody2D" parent="." unique_id=71169479 groups=["nav_obstacles"]]
 
-[node name="CliffOccluder" type="LightOccluder2D" parent="." unique_id=1418425867]
+[node name="CliffOccluder" type="LightOccluder2D" parent="." unique_id=44094169]
 
-[node name="Cave" parent="." unique_id=292950724 instance=ExtResource("12_vchkt")]
+[node name="Cave" parent="." unique_id=2238859 instance=ExtResource("12_vchkt")]
 
-[node name="Actors" type="Node2D" parent="." unique_id=2017555503 groups=["nav_obstacles"]]
+[node name="Actors" type="Node2D" parent="." unique_id=15695389 groups=["nav_obstacles"]]
 y_sort_enabled = true
 
-[node name="Player" parent="Actors" unique_id=802671437 instance=ExtResource("13_txyw0")]
+[node name="Player" parent="Actors" unique_id=1579942105 instance=ExtResource("13_txyw0")]
 
-[node name="Predator" parent="Actors" unique_id=2102552292 instance=ExtResource("14_vc5cj")]
+[node name="Predator" parent="Actors" unique_id=1523008523 instance=ExtResource("14_vc5cj")]
 
-[node name="Predator2" parent="Actors" unique_id=1542397547 instance=ExtResource("14_vc5cj")]
+[node name="Predator2" parent="Actors" unique_id=243233852 instance=ExtResource("14_vc5cj")]
 
-[node name="LizardSpawner" type="Node2D" parent="." unique_id=750213359]
+[node name="LizardSpawner" type="Node2D" parent="." unique_id=2010225639]
 script = ExtResource("15_nvyfr")
 scene = ExtResource("16_ty1g6")
 group = "lizard"
 count = 12
 spawn_parent = NodePath("../Actors")
 
-[node name="CompySpawner" type="Node2D" parent="." unique_id=819170731]
+[node name="CompySpawner" type="Node2D" parent="." unique_id=1670768086]
 script = ExtResource("15_nvyfr")
 scene = ExtResource("17_j2jfr")
 group = "compy"
@@ -208,14 +211,14 @@ count = 12
 group_size = 3
 spawn_parent = NodePath("../Actors")
 
-[node name="ProtoSpawner" type="Node2D" parent="." unique_id=180417241]
+[node name="ProtoSpawner" type="Node2D" parent="." unique_id=221334592]
 script = ExtResource("15_nvyfr")
 scene = ExtResource("18_bjg73")
 group = "proto"
 group_size = 3
 spawn_parent = NodePath("../Actors")
 
-[node name="RaptorSpawner" type="Node2D" parent="." unique_id=1781526452]
+[node name="RaptorSpawner" type="Node2D" parent="." unique_id=1552245501]
 script = ExtResource("15_nvyfr")
 scene = ExtResource("19_bu4jf")
 group = "raptor"
@@ -224,7 +227,7 @@ group_size = 2
 min_player_distance = 420.0
 spawn_parent = NodePath("../Actors")
 
-[node name="DiploSpawner" type="Node2D" parent="." unique_id=1184711070]
+[node name="DiploSpawner" type="Node2D" parent="." unique_id=663627192]
 script = ExtResource("15_nvyfr")
 scene = ExtResource("20_o7ddy")
 group = "diplo"
@@ -232,7 +235,7 @@ count = 8
 group_size = 2
 spawn_parent = NodePath("../Actors")
 
-[node name="AnkyloSpawner" type="Node2D" parent="." unique_id=342321208]
+[node name="AnkyloSpawner" type="Node2D" parent="." unique_id=1517461552]
 script = ExtResource("15_nvyfr")
 scene = ExtResource("21_0loja")
 group = "ankylo"
@@ -240,14 +243,14 @@ count = 4
 group_size = 2
 spawn_parent = NodePath("../Actors")
 
-[node name="SnowrunnerSpawner" type="Node2D" parent="." unique_id=345955230]
+[node name="SnowrunnerSpawner" type="Node2D" parent="." unique_id=1086903767]
 script = ExtResource("15_nvyfr")
 scene = ExtResource("22_ids8r")
 group = "snowrunner"
 count = 3
 spawn_parent = NodePath("../Actors")
 
-[node name="FishSpawner" type="Node2D" parent="." unique_id=1064317405]
+[node name="FishSpawner" type="Node2D" parent="." unique_id=946488493]
 script = ExtResource("15_nvyfr")
 scene = ExtResource("23_dnhof")
 group = "fish"
@@ -255,7 +258,7 @@ count = 5
 min_player_distance = 0.0
 spawn_parent = NodePath("../Pond")
 
-[node name="RiverFishSpawner" type="Node2D" parent="." unique_id=1089637157]
+[node name="RiverFishSpawner" type="Node2D" parent="." unique_id=707824723]
 script = ExtResource("15_nvyfr")
 scene = ExtResource("23_dnhof")
 group = "river_fish"
@@ -263,28 +266,28 @@ count = 10
 min_player_distance = 0.0
 spawn_parent = NodePath("../River")
 
-[node name="Navigation" type="NavigationRegion2D" parent="." unique_id=1781409157 groups=["navigation"]]
+[node name="Navigation" type="NavigationRegion2D" parent="." unique_id=741857419 groups=["navigation"]]
 navigation_polygon = SubResource("NavigationPolygon_ygd8o")
 script = ExtResource("24_1v6qk")
 
-[node name="Weather" type="Node" parent="." unique_id=1440765505 groups=["weather"]]
+[node name="Weather" type="Node" parent="." unique_id=1403780940 groups=["weather"]]
 script = ExtResource("25_augu2")
 
-[node name="Disasters" type="Node" parent="." unique_id=907321537 groups=["disasters"]]
+[node name="Disasters" type="Node" parent="." unique_id=138017296 groups=["disasters"]]
 script = ExtResource("26_tm6hj")
 
-[node name="Story" type="Node" parent="." unique_id=712998595 groups=["story"]]
+[node name="Story" type="Node" parent="." unique_id=1384395153 groups=["story"]]
 script = ExtResource("27_kf5aa")
 
-[node name="Dungeons" type="Node" parent="." unique_id=646075843 groups=["dungeons"]]
+[node name="Dungeons" type="Node" parent="." unique_id=514787084 groups=["dungeons"]]
 script = ExtResource("28_t5ykj")
 
-[node name="Sky" type="CanvasLayer" parent="." unique_id=1597860217]
+[node name="Sky" type="CanvasLayer" parent="." unique_id=297315475]
 
-[node name="Meteor" type="Node2D" parent="Sky" unique_id=518982704]
+[node name="Meteor" type="Node2D" parent="Sky" unique_id=2006632948]
 script = ExtResource("29_e755i")
 
-[node name="Mist" type="CPUParticles2D" parent="." unique_id=430786224]
+[node name="Mist" type="CPUParticles2D" parent="." unique_id=1769235606]
 amount = 30
 lifetime = 1.6
 preprocess = 1.6
@@ -298,38 +301,38 @@ initial_velocity_max = 16.0
 scale_amount_max = 2.0
 color_ramp = SubResource("Gradient_2s0kr")
 
-[node name="Fog" type="ColorRect" parent="." unique_id=2023513753]
+[node name="Fog" type="ColorRect" parent="." unique_id=851682824]
 material = SubResource("ShaderMaterial_ih3m7")
 offset_right = 3072.0
 offset_bottom = 1536.0
 mouse_filter = 2
 
-[node name="Fireflies" type="Node2D" parent="." unique_id=665995157]
+[node name="Fireflies" type="Node2D" parent="." unique_id=1483514458]
 material = SubResource("CanvasItemMaterial_11yus")
 script = ExtResource("31_od4ux")
 
-[node name="Atmosphere" type="Node2D" parent="." unique_id=813408325]
+[node name="Atmosphere" type="Node2D" parent="." unique_id=728909598]
 
-[node name="Night" type="CanvasModulate" parent="." unique_id=527149140]
+[node name="Night" type="CanvasModulate" parent="." unique_id=684529493]
 color = Color(0.33, 0.38, 0.52, 1)
 
-[node name="WorldUI" type="CanvasLayer" parent="." unique_id=940681502]
+[node name="WorldUI" type="CanvasLayer" parent="." unique_id=2010573380]
 follow_viewport_enabled = true
 
-[node name="Overlay" type="Node2D" parent="WorldUI" unique_id=137945788 groups=["world_ui"]]
+[node name="Overlay" type="Node2D" parent="WorldUI" unique_id=1507807933 groups=["world_ui"]]
 script = ExtResource("32_xhfw6")
 
-[node name="Overlay" type="CanvasLayer" parent="." unique_id=1461312740]
+[node name="Overlay" type="CanvasLayer" parent="." unique_id=1679130726]
 layer = 2
 
-[node name="Vignette" type="ColorRect" parent="Overlay" unique_id=1641805368]
+[node name="Vignette" type="ColorRect" parent="Overlay" unique_id=2128056278]
 material = SubResource("ShaderMaterial_b6ruc")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="HUD" type="Control" parent="Overlay" unique_id=1646564882]
+[node name="HUD" type="Control" parent="Overlay" unique_id=983845726]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -337,5 +340,5 @@ anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource("34_152kg")
 
-[node name="Glow" type="WorldEnvironment" parent="." unique_id=874589720]
+[node name="Glow" type="WorldEnvironment" parent="." unique_id=1709042414]
 environment = SubResource("Environment_155or")

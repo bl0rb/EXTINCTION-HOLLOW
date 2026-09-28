@@ -9,10 +9,11 @@
 script = ExtResource("1_drop")
 
 [node name="Shadow" type="Sprite2D" parent="."]
-scale = Vector2(0.4, 0.3)
+scale = Vector2(0.2, 0.15)
 texture = ExtResource("2_shadow")
 
 [node name="Icon" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 position = Vector2(0, -7)
 texture = ExtResource("3_items")
 hframes = 4

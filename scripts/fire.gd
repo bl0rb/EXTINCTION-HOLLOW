@@ -23,7 +23,7 @@ func _physics_process(delta: float) -> void:
 	_age += delta * (2.5 if rain else 1.0)
 	flames.frame = int(_age * 10.0) % 4
 	var strength := clampf((burn_time - _age) / 4.0, 0.0, 1.0)
-	flames.scale = Vector2.ONE * (0.4 + 0.6 * strength)
+	flames.scale = Vector2.ONE * (0.4 + 0.6 * strength) * Art.SCALE
 	glow.intensity = strength
 	for body in get_overlapping_bodies():
 		if body is Player:

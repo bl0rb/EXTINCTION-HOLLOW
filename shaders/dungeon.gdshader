@@ -22,10 +22,11 @@ float floor_at(vec2 c) {
 }
 
 void fragment() {
-	vec2 px = floor(UV * cells * cell);
-	vec2 c = floor(px / cell);
-	vec2 f = px - c * cell;
-	float b = BAYER[int(mod(px.y, 4.0)) * 4 + int(mod(px.x, 4.0))] / 16.0;
+	vec2 fine = floor(UV * cells * cell * 2.0); // HD pixel art: two painted pixels per world pixel
+	vec2 px = (fine + 0.5) / 2.0 - 0.5;
+	vec2 c = floor((px + 0.25) / cell);
+	vec2 f = px + 0.25 - c * cell;
+	float b = BAYER[int(mod(fine.y, 4.0)) * 4 + int(mod(fine.x, 4.0))] / 16.0;
 	float n = texture(noise, px / 96.0).r;
 	float n2 = texture(noise, px / 19.0).r;
 	vec3 col;
@@ -34,7 +35,7 @@ void fragment() {
 		float row = floor(px.y / 12.0);
 		float sx = mod(px.x + mod(row, 2.0) * 9.0, 18.0);
 		float sy = mod(px.y, 12.0);
-		float grout = (sx < 1.0 || sy < 1.0) ? 1.0 : 0.0;
+		float grout = (sx < 0.5 || sy < 0.5) ? 1.0 : 0.0;
 		float v = 0.35 + 0.45 * n + 0.3 * (n2 - 0.5);
 		// the wall above casts a shadow, corners are darker
 		float above = 1.0 - floor_at(c + vec2(0.0, -1.0));
@@ -51,7 +52,7 @@ void fragment() {
 		// rock face seen from the front, lit from above, with a ledge on top
 		float streak = texture(noise, vec2(px.x / 7.0, px.y / 38.0)).r;
 		float v = 0.85 - (f.y - 4.0) / 12.0 * 0.55 + (streak - 0.5) * 0.5;
-		v += (f.y < 5.0) ? 0.25 : 0.0;
+		v += (f.y < 4.5) ? 0.25 : 0.0;
 		v = floor(clamp(v, 0.0, 1.0) * 4.0 + b) / 4.0;
 		col = mix(wall_face.rgb * 0.35, wall_face.rgb, v);
 		col = mix(col, accent.rgb, step(0.78, streak) * step(f.y, 9.0) * 0.6);

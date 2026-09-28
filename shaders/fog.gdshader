@@ -11,11 +11,11 @@ uniform vec2 clear_x = vec2(100000.0, 100001.0); // the fog thins out between th
 const float BAYER[16] = { 0.0, 8.0, 2.0, 10.0, 12.0, 4.0, 14.0, 6.0, 3.0, 11.0, 1.0, 9.0, 15.0, 7.0, 13.0, 5.0 };
 
 void fragment() {
-	vec2 px = floor(UV * world_size);
-	vec2 uv = px / world_size;
+	vec2 px = floor(UV * world_size * 2.0) / 2.0;
+	vec2 uv = px / world_size; // HD: half-pixel steps
 	float n = texture(noise, uv + drift * TIME).r * 0.6 + texture(noise, uv * 2.1 - drift * TIME * 1.6).r * 0.4;
 	float f = smoothstep(0.4, 0.8, n);
-	float b = BAYER[int(mod(px.y, 4.0)) * 4 + int(mod(px.x, 4.0))] / 16.0;
+	float b = BAYER[int(mod(px.y * 2.0, 4.0)) * 4 + int(mod(px.x * 2.0, 4.0))] / 16.0;
 	f = floor(f * 3.0 + b) / 3.0;
 	COLOR = vec4(fog_color.rgb, f * density * mix(1.0, 0.3, smoothstep(clear_x.x, clear_x.y, px.x)));
 }

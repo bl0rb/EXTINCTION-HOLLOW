@@ -101,6 +101,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		skill_tree.visible = not skill_tree.visible
 	elif event.is_action_pressed("map"):
 		automap.toggle()
+	elif event.is_action_pressed("fullscreen"):
+		var window := get_window()
+		window.mode = Window.MODE_WINDOWED if window.mode == Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
 
 
 func _story_label(font_size: int, color: Color, y: float) -> Label:
@@ -242,7 +245,7 @@ func _draw_skill_bar() -> void:
 		var learned: bool = player.talents[id] > 0
 		var affordable: bool = player.stamina >= def.stamina * (1.0 - 0.08 * player.talents.vigor)
 		draw_rect(rect, PANEL)
-		draw_texture_rect_region(SKILL_ICONS, Rect2(rect.position + Vector2(2, 2), Vector2(16, 16)), Rect2(ids.find(id) * 16, 0, 16, 16),
+		draw_texture_rect_region(SKILL_ICONS, Rect2(rect.position + Vector2(2, 2), Vector2(16, 16)), Rect2(ids.find(id) * 32, 0, 32, 32),
 			Color.WHITE if learned and affordable else Color(0.35, 0.35, 0.35))
 		var cooling: float = player.cooldowns[id] / def.cooldown
 		if cooling > 0.0:
