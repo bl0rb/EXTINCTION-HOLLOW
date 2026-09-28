@@ -4806,5 +4806,25 @@ Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diab
 | ARPG007 | Loot | Item-Drops mit Seltenheiten und zufälligen Werten | Erledigt |
 | ARPG008 | Loot | Inventar, Ausrüstung, Zerlegen | Erledigt |
 | ARPG009 | Speichern | Level, Talente und Items speichern | Erledigt |
-| ARPG010 | Gegner | Elite-Tiere und Bosse pro Biom | Offen |
-| ARPG011 | Welt | zufällig erzeugte Höhlen als Dungeons | Offen |
+| ARPG010 | Gegner | Elite-Tiere und Bosse pro Biom | Erledigt |
+| ARPG011 | Welt | zufällig erzeugte Höhlen als Dungeons | Erledigt |
+| ARPG012 | Karte | Automap mit Nebel: Minimap und große Karte (Taste M) | Erledigt |
+| ARPG013 | Welt | zufällige Oberwelt bei jedem neuen Zeitalter | Offen |
+
+### Dungeons
+
+- Vier Eingänge (Dschungel, Sumpf, Vulkan, Schnee) mit eigenem Aussehen und Schwierigkeitsstufe.
+- Jeder Besuch erzeugt ein neues Höhlensystem: Räume, verbundene Gänge mit Schleifen, Licht nur von leuchtenden Pilzen und dem Dino selbst.
+- In jedem Raum Tiere, die den Dino unabhängig von der Größe angreifen; manchmal ein Elite-Tier (mehr Leben, härtere Bisse, besserer Loot).
+- Im entferntesten Raum wartet der Boss (Cave Tyrant) mit großer Lebensleiste; besiegt öffnet er einen zweiten Ausgang und lässt mindestens drei seltene Items fallen.
+- Ein Trophäenhort, eine eigene Dungeon-Karte, die sich beim Erkunden aufdeckt, und die letzte Lore-Stelle („star“).
+- Wer unten stirbt, erwacht in der Höhle; was unten liegen bleibt, ist verloren.
+
+### Story – der Meteor-Bogen
+
+- Ein Zeitalter dauert 50 Minuten in fünf Phasen (Frühe Welt, Unruhe, Feuer, Vorzeichen, Letzte Tage), jede mit Kapiteltext; Katastrophen werden häufiger.
+- Der Meteor wächst am Himmel vom Lichtpunkt zum glühenden Körper mit Schweif und färbt die Nacht rot.
+- In den letzten drei Minuten fallen Meteoriten, Tiere fliehen, ein Countdown läuft.
+- Einschlag: Lichtblitz, Stille, Staub. Nur in einer Höhle mit genug Schutz (Höhlenlevel doppelt, jeder Wert einfach, mindestens 12) überlebt der Dino.
+- Danach beginnt ein neues Zeitalter: Level, Talente und Items bleiben; beim Aussterben gehen Höhle und gesparte XP verloren.
+- Acht Lore-Stellen (Fossilien, Kratzspuren, Steinkreise) erzählen die Vorgeschichte.

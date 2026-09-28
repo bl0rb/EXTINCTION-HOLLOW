@@ -25,6 +25,12 @@ func _draw() -> void:
 		var pos := (animal.sprite.global_position - Vector2(width / 2.0, height / 2.0 + 5.0)).round()
 		draw_rect(Rect2(pos, Vector2(width, 3)), Color(0.02, 0.02, 0.03, 0.8 * alpha))
 		draw_rect(Rect2(pos + Vector2.ONE, Vector2(roundf((width - 2.0) * animal.health / animal.max_health), 1)), Color(0.9, 0.22, 0.16, alpha))
+	# elites and bosses carry their title
+	for animal: Animal in _animals():
+		if animal.title != "" and animal.global_position.distance_to(get_viewport().get_camera_2d().get_screen_center_position()) < 400.0:
+			var height := animal.sprite.get_rect().size.y * absf(animal.sprite.scale.y)
+			draw_string(FONT, (animal.sprite.global_position - Vector2(60, height / 2.0 + 8.0)).round(), animal.title, HORIZONTAL_ALIGNMENT_CENTER, 120, 8,
+				Fx.CRIT if animal.rank == 1 else Fx.HURT)
 	var mouse := get_global_mouse_position()
 	for drop: Node2D in get_tree().get_nodes_in_group("loot"):
 		if drop.global_position.distance_to(mouse) < 12.0:

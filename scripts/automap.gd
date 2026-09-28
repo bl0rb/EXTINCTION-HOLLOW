@@ -100,6 +100,10 @@ func toggle() -> void:
 
 
 func _draw() -> void:
+	var dungeons := get_tree().get_first_node_in_group("dungeons") as Dungeons
+	if dungeons and dungeons.inside():
+		_draw_dungeon(dungeons.current)
+		return
 	if Biomes.at(player.global_position) == Biomes.DUNGEON:
 		return
 	var here := player.global_position / CELL
@@ -122,6 +126,22 @@ func _draw() -> void:
 		draw_texture_rect_region(_texture, Rect2(rect.position + src.position - from, src.size), src)
 	_markers(rect.position, 1.0, from, rect)
 	draw_rect(Rect2(rect.position - Vector2(0.5, 0.5), rect.size + Vector2.ONE), BORDER, false, 1.0)
+
+
+## Down in a dungeon the map shows its tunnels as far as they have been explored, and the ways out.
+func _draw_dungeon(dungeon: Dungeon) -> void:
+	var scale := 4.0 if big else 1.0
+	var size_px := Vector2(Dungeon.SIZE) * scale
+	var frame := Rect2(((Vector2(640, 360) - size_px) / 2.0).round() - Vector2(6, 6), size_px + Vector2(12, 12)) if big else Rect2(Vector2(640 - 6 - MINI.x, 6), MINI)
+	var origin := (frame.position + (frame.size - size_px) / 2.0).round()
+	draw_rect(frame, Color(0.02, 0.02, 0.03, 0.92) if big else HIDDEN)
+	draw_texture_rect(dungeon.map_texture, Rect2(origin, size_px), false)
+	for door: Node2D in get_tree().get_nodes_in_group("dungeon_exit"):
+		if dungeon.explored_at(door.global_position):
+			_marker(origin + (door.global_position - dungeon.global_position) / Dungeon.CELL * scale, Color(0.7, 0.85, 1.0), 1.5 * sqrt(scale), frame)
+	if int(_time * 3.0) % 2 == 0:
+		_marker(origin + (player.global_position - dungeon.global_position) / Dungeon.CELL * scale, Color.WHITE, 1.5 * sqrt(scale), frame)
+	draw_rect(Rect2(frame.position - Vector2(0.5, 0.5), frame.size + Vector2.ONE), BORDER, false, 1.0)
 
 
 func _markers(origin: Vector2, scale: float, from: Vector2, clip: Rect2) -> void:

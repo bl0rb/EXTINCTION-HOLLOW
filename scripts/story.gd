@@ -120,6 +120,8 @@ func _final_minutes(delta: float) -> void:
 	if _shower > 0.0:
 		return
 	_shower = randf_range(1.2, 2.6)
+	if Biomes.at(player.global_position) == Biomes.DUNGEON:
+		return # the rock above keeps the meteorites out
 	var target := player.global_position + Vector2(randf_range(-260, 260), randf_range(-160, 160))
 	if randf() < 0.25:
 		target = player.global_position + Vector2(randf_range(-20, 20), randf_range(-14, 14))

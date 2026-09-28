@@ -30,11 +30,11 @@ const DROP_CHANCE := [0.0, 0.12, 0.35, 0.6, 1.0, 1.0] ## by size class
 const DROP := "res://scenes/loot_drop.tscn" ## loaded when needed: the drop scene refers back to this class
 
 
-## A random item; the level (1-5) scales its stats and base, rarity -1 rolls one.
-static func roll(level: int, rarity := -1) -> Dictionary:
+## A random item; the level (1-5) scales its stats and base, rarity -1 rolls one (but at least min_rarity).
+static func roll(level: int, rarity := -1, min_rarity := 0) -> Dictionary:
 	if rarity < 0:
 		var r := randf()
-		rarity = 3 if r < 0.03 else (2 if r < 0.13 else (1 if r < 0.4 else 0))
+		rarity = maxi(3 if r < 0.03 else (2 if r < 0.13 else (1 if r < 0.4 else 0)), min_rarity)
 	var slot: String = SLOTS[randi() % SLOTS.size()]
 	var main: String = MAIN[slot]
 	var power := (1.0 + 0.5 * (level - 1)) * (1.3 if rarity == 3 else 1.0)
@@ -74,12 +74,18 @@ static func describe(item: Dictionary) -> PackedStringArray:
 
 
 ## A killed animal may leave an item behind; the bigger it was, the likelier and better.
-static func drop(parent: Node, pos: Vector2, size: int) -> void:
+## Elites and bosses always drop extra items of a guaranteed rarity.
+static func drop(parent: Node, pos: Vector2, size: int, extra := 0, min_rarity := 0) -> void:
 	var drops := 1 if randf() < DROP_CHANCE[clampi(size, 0, 5)] else 0
 	if size >= 4 and randf() < 0.5:
 		drops += 1
-	for i in drops:
-		var node: Node2D = load(DROP).instantiate()
-		node.item = roll(clampi(size, 1, 5))
-		node.position = pos + Vector2(randf_range(-10, 10), randf_range(-6, 6))
-		parent.add_child(node)
+	for i in drops + extra:
+		spawn(parent, pos + Vector2(randf_range(-14, 14), randf_range(-8, 8)), roll(clampi(size, 1, 5), -1, min_rarity))
+
+
+static func spawn(parent: Node, pos: Vector2, item: Dictionary) -> Node2D:
+	var node: Node2D = load(DROP).instantiate()
+	node.item = item
+	node.position = pos
+	parent.add_child(node)
+	return node

@@ -28,6 +28,7 @@ var automap: Control
 var narration: Label
 var chapter: Label
 var flash: ColorRect
+var fade: ColorRect ## black, for going into and out of dungeons
 var end_screen: Control
 var _narration_tween: Tween
 var _title: Label
@@ -78,6 +79,13 @@ func _ready() -> void:
 	flash.mouse_filter = MOUSE_FILTER_IGNORE
 	flash.color = Color(1, 0.95, 0.85, 0)
 	add_child(flash)
+	fade = ColorRect.new()
+	fade.set_anchors_preset(PRESET_FULL_RECT)
+	fade.mouse_filter = MOUSE_FILTER_IGNORE
+	fade.color = Color(0, 0, 0, 0)
+	add_child(fade)
+	move_child(chapter, -1) # dungeon names show over the fade
+	move_child(narration, -1)
 	_build_end_screen()
 	var story := get_tree().get_first_node_in_group("story") as Story
 	if story:
@@ -201,12 +209,26 @@ func _draw() -> void:
 		_text(Vector2(11, 73), weather.look.name, DIM)
 		var temp_color := COLD if player.temperature < 5.0 else (HOT if player.temperature > 32.0 else DIM)
 		_text(Vector2(84, 73), "%d°" % roundi(player.temperature), temp_color)
-	_text(Vector2(11, 85), Biomes.name_at(player.global_position), TEXT)
+	var dungeons := get_tree().get_first_node_in_group("dungeons") as Dungeons
+	var place := Biomes.name_at(player.global_position)
+	if dungeons and dungeons.inside():
+		place = Dungeon.THEMES[dungeons.current.theme].name
+		_draw_boss_bar(dungeons.current.boss)
+	_text(Vector2(11, 85), place, TEXT)
 	_draw_skill_bar()
 	var story := get_tree().get_first_node_in_group("story") as Story
 	if story and story.warning() and int(Time.get_ticks_msec() / 400) % 3 != 0:
 		var left := ceili(story.time_left())
 		draw_string(FONT, Vector2(0, 22), "IMPACT  %d:%02d" % [left / 60, left % 60], HORIZONTAL_ALIGNMENT_CENTER, 640, 16, Fx.HURT)
+
+
+## A dungeon boss in the fight gets a big health bar at the top of the screen.
+func _draw_boss_bar(boss) -> void: # untyped: the boss may have been freed
+	if not is_instance_valid(boss) or (boss.bar_time <= 0.0 and boss.global_position.distance_to(player.global_position) > 160.0):
+		return
+	draw_string(FONT, Vector2(0, 30), boss.title, HORIZONTAL_ALIGNMENT_CENTER, 640, 8, Fx.HURT)
+	draw_rect(Rect2(220, 34, 200, 5), Color(0, 0, 0, 0.7))
+	draw_rect(Rect2(221, 35, roundf(198 * boss.health / boss.max_health), 3), Color(0.8, 0.16, 0.12))
 
 
 ## Skills on the keys 1-4 with their cooldowns, the level and the XP towards the next one (GAME_SPEC §150).

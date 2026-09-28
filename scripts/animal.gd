@@ -9,6 +9,10 @@ var anim := SpriteAnimator.new()
 var health := 1.0
 var max_health := 1.0
 var bar_time := 0.0 ## seconds the health bar stays visible after a hit
+var power := 1.0 ## multiplies its bites: elites and bosses hit harder
+var rank := 0 ## 0 normal, 1 elite, 2 boss: more XP and better loot (GAME_SPEC §150)
+var title := "" ## shown above elites and bosses
+var hostile := false ## dungeon beasts go for the dino whatever its size
 var _panic_from := Vector2.ZERO
 var _panic_left := 0.0
 

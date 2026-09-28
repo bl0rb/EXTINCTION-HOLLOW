@@ -37,7 +37,7 @@ func _can_hunt(animal) -> bool:
 		return false
 	if animal == player:
 		# the cave is a safe place
-		return not player.dead and (player.get_size() < get_size() or _provoked > 0.0) and not cave.overlaps_body(player)
+		return not player.dead and (player.get_size() < get_size() or _provoked > 0.0 or hostile) and not cave.overlaps_body(player)
 	return animal is Prey and not animal is Fish and animal.get_size() < get_size()
 
 
@@ -110,7 +110,7 @@ func _physics_process(delta: float) -> void:
 func _bite() -> void:
 	anim.play("attack", 0.22)
 	if victim == player:
-		player.take_damage(species.damage)
+		player.take_damage(species.damage * power)
 	else:
 		Fx.burst(Fx.BLOOD, get_parent(), victim.global_position + Vector2(0, -4))
 		victim.queue_free()

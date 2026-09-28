@@ -3,6 +3,7 @@ extends CharacterBody2D
 ## Player dino: click-to-move (double click sprints), fighting and hunting, needs, skills, items and upgrades.
 
 signal leveled_up
+signal respawned
 
 const PICK_TOLERANCE := 8.0 ## extra pixels so small animals are easy to click
 const SIZE_SCALE := 0.15 ## sprite growth per size upgrade
@@ -260,15 +261,17 @@ func strike(animal: Animal, amount: float, crit := false) -> bool:
 	var species := animal.species
 	var pos := animal.global_position
 	var size := animal.get_size()
+	var rank := animal.rank
 	if not animal.hit(amount, self, crit):
 		if crit:
 			Fx.hit_stop(get_tree(), 0.04)
 		return false
-	Fx.hit_stop(get_tree())
-	carried_xp += species.xp
-	gain_xp(species.xp)
+	Fx.hit_stop(get_tree(), 0.06 if rank == 0 else 0.2)
+	var xp: int = species.xp * [1, 3, 8][rank]
+	carried_xp += xp
+	gain_xp(xp)
 	hunger = minf(hunger + species.food, max_hunger)
-	Loot.drop(get_parent(), pos, size)
+	Loot.drop(get_parent(), pos, size + rank, [0, 1, 3][rank], [0, 1, 2][rank])
 	return true
 
 
@@ -374,6 +377,7 @@ func _respawn() -> void:
 	sprite.modulate = Color.WHITE
 	_apply_size()
 	dead = false
+	respawned.emit()
 
 
 func _apply_size() -> void:
