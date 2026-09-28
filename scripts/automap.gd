@@ -41,27 +41,11 @@ func _ready() -> void:
 
 ## The map picture: the ground seen from far above, with the water drawn in.
 func _world_image() -> Image:
-	var world := get_tree().get_first_node_in_group("world_map")
+	var world := get_tree().get_first_node_in_group("world_map") as World
 	if world:
 		return world.map_image(CELL)
-	var image: Image = load("res://assets/ground.png").get_image()
-	image.convert(Image.FORMAT_RGBA8)
-	image.resize(image.get_width() / CELL, image.get_height() / CELL, Image.INTERPOLATE_BILINEAR)
-	var water := Color(0.16, 0.34, 0.42)
-	for x in image.get_width():
-		var wx := (x + 0.5) * CELL
-		if wx >= Biomes.EAST:
-			continue
-		var half := Biomes.river_half(wx) / CELL
-		var cy := Biomes.river_y(wx) / CELL
-		for y in range(floori(cy - half), ceili(cy + half)):
-			image.set_pixel(x, y, water)
-	var pond := get_tree().root.get_node_or_null("Main/Pond") as Node2D
-	if pond:
-		for y in image.get_height():
-			for x in image.get_width():
-				if ((Vector2(x + 0.5, y + 0.5) * CELL - pond.global_position) / Vector2(115, 52)).length() < 1.0:
-					image.set_pixel(x, y, water)
+	var image := Image.create_empty(int(World.W) / CELL, int(World.H) / CELL, false, Image.FORMAT_RGBA8)
+	image.fill(HIDDEN)
 	return image
 
 

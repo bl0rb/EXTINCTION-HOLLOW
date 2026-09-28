@@ -25,7 +25,9 @@ func _process(delta: float) -> void:
 	if _check > 0.0 or not glow.visible:
 		return
 	_check = 0.25
-	if player.global_position.distance_to(global_position) < REACH and story.discover(id):
+	if story.found.has(id): # found in an earlier session
+		glow.visible = false
+	elif player.global_position.distance_to(global_position) < REACH and story.discover(id):
 		glow.visible = false
 		var hud := get_tree().get_first_node_in_group("hud")
 		if hud:

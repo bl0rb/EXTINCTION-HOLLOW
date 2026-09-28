@@ -162,6 +162,7 @@ func new_age() -> void:
 	file.set_value("story", "time", 0.0)
 	file.set_value("story", "found", {})
 	file.set_value("map", "explored", PackedByteArray())
+	file.set_value("world", "seed", randi_range(1, 999999)) # a new world for the new age
 	if not survived:
 		file.set_value("cave", "levels", {})
 		file.set_value("player", "banked_xp", 0)

@@ -4809,7 +4809,13 @@ Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diab
 | ARPG010 | Gegner | Elite-Tiere und Bosse pro Biom | Erledigt |
 | ARPG011 | Welt | zufällig erzeugte Höhlen als Dungeons | Erledigt |
 | ARPG012 | Karte | Automap mit Nebel: Minimap und große Karte (Taste M) | Erledigt |
-| ARPG013 | Welt | zufällige Oberwelt bei jedem neuen Zeitalter | Offen |
+| ARPG013 | Welt | zufällige Oberwelt bei jedem neuen Zeitalter | Erledigt |
+
+### Zufällige Welt
+
+- Die Oberwelt wird beim Start gebaut. Das erste Zeitalter spielt in der klassischen Welt, jedes weitere würfelt eine neue: Biom-Grenzen, Verlauf des Flusses und seine Furten, Klippe mit Höhle, Rampe, Teich mit Wasserfall und Bach, Wege, Vulkan, Skelett, Eisflächen und alle Pflanzen, Felsen, Dungeon-Eingänge und Lore-Orte.
+- Der Boden wird von einem Shader aus diesen Werten gemalt (gleiche Paletten, Dithering und Details wie die übrige Pixel-Art), Kollisionen und Navigation entstehen passend dazu.
+- Die Automap zeichnet ihr Bild aus derselben Welt; der Welt-Seed wird gespeichert, damit ein laufendes Zeitalter gleich bleibt.
 
 ### Dungeons
 

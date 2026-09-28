@@ -16,7 +16,6 @@ const LOOKS := {
 const CHANCES := {Kind.CLEAR: 5.0, Kind.RAIN: 3.0, Kind.HEAVY_RAIN: 1.0}
 const TRANSITION := 6.0 ## seconds to blend into new weather
 const BASE_TEMPERATURE := 24.0
-const VOLCANO := Vector2(2690, 250) ## warms its surroundings
 const DUNGEON_TEMPERATURE := 14.0
 const DUNGEON_LIGHT := Color(0.13, 0.12, 0.16) ## underground only what glows can be seen
 
@@ -37,6 +36,7 @@ var _emitters := {} ## Kind -> particle emitters
 @onready var _fog: ShaderMaterial = get_node("../Fog").material
 @onready var _cover: ShaderMaterial = get_node("../SnowCover").material
 @onready var _player: Player = get_tree().get_first_node_in_group("player")
+@onready var _volcano: Node2D = get_tree().get_first_node_in_group("volcano")
 
 
 func _ready() -> void:
@@ -64,7 +64,9 @@ func temperature_at(pos: Vector2) -> float:
 		return DUNGEON_TEMPERATURE # deep underground the weather does not reach
 	# every region has its own climate: the open steppe is cold at night, the snowfields freeze
 	var t: float = BASE_TEMPERATURE + look.temp + Biomes.TEMPERATURE[Biomes.at(pos)]
-	return t + 14.0 * clampf(1.0 - pos.distance_to(VOLCANO) / 420.0, 0.0, 1.0)
+	# the volcano warms its surroundings
+	var crater := _volcano.global_position + Vector2(0, -50) if _volcano else Vector2(INF, INF)
+	return t + 14.0 * clampf(1.0 - pos.distance_to(crater) / 420.0, 0.0, 1.0)
 
 
 func _process(delta: float) -> void:
