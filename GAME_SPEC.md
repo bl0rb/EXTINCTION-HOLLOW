@@ -4772,3 +4772,39 @@ Art später
 ### Neues Hauptziel
 
 > **Extinction Hollow soll aussehen wie ein hochwertiges atmosphärisches Pixel-Art-Indiespiel und nicht wie ein einfacher Retro-Prototyp.**
+
+---
+
+# 150. Plan-Update – Dino-ARPG
+
+Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diablo, Torchlight).
+
+### Beibehalten
+
+- Spieler-Dino, Welt, Biome, Wetter, Katastrophen, Meteor-Ziel
+- Höhle als sicherer Ort (wie eine Stadt): XP abgeben, speichern, Höhle und Größe aufwerten
+- Hunger, Temperatur, getragene XP gehen beim Tod verloren
+- Click-to-Move, 3/4-Top-Down-Pixel-Art
+
+### Neu
+
+- **Kampf mit Lebenspunkten:** Jede Tierart hat Lebenspunkte. Bisse verursachen Schaden, es gibt Schadenszahlen, Lebensbalken und kritische Treffer. Kleine Beute stirbt mit einem Biss, große Tiere brauchen viele. Der Dino darf jedes Tier angreifen; gebissene Raubtiere wehren sich unabhängig von der Größe.
+- **Skills auf den Tasten 1–4:** Schwanzschlag (Flächenschaden), Brüllen (verscheucht alles in der Nähe), Ansturm (rammt Richtung Mauszeiger), Raserei (schnelle, heilende Bisse). Skills kosten Ausdauer und haben einen Cooldown.
+- **Level und Skillbaum:** Jede XP zählt auch für das Charakter-Level (wird nie verloren). Jedes Level bringt +5 Leben und einen Talentpunkt. Drei Stufen im Skillbaum (ab Level 1, 3 und 6) mit Skills und passiven Talenten (Schaden, Rüstung, Crit, Ausdauer). Taste K.
+- **Loot und Ausrüstung:** Getötete Tiere lassen Trophäen fallen – Zähne, Klauen, Haut, Bernstein – in vier Seltenheiten (Common, Magic, Rare, Legendary) mit zufälligen Werten. Je größer das Tier, desto öfter und besser. Aufheben durch Drüberlaufen, Inventar mit 4 Slots und 12 Taschenplätzen (Taste I). Unnötige Items lassen sich gegen XP zerlegen.
+
+### Milestone 8b – ARPG-Kern
+
+| ID | Bereich | Task | Status |
+|---|---|---|---|
+| ARPG001 | Kampf | Lebenspunkte für alle Tierarten | Erledigt |
+| ARPG002 | Kampf | Schadenszahlen, Lebensbalken, kritische Treffer | Erledigt |
+| ARPG003 | Kampf | Raubtiere wehren sich, verwundete Beute flieht | Erledigt |
+| ARPG004 | Skills | vier Skills auf Tasten 1–4 mit Cooldown und Ausdauerkosten | Erledigt |
+| ARPG005 | Progression | Charakter-Level aus XP, Talentpunkte | Erledigt |
+| ARPG006 | Progression | Skillbaum mit drei Stufen | Erledigt |
+| ARPG007 | Loot | Item-Drops mit Seltenheiten und zufälligen Werten | Erledigt |
+| ARPG008 | Loot | Inventar, Ausrüstung, Zerlegen | Erledigt |
+| ARPG009 | Speichern | Level, Talente und Items speichern | Erledigt |
+| ARPG010 | Gegner | Elite-Tiere und Bosse pro Biom | Offen |
+| ARPG011 | Welt | zufällig erzeugte Höhlen als Dungeons | Offen |

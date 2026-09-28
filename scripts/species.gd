@@ -18,3 +18,4 @@ extends Resource
 @export var attack_range: float ## predators bite inside this distance
 @export var damage: int
 @export var attack_interval: float ## seconds between bites
+@export var health := 1.0 ## hit points against the player's bites (GAME_SPEC §150)

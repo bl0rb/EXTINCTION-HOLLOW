@@ -1,11 +1,20 @@
 class_name Player
 extends CharacterBody2D
-## Player dino: click-to-move (double click sprints), hunting, needs and upgrades.
+## Player dino: click-to-move (double click sprints), fighting and hunting, needs, skills, items and upgrades.
+
+signal leveled_up
 
 const PICK_TOLERANCE := 8.0 ## extra pixels so small animals are easy to click
 const SIZE_SCALE := 0.15 ## sprite growth per size upgrade
 const STRIDE := 11.0 ## pixels per walk frame
 const STUCK_TIME := 0.5 ## seconds without moving before giving up
+const BASE_DAMAGE := 10.0 ## per bite (GAME_SPEC §150)
+const ATTACK_INTERVAL := 0.6 ## seconds between bites
+const CRIT_CHANCE := 0.05
+const HEALTH_PER_LEVEL := 5.0
+const BAG_SIZE := 12
+const PICKUP_RANGE := 12.0 ## items are picked up by walking over them
+const DASH_SPEED := 360.0
 
 @export var base_speed := 90.0 ## pixels per second
 @export var base_sprint_speed := 140.0
@@ -23,20 +32,31 @@ const STUCK_TIME := 0.5 ## seconds without moving before giving up
 
 var carried_xp := 0 ## XP collected outside the cave, lost on death
 var banked_xp := 0 ## XP brought to the cave, kept permanently
+var total_xp := 0 ## all XP ever earned, decides the level
 var upgrades := {"health": 0, "speed": 0, "bite": 0, "size": 0}
+var talents := {"sweep": 1, "teeth": 0, "hide": 0, "roar": 0, "charge": 0, "instinct": 0, "frenzy": 0, "vigor": 0}
+var cooldowns := {"sweep": 0.0, "roar": 0.0, "charge": 0.0, "frenzy": 0.0}
+var bag: Array = [] ## items, see Loot.roll
+var equipped := {"teeth": {}, "claws": {}, "hide": {}, "amber": {}}
 var health := 100.0
 var stamina := 100.0
 var hunger := 100.0
 var dead := false
 var sprinting := false
 var temperature := 24.0
+var frenzy_left := 0.0
 var _burn_flash := 0.0
+var _stats := {}
 
 var target := Vector2.ZERO
 var moving := false
-var prey: Animal
+var prey: Animal ## the animal the dino is going for
 var anim := SpriteAnimator.new()
 var _stuck := 0.0
+var _attack_cd := 0.0
+var _dash_left := 0.0
+var _dash_dir := Vector2.ZERO
+var _dash_hit: Array = []
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var shadow: Sprite2D = $Shadow
@@ -50,7 +70,12 @@ var _stuck := 0.0
 
 func _ready() -> void:
 	banked_xp = SaveGame.read("player", "banked_xp", 0)
+	total_xp = SaveGame.read("player", "total_xp", 0)
 	upgrades.merge(SaveGame.read("player", "upgrades", {}), true)
+	talents.merge(SaveGame.read("player", "talents", {}), true)
+	bag = SaveGame.read("player", "bag", [])
+	equipped.merge(SaveGame.read("player", "equipped", {}), true)
+	_update_stats()
 	health = max_health()
 	stamina = max_stamina
 	hunger = max_hunger
@@ -62,6 +87,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		var mouse := event as InputEventMouseButton
 		click_at(get_global_mouse_position(), mouse != null and mouse.double_click)
 		get_viewport().set_input_as_handled()
+	for i in Talents.SKILLS.size():
+		if event.is_action_pressed("skill_%d" % (i + 1)):
+			use_skill(Talents.SKILLS[i], get_global_mouse_position())
+			get_viewport().set_input_as_handled()
 
 
 ## Size class (GAME_SPEC §8): the player starts small and grows with size upgrades.
@@ -69,20 +98,51 @@ func get_size() -> int:
 	return 2 + upgrades.size
 
 
+func level() -> int:
+	return Talents.level_for(total_xp)
+
+
+## Worn items add up (GAME_SPEC §150).
+func stat(id: String) -> float:
+	return _stats.get(id, 0.0)
+
+
 func max_health() -> float:
-	return base_max_health + Upgrades.PLAYER.health.step * upgrades.health
+	return base_max_health + Upgrades.PLAYER.health.step * upgrades.health + HEALTH_PER_LEVEL * (level() - 1) + stat("health")
 
 
 func speed() -> float:
-	return base_speed + Upgrades.PLAYER.speed.step * upgrades.speed
+	return base_speed + Upgrades.PLAYER.speed.step * upgrades.speed + stat("speed")
 
 
 func sprint_speed() -> float:
-	return base_sprint_speed + Upgrades.PLAYER.speed.step * 1.5 * upgrades.speed
+	return base_sprint_speed + Upgrades.PLAYER.speed.step * 1.5 * upgrades.speed + stat("speed")
 
 
 func bite_range() -> float:
 	return base_bite_range + Upgrades.PLAYER.bite.step * upgrades.bite
+
+
+## Bigger dinos with sharper teeth bite harder.
+func damage() -> float:
+	return (BASE_DAMAGE + stat("damage")) * (1.0 + 0.25 * upgrades.size) * (1.0 + 0.1 * talents.teeth)
+
+
+func crit_chance() -> float:
+	return CRIT_CHANCE + 0.03 * talents.instinct + stat("crit") / 100.0
+
+
+func attack_interval() -> float:
+	return ATTACK_INTERVAL / (1.0 + stat("attack_speed") / 100.0 + (0.6 if frenzy_left > 0.0 else 0.0))
+
+
+## Share of incoming bites the hide and armour keep off.
+func armor() -> float:
+	return minf(0.04 * talents.hide + stat("armor") / 100.0, 0.75)
+
+
+func life_on_hit() -> float:
+	return stat("life_hit") + (2.0 + 2.0 * talents.frenzy if frenzy_left > 0.0 else 0.0)
 
 
 func upgrade_cost(id: String) -> int:
@@ -112,10 +172,13 @@ func click_at(point: Vector2, sprint := false) -> void:
 	target = point
 	sprinting = sprint
 	_stuck = 0.0
-	# clicking an animal small enough to eat selects it as prey, anything else just walks there
+	# clicking an animal attacks it, clicking an item walks over to pick it up, anything else just walks there
 	prey = _prey_at(point)
+	var drop := _drop_at(point)
 	var cave := get_tree().get_first_node_in_group("cave") as Cave
-	if prey == null and cave and cave.is_clicked(point):
+	if prey == null and drop:
+		target = drop.global_position
+	elif prey == null and cave and cave.is_clicked(point):
 		# clicking the cave walks right into its entrance
 		target = cave.global_position
 	moving = true
@@ -127,12 +190,131 @@ func enter_cave() -> void:
 	carried_xp = 0
 
 
+## Every kill brings the dino closer to the next level; each level heals and grants a talent point.
+func gain_xp(amount: int) -> void:
+	var before := level()
+	total_xp += roundi(amount * (1.0 + stat("xp") / 100.0))
+	if level() > before:
+		health = max_health()
+		Fx.text(self, global_position + Vector2(0, -36), "LEVEL %d" % level(), Fx.GOLD, 16)
+		leveled_up.emit()
+
+
+func talent_points() -> int:
+	var spent := 0
+	for id: String in talents:
+		spent += talents[id]
+	return level() - spent # the tail sweep comes for free at level 1
+
+
+func can_learn(id: String) -> bool:
+	return talent_points() > 0 and talents[id] < Talents.MAX_RANK and level() >= Talents.TIER_LEVEL[Talents.DEFS[id].tier]
+
+
+func learn(id: String) -> bool:
+	if not can_learn(id):
+		return false
+	talents[id] += 1
+	return true
+
+
+## Skills on the keys 1-4 (GAME_SPEC §150); they cost stamina and have a cooldown.
+func use_skill(id: String, aim: Vector2) -> bool:
+	var def: Dictionary = Talents.DEFS[id]
+	var cost: float = def.stamina * (1.0 - 0.08 * talents.vigor)
+	if dead or talents[id] == 0 or cooldowns[id] > 0.0 or stamina < cost or _dash_left > 0.0:
+		return false
+	stamina -= cost
+	cooldowns[id] = def.cooldown
+	var rank: int = talents[id]
+	match id:
+		"sweep":
+			anim.play("attack", 0.2)
+			camera.shake(1.5, 0.15)
+			for animal in _animals_near(global_position, 34.0 + 4.0 * rank):
+				strike(animal, damage() * (1.0 + 0.25 * rank))
+		"roar":
+			anim.play("attack", 0.35)
+			camera.shake(2.5, 0.35)
+			Fx.text(self, global_position + Vector2(0, -34), "ROAR", Fx.GOLD, 16)
+			for animal in _animals_near(global_position, 130.0):
+				animal.panic(global_position, 2.0 + 0.5 * rank)
+		"charge":
+			_dash_dir = (aim - global_position).normalized()
+			if _dash_dir == Vector2.ZERO:
+				_dash_dir = Vector2(anim.facing, 0)
+			_dash_left = (90.0 + 15.0 * rank) / DASH_SPEED
+			_dash_hit.clear()
+			prey = null
+			moving = false
+		"frenzy":
+			frenzy_left = 5.0 + rank
+			Fx.text(self, global_position + Vector2(0, -34), "FRENZY", Fx.HURT, 16)
+	return true
+
+
+## Bites an animal; eats it and collects its XP, food and loot when it dies. Returns true on a kill.
+func strike(animal: Animal, amount: float, crit := false) -> bool:
+	health = minf(health + life_on_hit(), max_health())
+	Fx.burst(Fx.BLOOD, get_parent(), animal.global_position + Vector2(0, -4))
+	var species := animal.species
+	var pos := animal.global_position
+	var size := animal.get_size()
+	if not animal.hit(amount, self, crit):
+		if crit:
+			Fx.hit_stop(get_tree(), 0.04)
+		return false
+	Fx.hit_stop(get_tree())
+	carried_xp += species.xp
+	gain_xp(species.xp)
+	hunger = minf(hunger + species.food, max_hunger)
+	Loot.drop(get_parent(), pos, size)
+	return true
+
+
+func pick_up(drop: Node2D) -> bool:
+	if bag.size() >= BAG_SIZE:
+		return false
+	bag.append(drop.item)
+	Fx.text(self, drop.global_position + Vector2(0, -14), drop.item.name, Loot.COLORS[drop.item.rarity])
+	drop.queue_free()
+	return true
+
+
+## Wears an item from the bag; whatever was worn in its slot goes back into the bag.
+func equip(index: int) -> void:
+	var item: Dictionary = bag[index]
+	var old: Dictionary = equipped[item.slot]
+	equipped[item.slot] = item
+	bag.remove_at(index)
+	if not old.is_empty():
+		bag.insert(index, old)
+	_update_stats()
+
+
+func unequip(slot: String) -> bool:
+	if equipped[slot].is_empty() or bag.size() >= BAG_SIZE:
+		return false
+	bag.append(equipped[slot])
+	equipped[slot] = {}
+	_update_stats()
+	return true
+
+
+## Items nobody needs are worth a little XP.
+func salvage(index: int) -> void:
+	carried_xp += Loot.VALUE[bag[index].rarity]
+	bag.remove_at(index)
+
+
 func take_damage(amount: float) -> void:
 	if dead:
 		return
+	amount *= 1.0 - armor()
 	health -= amount
 	camera.shake(3.0, 0.25)
 	Fx.burst(Fx.BLOOD, get_parent(), global_position + Vector2(0, -12))
+	Fx.number(self, global_position + Vector2(0, -26), amount, Fx.HURT)
 	Fx.hit_stop(get_tree(), 0.08)
 	sprite.modulate = Color(1.0, 0.25, 0.2)
 	create_tween().tween_property(sprite, "modulate", Color.WHITE, 0.25)
@@ -160,12 +342,18 @@ func move_factor() -> float:
 	return weather * (0.9 if temperature < 5.0 else 1.0) * Biomes.FOOTING[Biomes.at(global_position)]
 
 
+func _update_stats() -> void:
+	_stats = Loot.total(equipped)
+	health = minf(health, max_health())
+
+
 func _die() -> void:
 	if dead:
 		return
 	dead = true
 	moving = false
 	prey = null
+	_dash_left = 0.0
 	dust.emitting = false
 	# XP that was not brought home is lost
 	carried_xp = 0
@@ -201,6 +389,16 @@ func _physics_process(delta: float) -> void:
 	_update_needs(delta)
 	if dead:
 		return
+	for id: String in cooldowns:
+		cooldowns[id] = maxf(cooldowns[id] - delta, 0.0)
+	frenzy_left = maxf(frenzy_left - delta, 0.0)
+	_attack_cd -= delta
+	for drop: Node2D in get_tree().get_nodes_in_group("loot"):
+		if drop.global_position.distance_to(global_position) < PICKUP_RANGE and not drop.is_queued_for_deletion():
+			pick_up(drop)
+	if _dash_left > 0.0:
+		_dash(delta)
+		return
 	if is_instance_valid(prey):
 		# keep chasing the selected prey wherever it runs
 		target = prey.global_position
@@ -213,6 +411,13 @@ func _physics_process(delta: float) -> void:
 	if not moving or anim.busy():
 		velocity = Vector2.ZERO
 		_animate(Vector2.ZERO, 0.0, delta)
+		return
+	if prey and global_position.distance_to(prey.global_position) <= bite_range() + prey.radius:
+		# in reach: stand and bite whenever the jaws are ready
+		velocity = Vector2.ZERO
+		_animate(prey.global_position - global_position, 0.0, delta)
+		if _attack_cd <= 0.0:
+			_attack()
 		return
 
 	# follow the navigation path around obstacles, speed up and ease into the target
@@ -241,8 +446,19 @@ func _physics_process(delta: float) -> void:
 		if _stuck > STUCK_TIME:
 			moving = false
 
-	if prey and global_position.distance_to(prey.global_position) <= bite_range() + prey.radius:
-		_bite()
+
+## Charge: rams forward and bites everything in the way once.
+func _dash(delta: float) -> void:
+	_dash_left -= delta
+	velocity = _dash_dir * DASH_SPEED
+	_animate(velocity, velocity.length() * delta / STRIDE, delta)
+	move_and_slide()
+	for animal in _animals_near(global_position, 14.0):
+		if not animal in _dash_hit:
+			_dash_hit.append(animal)
+			strike(animal, damage() * (1.2 + 0.3 * talents.charge))
+	if _dash_left <= 0.0:
+		velocity = Vector2.ZERO
 
 
 ## Hunger drains while moving outside the cave (GAME_SPEC §7); stamina is spent by sprinting and recovers otherwise.
@@ -255,7 +471,8 @@ func _update_needs(delta: float) -> void:
 	# the cave fire keeps it warm inside
 	temperature = maxf(_weather.temperature_at(global_position), 20.0) if in_cave else _weather.temperature_at(global_position)
 	if not (sprinting and moving and stamina > 0.0):
-		stamina = minf(stamina + stamina_regen * (0.5 if temperature < 5.0 else 1.0) * delta, max_stamina)
+		var recovery: float = stamina_regen * (0.5 if temperature < 5.0 else 1.0) * (1.0 + 0.2 * talents.vigor)
+		stamina = minf(stamina + recovery * delta, max_stamina)
 	var freezing := temperature < -4.0 and not in_cave
 	if freezing:
 		health -= freeze_damage * delta
@@ -276,18 +493,24 @@ func _animate(direction: Vector2, steps: float, delta: float) -> void:
 	anim.update(sprite, direction, steps, delta)
 
 
-## Snap, then stand and chew for a moment.
-func _bite() -> void:
-	carried_xp += prey.species.xp
-	hunger = minf(hunger + prey.species.food, max_hunger)
+## Snap; the kill is followed by a moment of chewing.
+func _attack() -> void:
+	_attack_cd = attack_interval()
 	anim.update(sprite, prey.global_position - global_position, 0.0, 0.0)
 	anim.play("attack", 0.16)
-	anim.then("eat", 0.5)
-	Fx.burst(Fx.BLOOD, get_parent(), prey.global_position + Vector2(0, -4))
-	Fx.hit_stop(get_tree())
-	prey.queue_free()
-	prey = null
-	moving = false
+	var crit := randf() < crit_chance()
+	if strike(prey, damage() * (2.0 if crit else 1.0), crit):
+		anim.then("eat", 0.5)
+		prey = null
+		moving = false
+
+
+func _animals_near(pos: Vector2, reach: float) -> Array:
+	var near := []
+	for animal: Animal in get_tree().get_nodes_in_group("prey") + get_tree().get_nodes_in_group("predator"):
+		if not animal.is_queued_for_deletion() and animal.global_position.distance_to(pos) <= reach + animal.radius:
+			near.append(animal)
+	return near
 
 
 func _prey_at(point: Vector2) -> Animal:
@@ -295,7 +518,14 @@ func _prey_at(point: Vector2) -> Animal:
 	var best_dist := INF
 	for animal: Animal in get_tree().get_nodes_in_group("prey") + get_tree().get_nodes_in_group("predator"):
 		var dist := point.distance_to(animal.sprite.global_position)
-		if animal.get_size() < get_size() and dist <= animal.radius + PICK_TOLERANCE and dist < best_dist:
+		if dist <= animal.radius + PICK_TOLERANCE and dist < best_dist:
 			best = animal
 			best_dist = dist
 	return best
+
+
+func _drop_at(point: Vector2) -> Node2D:
+	for drop: Node2D in get_tree().get_nodes_in_group("loot"):
+		if point.distance_to(drop.global_position + Vector2(0, -6)) <= 10.0:
+			return drop
+	return null

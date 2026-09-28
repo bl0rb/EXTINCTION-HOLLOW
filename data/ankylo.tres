@@ -18,3 +18,4 @@ idle_time = 4.0
 attack_range = 26.0
 damage = 12
 attack_interval = 1.2
+health = 110.0

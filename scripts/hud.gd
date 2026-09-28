@@ -18,8 +18,12 @@ const ICONS := {
 	"banked": [Color(0.72, 0.68, 0.6), ["..XXX..", ".XXXXX.", "XX...XX", "XX...XX", "XX...XX", "XX...XX"]],
 }
 
+const SKILL_ICONS := preload("res://assets/talents.png")
+
 var menu: PanelContainer
 var warning: Label
+var inventory: Control
+var skill_tree: Control
 var _title: Label
 var _rows := {} ## "player:health" -> [level label, buy button]
 
@@ -46,6 +50,21 @@ func _ready() -> void:
 	var disasters := get_tree().get_first_node_in_group("disasters")
 	if disasters:
 		disasters.warning.connect(show_warning)
+	inventory = Control.new()
+	inventory.set_script(load("res://scripts/inventory_panel.gd"))
+	inventory.position = Vector2(6, 96)
+	add_child(inventory)
+	skill_tree = Control.new()
+	skill_tree.set_script(load("res://scripts/talent_panel.gd"))
+	skill_tree.position = Vector2(640 - 158, 96)
+	add_child(skill_tree)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("inventory"):
+		inventory.visible = not inventory.visible
+	elif event.is_action_pressed("talents"):
+		skill_tree.visible = not skill_tree.visible
 
 
 ## Disaster warnings (GAME_SPEC §138): the text drifts in, lingers and fades away.
@@ -80,6 +99,35 @@ func _draw() -> void:
 		var temp_color := COLD if player.temperature < 5.0 else (HOT if player.temperature > 32.0 else DIM)
 		_text(Vector2(84, 73), "%d°" % roundi(player.temperature), temp_color)
 	_text(Vector2(11, 85), Biomes.name_at(player.global_position), TEXT)
+	_draw_skill_bar()
+
+
+## Skills on the keys 1-4 with their cooldowns, the level and the XP towards the next one (GAME_SPEC §150).
+func _draw_skill_bar() -> void:
+	var ids: Array = Talents.DEFS.keys()
+	var x0 := 277.0
+	for i in Talents.SKILLS.size():
+		var id: String = Talents.SKILLS[i]
+		var def: Dictionary = Talents.DEFS[id]
+		var rect := Rect2(x0 + i * 22, 330, 20, 20)
+		var learned: bool = player.talents[id] > 0
+		var affordable: bool = player.stamina >= def.stamina * (1.0 - 0.08 * player.talents.vigor)
+		draw_rect(rect, PANEL)
+		draw_texture_rect_region(SKILL_ICONS, Rect2(rect.position + Vector2(2, 2), Vector2(16, 16)), Rect2(ids.find(id) * 16, 0, 16, 16),
+			Color.WHITE if learned and affordable else Color(0.35, 0.35, 0.35))
+		var cooling: float = player.cooldowns[id] / def.cooldown
+		if cooling > 0.0:
+			draw_rect(Rect2(rect.position, Vector2(20, roundf(20 * cooling))), Color(0, 0, 0, 0.65))
+		draw_rect(Rect2(rect.position + Vector2(0.5, 0.5), rect.size - Vector2.ONE), BORDER if learned else Color(0.3, 0.3, 0.3, 0.5), false, 1.0)
+		_text(rect.position + Vector2(1, 7), str(i + 1), TEXT if learned else DIM)
+	var level := player.level()
+	_text(Vector2(x0 - 34, 344), "LV %d" % level, AMBER)
+	var from := Talents.xp_for(level)
+	var ratio := 1.0 if level >= Talents.MAX_LEVEL else float(player.total_xp - from) / (Talents.xp_for(level + 1) - from)
+	draw_rect(Rect2(x0, 353, 86, 2), Color(0, 0, 0, 0.6))
+	draw_rect(Rect2(x0, 353, roundf(86 * ratio), 2), AMBER)
+	if player.talent_points() > 0 and int(Time.get_ticks_msec() / 500) % 2 == 0:
+		_text(Vector2(x0 + 92, 344), "+%d  K" % player.talent_points(), AMBER)
 
 
 func _bar(y: float, icon: String, ratio: float, color: Color, value: float) -> void:

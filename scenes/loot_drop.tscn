@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/loot_drop.gd" id="1_drop"]
+[ext_resource type="Texture2D" path="res://assets/shadow.png" id="2_shadow"]
+[ext_resource type="Texture2D" path="res://assets/items.png" id="3_items"]
+[ext_resource type="Texture2D" path="res://world/light_radial.tres" id="4_light"]
+
+[node name="LootDrop" type="Node2D"]
+script = ExtResource("1_drop")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.3)
+texture = ExtResource("2_shadow")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(0, -7)
+texture = ExtResource("3_items")
+hframes = 4
+
+[node name="Glow" type="PointLight2D" parent="."]
+position = Vector2(0, -6)
+texture = ExtResource("4_light")
+texture_scale = 0.45

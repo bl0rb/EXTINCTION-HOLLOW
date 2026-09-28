@@ -17,3 +17,4 @@ vision_radius = 130.0
 attack_range = 20.0
 damage = 14
 attack_interval = 0.8
+health = 60.0
