@@ -7,6 +7,8 @@ const SLOT_NAMES := {"teeth": "Teeth", "claws": "Claws", "hide": "Hide", "amber"
 const RARITY_NAMES := ["Common", "Magic", "Rare", "Legendary"]
 const COLORS := [Color(0.8, 0.78, 0.72), Color(0.45, 0.62, 1.0), Color(1.0, 0.86, 0.3), Color(1.0, 0.52, 0.12)]
 const VALUE := [2, 5, 12, 30] ## XP for salvaging an item
+const BETTER := Color(0.45, 0.92, 0.4) ## an item beats what is worn
+const WORSE := Color(1.0, 0.35, 0.3)
 const BASES := {
 	"teeth": ["Tooth", "Fang", "Sabre Tooth"],
 	"claws": ["Claw", "Talon", "Sickle Claw"],
@@ -64,6 +66,48 @@ static func total(equipped: Dictionary) -> Dictionary:
 		for id: String in stats:
 			sum[id] = sum.get(id, 0.0) + stats[id]
 	return sum
+
+
+## How wearing an item would change the dino's stats against what it wears in that slot: stat id -> difference.
+static func compare(item: Dictionary, worn: Dictionary) -> Dictionary:
+	var diff := {}
+	var old: Dictionary = worn.get("stats", {})
+	for id: String in item.stats:
+		diff[id] = int(item.stats[id] - old.get(id, 0))
+	for id: String in old:
+		if not item.stats.has(id):
+			diff[id] = -int(old[id])
+	return diff
+
+
+## 1 if an item is better than what is worn in its slot, -1 if worse, 0 if about the same.
+## Every stat counts in proportion to its roll range, so +3 damage weighs like +3% crit but more than +3 health.
+static func verdict(item: Dictionary, worn: Dictionary) -> int:
+	if worn.is_empty():
+		return 1
+	var score := 0.0
+	var diff := compare(item, worn)
+	for id: String in diff:
+		score += diff[id] / STATS[id][1]
+	return 0 if absf(score) < 0.25 else (1 if score > 0.0 else -1)
+
+
+## One stat change as text, e.g. "+3 damage" or "-2% armour".
+static func change_text(id: String, amount: int) -> String:
+	return ("-" if amount < 0 else "+") + (STAT_TEXT[id] % absi(amount)).substr(1)
+
+
+## A small pixel arrow: green and up for a better item, red and down for a worse one, nothing for about the same.
+static func draw_arrow(canvas: CanvasItem, at: Vector2, direction: int) -> void:
+	if direction == 0:
+		return
+	var p := at.round()
+	for row in 3:
+		var y := row if direction > 0 else 2 - row
+		canvas.draw_rect(Rect2(p + Vector2(-row - 1, y), Vector2(3 + 2 * row, 2)), Color(0.02, 0.02, 0.03, 0.8))
+	for row in 3:
+		var y := row if direction > 0 else 2 - row
+		canvas.draw_rect(Rect2(p + Vector2(-row, y), Vector2(1 + 2 * row, 1)), Loot.BETTER if direction > 0 else Loot.WORSE)
 
 
 static func describe(item: Dictionary) -> PackedStringArray:

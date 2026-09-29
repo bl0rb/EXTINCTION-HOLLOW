@@ -56,6 +56,7 @@ var anim := SpriteAnimator.new()
 var _stuck := 0.0
 var _attack_cd := 0.0
 var _dash_left := 0.0
+var _full_warning := 0.0 ## seconds until "bag full" shows again
 var _dash_dir := Vector2.ZERO
 var _dash_hit: Array = []
 
@@ -276,6 +277,13 @@ func strike(animal: Animal, amount: float, crit := false) -> bool:
 	return true
 
 
+## Tells the player that nothing more fits into the bag, at most every two seconds.
+func warn_bag_full() -> void:
+	if _full_warning <= 0.0:
+		_full_warning = 2.0
+		Fx.text(self, global_position + Vector2(0, -30), "BAG FULL", Fx.HURT)
+
+
 func pick_up(drop: Node2D) -> bool:
 	if bag.size() >= BAG_SIZE:
 		return false
@@ -398,9 +406,11 @@ func _physics_process(delta: float) -> void:
 		cooldowns[id] = maxf(cooldowns[id] - delta, 0.0)
 	frenzy_left = maxf(frenzy_left - delta, 0.0)
 	_attack_cd -= delta
+	_full_warning -= delta
 	for drop: Node2D in get_tree().get_nodes_in_group("loot"):
 		if drop.global_position.distance_to(global_position) < PICKUP_RANGE and not drop.is_queued_for_deletion():
-			pick_up(drop)
+			if not pick_up(drop):
+				warn_bag_full()
 	if _dash_left > 0.0:
 		_dash(delta)
 		return
