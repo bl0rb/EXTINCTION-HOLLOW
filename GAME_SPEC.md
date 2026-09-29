@@ -4859,6 +4859,7 @@ Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diab
 - **Alle Sprites haben die doppelte Pixeldichte**: sie werden mit doppelter Auflösung erzeugt (glattere Konturen, feinere Schattierung, feineres Dithering, feinere Details) und mit halber Größe angezeigt. Auf 2560 × 1440 ist ein Texel damit 2 × 2 Bildschirmpixel statt 4 × 4.
 - Boden, Dungeons, Nebel und Schneedecke werden ebenfalls mit doppelter Dichte gemalt; Partikel (Regen, Blätter, Schnee, Asche, Glut) sind feiner.
 - Die Pixel-Schrift des UI bleibt bewusst gröber.
+- Der Spieler-Dino hat ein eigenes Helden-Sprite: rostorange mit cremefarbenem Bauch, Tigerstreifen nur auf dem Rücken und einem türkisen Stachelkamm, damit er sich vom grünen Dschungel abhebt. Dazu kommen kleine Arme, ein kräftiger Oberschenkel, schmaler werdende Beine, Brauenwulst und Zähne. Die Schattierung ist gerundet, das Licht kommt von links oben.
 
 ---
 
