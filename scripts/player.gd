@@ -152,7 +152,7 @@ func upgrade_cost(id: String) -> int:
 
 
 func can_upgrade(id: String) -> bool:
-	return upgrades[id] < Upgrades.PLAYER[id].max and banked_xp >= upgrade_cost(id)
+	return upgrades[id] < Upgrades.PLAYER[id].max and banked_xp >= upgrade_cost(id) and Upgrades.rooted(Upgrades.PLAYER, id, upgrades)
 
 
 func buy_upgrade(id: String) -> bool:
@@ -210,7 +210,8 @@ func talent_points() -> int:
 
 
 func can_learn(id: String) -> bool:
-	return talent_points() > 0 and talents[id] < Talents.MAX_RANK and level() >= Talents.TIER_LEVEL[Talents.DEFS[id].tier]
+	return talent_points() > 0 and talents[id] < Talents.MAX_RANK and level() >= Talents.TIER_LEVEL[Talents.DEFS[id].tier] \
+		and Talents.rooted(id, talents)
 
 
 func learn(id: String) -> bool:

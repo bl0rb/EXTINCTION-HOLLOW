@@ -1,9 +1,14 @@
 extends Control
-## Skill tree (GAME_SPEC §150): three tiers of skills and traits; a click spends a talent point.
+## Skill tree (GAME_SPEC §150): three branches over three tiers of skills and traits, joined by threads;
+## a click spends a talent point on a talent whose thread leads to it.
 
 const FONT := preload("res://assets/fonts/silkscreen-latin-400-normal.woff2")
 const ICONS := preload("res://assets/talents.png")
-const ROWS := [["sweep", "teeth", "hide"], ["roar", "charge", "instinct"], ["frenzy", "vigor"]]
+const LAYOUT := { ## column, row of each talent
+	"sweep": Vector2(0, 0), "teeth": Vector2(1, 0), "hide": Vector2(2, 0),
+	"charge": Vector2(0, 1), "instinct": Vector2(1, 1), "roar": Vector2(2, 1),
+	"frenzy": Vector2(0.5, 2), "vigor": Vector2(2, 2),
+}
 const TEXT := Color(0.86, 0.83, 0.75)
 const DIM := Color(0.56, 0.55, 0.52)
 const PANEL := Color(0.03, 0.035, 0.05, 0.9)
@@ -31,11 +36,8 @@ func _notification(what: int) -> void:
 
 
 func cell_rect(id: String) -> Rect2:
-	for r in ROWS.size():
-		var c: int = ROWS[r].find(id)
-		if c >= 0:
-			return Rect2(8 + c * 48, 22 + r * 34, 20, 20)
-	return Rect2()
+	var at: Vector2 = LAYOUT[id]
+	return Rect2(8 + at.x * 48, 22 + at.y * 34, 20, 20)
 
 
 func _id_at(pos: Vector2) -> String:
@@ -63,6 +65,9 @@ func _draw() -> void:
 	_text(Vector2(122, 12), "[K]", DIM)
 	var ids: Array = Talents.DEFS.keys()
 	for id: String in Talents.DEFS:
+		for parent: String in Talents.DEFS[id].get("needs", []):
+			SkillTree.thread(self, cell_rect(parent), cell_rect(id), SkillTree.thread_color(player.talents[parent], player.talents[id]))
+	for id: String in Talents.DEFS:
 		var rect := cell_rect(id)
 		var open: bool = player.level() >= Talents.TIER_LEVEL[Talents.DEFS[id].tier]
 		var rank: int = player.talents[id]
@@ -83,6 +88,8 @@ func _tooltip(id: String) -> void:
 	var lines := PackedStringArray([def.info, "rank %d/%d" % [player.talents[id], Talents.MAX_RANK]])
 	if def.has("cooldown"):
 		lines.append("key %d  %d stamina  %ds" % [Talents.SKILLS.find(id) + 1, roundi(def.stamina), roundi(def.cooldown)])
+	if not Talents.rooted(id, player.talents):
+		lines.append("needs " + " or ".join(PackedStringArray(def.needs.map(func(parent: String) -> String: return Talents.DEFS[parent].name))))
 	if player.level() < Talents.TIER_LEVEL[def.tier]:
 		lines.append("needs level %d" % Talents.TIER_LEVEL[def.tier])
 	elif player.can_learn(id):
