@@ -21,6 +21,7 @@ const ICONS := {
 const SKILL_ICONS := preload("res://assets/talents.png")
 
 var menu: Control ## the cave's upgrade tree
+var pause_menu: PanelContainer ## Esc: resume or switch to another save
 var warning: Label
 var inventory: Control
 var skill_tree: Control
@@ -40,11 +41,12 @@ var _narration_tween: Tween
 func _ready() -> void:
 	add_to_group("hud")
 	mouse_filter = MOUSE_FILTER_IGNORE
-	theme = _make_theme()
+	theme = UiTheme.make()
 	automap = Control.new()
 	automap.set_script(load("res://scripts/automap.gd"))
 	add_child(automap)
 	_build_menu()
+	_build_pause_menu()
 	cave.player_entered.connect(_open_menu)
 	cave.player_exited.connect(menu.hide)
 	warning = Label.new()
@@ -93,7 +95,13 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("inventory"):
+	if event.is_action_pressed("ui_cancel"):
+		if inventory.visible or skill_tree.visible: # Esc closes open panels first
+			inventory.hide()
+			skill_tree.hide()
+		else:
+			open_pause_menu()
+	elif event.is_action_pressed("inventory"):
 		inventory.visible = not inventory.visible
 	elif event.is_action_pressed("talents"):
 		skill_tree.visible = not skill_tree.visible
@@ -251,6 +259,7 @@ func _draw_skill_bar() -> void:
 		draw_rect(Rect2(rect.position + Vector2(0.5, 0.5), rect.size - Vector2.ONE), BORDER if learned else Color(0.3, 0.3, 0.3, 0.5), false, 1.0)
 		_text(rect.position + Vector2(1, 7), str(i + 1), TEXT if learned else DIM)
 	var level := player.level()
+	draw_string(FONT, Vector2(x0 - 146, 344), player.dino_name.to_upper(), HORIZONTAL_ALIGNMENT_RIGHT, 108, FONT_SIZE, TEXT)
 	_text(Vector2(x0 - 34, 344), "LV %d" % level, AMBER)
 	var from := Talents.xp_for(level)
 	var ratio := 1.0 if level >= Talents.MAX_LEVEL else float(player.total_xp - from) / (Talents.xp_for(level + 1) - from)
@@ -291,35 +300,51 @@ func _open_menu() -> void:
 	menu.show()
 
 
-func _make_theme() -> Theme:
-	var t := Theme.new()
-	t.default_font = FONT
-	t.default_font_size = FONT_SIZE
-	var panel := StyleBoxFlat.new()
-	panel.bg_color = Color(0.03, 0.035, 0.05, 0.88)
-	panel.border_color = Color(0.62, 0.42, 0.22, 0.85)
-	panel.set_border_width_all(1)
-	panel.set_content_margin_all(6)
-	t.set_stylebox("panel", "PanelContainer", panel)
-	var looks := {
-		"normal": [Color(0.12, 0.09, 0.06), Color(0.55, 0.38, 0.2)],
-		"hover": [Color(0.22, 0.15, 0.08), Color(0.9, 0.62, 0.3)],
-		"pressed": [Color(0.32, 0.2, 0.08), Color(1.0, 0.72, 0.32)],
-		"disabled": [Color(0.07, 0.07, 0.08), Color(0.25, 0.25, 0.27)],
-	}
-	for look: String in looks:
-		var box := StyleBoxFlat.new()
-		box.bg_color = looks[look][0]
-		box.border_color = looks[look][1]
-		box.set_border_width_all(1)
-		box.content_margin_left = 4
-		box.content_margin_right = 4
-		box.content_margin_top = 0
-		box.content_margin_bottom = 1
-		t.set_stylebox(look, "Button", box)
-	t.set_stylebox("focus", "Button", StyleBoxEmpty.new())
-	t.set_color("font_color", "Label", TEXT)
-	t.set_color("font_color", "Button", AMBER)
-	t.set_color("font_hover_color", "Button", Color(1.0, 0.85, 0.55))
-	t.set_color("font_disabled_color", "Button", DIM)
-	return t
+## The game pauses; the dino can go on or make way for another save (GAME_SPEC §55).
+func open_pause_menu() -> void:
+	var in_cave := cave.overlaps_body(player)
+	pause_menu.get_node("Box/Hint").text = "your dino is safe in the cave" if in_cave else "progress since the last cave visit is lost"
+	pause_menu.show()
+	get_tree().paused = true
+
+
+func resume() -> void:
+	pause_menu.hide()
+	get_tree().paused = false
+
+
+## Back to the start screen; inside the cave the game is saved first.
+func switch_save() -> void:
+	if cave.overlaps_body(player):
+		SaveGame.store(player, cave)
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/title.tscn")
+
+
+func _build_pause_menu() -> void:
+	pause_menu = PanelContainer.new()
+	pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
+	pause_menu.hide()
+	add_child(pause_menu)
+	var box := VBoxContainer.new()
+	box.name = "Box"
+	box.add_theme_constant_override("separation", 5)
+	pause_menu.add_child(box)
+	var title := Label.new()
+	title.text = "PAUSED  -  " + player.dino_name.to_upper()
+	title.add_theme_color_override("font_color", AMBER)
+	box.add_child(title)
+	for entry in [["RESUME", resume], ["SWITCH SAVE", switch_save]]:
+		var button := Button.new()
+		button.text = entry[0]
+		button.custom_minimum_size = Vector2(150, 16)
+		button.pressed.connect(entry[1])
+		box.add_child(button)
+	var hint := Label.new()
+	hint.name = "Hint"
+	hint.add_theme_color_override("font_color", DIM)
+	box.add_child(hint)
+	pause_menu.position = Vector2(320 - 90, 130)
+	var closer := Node.new()
+	closer.set_script(load("res://scripts/pause_closer.gd"))
+	pause_menu.add_child(closer)

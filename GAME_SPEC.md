@@ -1287,6 +1287,8 @@ Sound soll stark zur Atmosphäre beitragen.
 
 # 55. Speichersystem
 
+> **Umgesetzt:** Bis zu fünf Speicherstände liegen unter `user://savegames` (`slot_1.cfg` bis `slot_5.cfg`); der Spielstand früherer Versionen wandert beim ersten Start in Platz 1. Der Startbildschirm zeigt jeden Platz mit Name, Farbe, Level, Höhlenlevel, Zeitalter-Phase und letztem Spieldatum; Plätze lassen sich spielen, neu anlegen und (nach Rückfrage) löschen. Ein neuer Dino entsteht in einem kurzen Einrichtungs-Wizard: **Name** und **Primärfarbe** (Rost, Moos, Ozean, Violett, Karmin, Sand, Schiefer, Gold) mit Vorschau. Im Spiel pausiert **Esc** mit einem Menü zum Weiterspielen oder **Spielstand wechseln**; in der Höhle wird vorher gespeichert, draußen geht der Fortschritt seit dem letzten Höhlenbesuch verloren.
+
 Gespeichert werden:
 
 * Spieler-Upgrades,
