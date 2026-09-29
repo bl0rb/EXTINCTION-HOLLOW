@@ -42,7 +42,7 @@ func shelter() -> int:
 
 
 func can_upgrade(id: String, xp: int) -> bool:
-	return levels[id] < upgrade_max(id) and xp >= upgrade_cost(id)
+	return levels[id] < upgrade_max(id) and xp >= upgrade_cost(id) and Upgrades.rooted(Upgrades.CAVE, id, levels)
 
 
 func buy_upgrade(id: String, player: Player) -> bool:

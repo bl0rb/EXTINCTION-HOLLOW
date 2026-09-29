@@ -3,15 +3,16 @@ extends Node
 ## Weather (GAME_SPEC §30-§34, §149.15-16): long stable phases that blend into each other.
 ## Rain darkens the night and thickens the fog, heavy rain slows the dino, snow settles on the ground, ash follows eruptions.
 ## It also sets the soundscape (T094-T095): the rain, and the jungle's birds, insects and frogs.
+## Day and night (GAME_SPEC §142): the sun rises and sets, with warm light in the morning and evening; each weather has its day and night light.
 
 enum Kind { CLEAR, RAIN, HEAVY_RAIN, SNOW, ASH }
 
 const LOOKS := {
-	Kind.CLEAR: {"name": "CLEAR", "light": Color(0.33, 0.38, 0.52), "fog": 1.0, "fog_color": Color(0.6, 0.7, 0.85), "wind": 1.0, "temp": 0.0, "speed": 1.0},
-	Kind.RAIN: {"name": "RAIN", "light": Color(0.27, 0.31, 0.43), "fog": 1.5, "fog_color": Color(0.55, 0.64, 0.78), "wind": 1.8, "temp": -4.0, "speed": 1.0},
-	Kind.HEAVY_RAIN: {"name": "HEAVY RAIN", "light": Color(0.21, 0.25, 0.36), "fog": 2.2, "fog_color": Color(0.5, 0.58, 0.72), "wind": 3.0, "temp": -7.0, "speed": 0.85},
-	Kind.SNOW: {"name": "SNOW", "light": Color(0.42, 0.46, 0.6), "fog": 1.4, "fog_color": Color(0.8, 0.85, 0.95), "wind": 1.3, "temp": -30.0, "speed": 0.85},
-	Kind.ASH: {"name": "ASH", "light": Color(0.36, 0.27, 0.24), "fog": 2.0, "fog_color": Color(0.5, 0.42, 0.38), "wind": 1.2, "temp": 3.0, "speed": 1.0},
+	Kind.CLEAR: {"name": "CLEAR", "light": Color(0.33, 0.38, 0.52), "day": Color(1.0, 0.97, 0.9), "fog": 1.0, "fog_color": Color(0.6, 0.7, 0.85), "wind": 1.0, "temp": 0.0, "speed": 1.0},
+	Kind.RAIN: {"name": "RAIN", "light": Color(0.27, 0.31, 0.43), "day": Color(0.74, 0.78, 0.84), "fog": 1.5, "fog_color": Color(0.55, 0.64, 0.78), "wind": 1.8, "temp": -4.0, "speed": 1.0},
+	Kind.HEAVY_RAIN: {"name": "HEAVY RAIN", "light": Color(0.21, 0.25, 0.36), "day": Color(0.58, 0.62, 0.7), "fog": 2.2, "fog_color": Color(0.5, 0.58, 0.72), "wind": 3.0, "temp": -7.0, "speed": 0.85},
+	Kind.SNOW: {"name": "SNOW", "light": Color(0.42, 0.46, 0.6), "day": Color(0.9, 0.93, 1.0), "fog": 1.4, "fog_color": Color(0.8, 0.85, 0.95), "wind": 1.3, "temp": -30.0, "speed": 0.85},
+	Kind.ASH: {"name": "ASH", "light": Color(0.36, 0.27, 0.24), "day": Color(0.72, 0.6, 0.52), "fog": 2.0, "fog_color": Color(0.5, 0.42, 0.38), "wind": 1.2, "temp": 3.0, "speed": 1.0},
 }
 ## Random weather; snow and ash come from events and the world phases.
 const CHANCES := {Kind.CLEAR: 5.0, Kind.RAIN: 3.0, Kind.HEAVY_RAIN: 1.0}
@@ -19,6 +20,8 @@ const TRANSITION := 6.0 ## seconds to blend into new weather
 const BASE_TEMPERATURE := 24.0
 const DUNGEON_TEMPERATURE := 14.0
 const DUNGEON_LIGHT := Color(0.13, 0.12, 0.16) ## underground only what glows can be seen
+const DAY_LENGTH := 600.0 ## seconds for a whole day and night
+const DAWN := Color(1.1, 0.78, 0.6) ## tints the light while the sun is low
 
 @export var min_duration := 70.0
 @export var max_duration := 160.0
@@ -28,6 +31,8 @@ var snow_cover := 0.0 ## 0..1, grows while it snows and melts afterwards
 var quake := 0.0 ## extra wind while the ground shakes
 var look := {} ## current blend of the weather looks
 var meteor_glow := 0.0 ## 0..1, the meteor tints the night orange-red (GAME_SPEC §149.30)
+var time_of_day := 0.3 ## 0 midnight, 0.25 sunrise, 0.5 noon, 0.75 sunset; the story's clock moves it on
+var daylight := 0.0 ## 0 at night, 1 in full daylight
 var _time_left := 0.0
 var _blend := 1.0
 var _from := {}
@@ -38,12 +43,16 @@ var _jungle_sound: AudioStreamPlayer
 @onready var _night: CanvasModulate = get_node("../Night")
 @onready var _fog: ShaderMaterial = get_node("../Fog").material
 @onready var _cover: ShaderMaterial = get_node("../SnowCover").material
+@onready var _glow: Environment = get_node("../Glow").environment
+@onready var _vignette: ShaderMaterial = get_node("../Overlay/Vignette").material
+var _grade: ShaderMaterial ## lifts the colours by day
 @onready var _player: Player = get_tree().get_first_node_in_group("player")
 @onready var _volcano: Node2D = get_tree().get_first_node_in_group("volcano")
 
 
 func _ready() -> void:
 	_build_emitters()
+	_build_grade()
 	_rain_sound = Sound.loop(self, "rain")
 	_jungle_sound = Sound.loop(self, "jungle")
 	look = LOOKS[Kind.CLEAR].duplicate()
@@ -83,11 +92,15 @@ func _process(delta: float) -> void:
 	look.name = to.name
 	for key in ["fog", "wind", "temp", "speed"]:
 		look[key] = lerpf(_from[key], to[key], _blend)
-	for key in ["light", "fog_color"]:
+	for key in ["light", "day", "fog_color"]:
 		look[key] = (_from[key] as Color).lerp(to[key], _blend)
 	var underground := Biomes.at(_player.global_position) == Biomes.DUNGEON
-	_night.color = DUNGEON_LIGHT if underground else (look.light as Color).lerp(Story.METEOR_LIGHT, meteor_glow)
-	_fog.set_shader_parameter("density", 0.3 * look.fog)
+	_night.color = DUNGEON_LIGHT if underground else sky(look).lerp(Story.METEOR_LIGHT, meteor_glow)
+	var day := 0.0 if underground else daylight
+	_glow.glow_hdr_threshold = lerpf(0.8, 1.15, day) # only lights glow by day, not every bright stone
+	_grade.set_shader_parameter("lift", day)
+	_vignette.set_shader_parameter("strength", lerpf(0.75, 0.35, day))
+	_fog.set_shader_parameter("density", 0.3 * look.fog * (1.0 - 0.6 * daylight)) # the sun burns the mist away
 	_fog.set_shader_parameter("fog_color", look.fog_color)
 	RenderingServer.global_shader_parameter_set("wind", look.wind + quake)
 	var settle := 60.0 if kind == Kind.SNOW else 90.0
@@ -104,6 +117,15 @@ func _process(delta: float) -> void:
 	var jungle := {Biomes.JUNGLE: 0.8, Biomes.SWAMP: 0.5, Biomes.RIVER: 0.4}.get(Biomes.at(_player.global_position), 0.0) as float
 	Sound.fade(_rain_sound, 0.0 if underground else rain, delta, 1.0 / TRANSITION)
 	Sound.fade(_jungle_sound, 0.0 if underground else jungle * (1.0 - 0.6 * rain), delta, 0.25)
+
+
+## The light over the land for a weather look at this time of day.
+func sky(weather_look: Dictionary) -> Color:
+	var sun := sin((time_of_day - 0.25) * TAU) # -1 at midnight, 0 at sunrise and sunset, 1 at noon
+	daylight = smoothstep(-0.2, 0.35, sun)
+	var light := (weather_look.light as Color).lerp(weather_look.day, daylight)
+	var low_sun := clampf(1.0 - absf(sun) / 0.3, 0.0, 1.0)
+	return light.lerp(light * DAWN, low_sun)
 
 
 func _pick() -> Kind:
@@ -131,6 +153,19 @@ func _build_emitters() -> void:
 			_emitter(null, 24, 6.0, Vector2(0.3, 1), 8.0, 16.0, Color(1.0, 0.55, 0.2), 1.0, ash_embers)],
 		Kind.CLEAR: [],
 	}
+
+
+## A full-screen pass over the world (below the HUD) that grades it by daylight.
+func _build_grade() -> void:
+	var rect := ColorRect.new()
+	rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_grade = ShaderMaterial.new()
+	_grade.shader = load("res://shaders/grade.gdshader")
+	rect.material = _grade
+	var overlay := get_node("../Overlay")
+	overlay.add_child.call_deferred(rect)
+	overlay.move_child.call_deferred(rect, 0)
 
 
 func _emitter(texture: Texture2D, amount: int, lifetime: float, direction: Vector2, speed_min: float, speed_max: float,

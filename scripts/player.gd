@@ -48,6 +48,11 @@ var temperature := 24.0
 var frenzy_left := 0.0
 var _burn_flash := 0.0
 var _stats := {}
+var _powers: Array = [] ## sets worn complete
+var _build := "" ## the set worn most, shown on the crest
+var _sparkle := 0.0
+var _ghost := 0.0
+var _look := ShaderMaterial.new() ## tints and makes the crest glitter
 
 var target := Vector2.ZERO
 var moving := false
@@ -56,6 +61,7 @@ var anim := SpriteAnimator.new()
 var _stuck := 0.0
 var _attack_cd := 0.0
 var _dash_left := 0.0
+var _full_warning := 0.0 ## seconds until "bag full" shows again
 var _dash_dir := Vector2.ZERO
 var _dash_hit: Array = []
 
@@ -70,6 +76,8 @@ var _dash_hit: Array = []
 
 
 func _ready() -> void:
+	_look.shader = load("res://shaders/hero.gdshader")
+	sprite.material = _look
 	banked_xp = SaveGame.read("player", "banked_xp", 0)
 	total_xp = SaveGame.read("player", "total_xp", 0)
 	upgrades.merge(SaveGame.read("player", "upgrades", {}), true)
@@ -142,6 +150,16 @@ func armor() -> float:
 	return minf(0.04 * talents.hide + stat("armor") / 100.0, 0.75)
 
 
+## Stamina a skill costs: Vigor and the Elder's set make skills cheaper.
+func skill_cost(id: String) -> float:
+	return Talents.DEFS[id].stamina * (1.0 - 0.08 * talents.vigor) * (0.75 if has_power("elder") else 1.0)
+
+
+## A set's special power (GAME_SPEC §150): all four pieces are worn.
+func has_power(set_id: String) -> bool:
+	return _powers.has(set_id)
+
+
 func life_on_hit() -> float:
 	return stat("life_hit") + (2.0 + 2.0 * talents.frenzy if frenzy_left > 0.0 else 0.0)
 
@@ -151,7 +169,7 @@ func upgrade_cost(id: String) -> int:
 
 
 func can_upgrade(id: String) -> bool:
-	return upgrades[id] < Upgrades.PLAYER[id].max and banked_xp >= upgrade_cost(id)
+	return upgrades[id] < Upgrades.PLAYER[id].max and banked_xp >= upgrade_cost(id) and Upgrades.rooted(Upgrades.PLAYER, id, upgrades)
 
 
 func buy_upgrade(id: String) -> bool:
@@ -209,7 +227,8 @@ func talent_points() -> int:
 
 
 func can_learn(id: String) -> bool:
-	return talent_points() > 0 and talents[id] < Talents.MAX_RANK and level() >= Talents.TIER_LEVEL[Talents.DEFS[id].tier]
+	return talent_points() > 0 and talents[id] < Talents.MAX_RANK and level() >= Talents.TIER_LEVEL[Talents.DEFS[id].tier] \
+		and Talents.rooted(id, talents)
 
 
 func learn(id: String) -> bool:
@@ -222,21 +241,24 @@ func learn(id: String) -> bool:
 ## Skills on the keys 1-4 (GAME_SPEC §150); they cost stamina and have a cooldown.
 func use_skill(id: String, aim: Vector2) -> bool:
 	var def: Dictionary = Talents.DEFS[id]
-	var cost: float = def.stamina * (1.0 - 0.08 * talents.vigor)
+	var cost := skill_cost(id)
 	if dead or talents[id] == 0 or cooldowns[id] > 0.0 or stamina < cost or _dash_left > 0.0:
 		return false
 	stamina -= cost
-	cooldowns[id] = def.cooldown
+	cooldowns[id] = def.cooldown * (0.6 if has_power("elder") else 1.0)
 	var rank: int = talents[id]
 	match id:
 		"sweep":
 			anim.play("attack", 0.2)
+			anim.spin()
 			camera.shake(1.5, 0.15)
+			SkillFx.swoosh(get_parent(), global_position + Vector2(0, -3), 34.0 + 4.0 * rank, Color(1.0, 0.86, 0.62), anim.facing)
+			SkillFx.dust_ring(get_parent(), global_position, 20.0, 6)
 			for animal in _animals_near(global_position, 34.0 + 4.0 * rank):
 				strike(animal, damage() * (1.0 + 0.25 * rank))
 		"roar":
 			anim.play("attack", 0.35)
-			camera.shake(2.5, 0.35)
+			_stomp()
 			Fx.text(self, global_position + Vector2(0, -34), "ROAR", Fx.GOLD, 16)
 			for animal in _animals_near(global_position, 130.0):
 				animal.panic(global_position, 2.0 + 0.5 * rank)
@@ -248,9 +270,13 @@ func use_skill(id: String, aim: Vector2) -> bool:
 			_dash_hit.clear()
 			prey = null
 			moving = false
+			SkillFx.dust_ring(get_parent(), global_position, 6.0, 4)
 		"frenzy":
 			frenzy_left = 5.0 + rank
+			SkillFx.ring(get_parent(), global_position, 40.0, Fx.HURT, 0.4)
 			Fx.text(self, global_position + Vector2(0, -34), "FRENZY", Fx.HURT, 16)
+	if has_power("elder"): # the elder's wisdom answers every skill
+		SkillFx.ring(get_parent(), global_position, 26.0, Loot.SET_COLORS.elder, 0.4)
 	return true
 
 
@@ -268,12 +294,26 @@ func strike(animal: Animal, amount: float, crit := false) -> bool:
 			Fx.hit_stop(get_tree(), 0.04)
 		return false
 	Fx.hit_stop(get_tree(), 0.06 if rank == 0 else 0.2)
+	if has_power("tyrant") and not dead: # every kill feeds the tyrant
+		var healed := minf(0.15 * max_health(), max_health() - health)
+		health += healed
+		if healed >= 1.0:
+			Fx.text(self, global_position + Vector2(0, -30), "+%d" % roundi(healed), Loot.BETTER)
+			for i in 4:
+				SkillFx.sparkle(get_parent(), global_position + Vector2(randf_range(-10, 10), randf_range(-26, -4)), Loot.BETTER)
 	var xp: int = species.xp * [1, 3, 8][rank]
 	carried_xp += xp
 	gain_xp(xp)
 	hunger = minf(hunger + species.food, max_hunger)
 	Loot.drop(get_parent(), pos, size + rank, [0, 1, 3][rank], [0, 1, 2][rank])
 	return true
+
+
+## Tells the player that nothing more fits into the bag, at most every two seconds.
+func warn_bag_full() -> void:
+	if _full_warning <= 0.0:
+		_full_warning = 2.0
+		Fx.text(self, global_position + Vector2(0, -30), "BAG FULL", Fx.HURT)
 
 
 func pick_up(drop: Node2D) -> bool:
@@ -311,10 +351,17 @@ func salvage(index: int) -> void:
 	bag.remove_at(index)
 
 
-func take_damage(amount: float) -> void:
+func take_damage(amount: float, from: Animal = null) -> void:
 	if dead:
 		return
 	amount *= 1.0 - armor()
+	if from and is_instance_valid(from):
+		SkillFx.bite(get_parent(), global_position + Vector2(0, -14), Fx.HURT)
+		if has_power("ankylo"): # the spiked hide bites back
+			SkillFx.spikes(get_parent(), global_position + Vector2(0, -12), Loot.SET_COLORS.ankylo)
+			_look.set_shader_parameter("flash", 1.0)
+			create_tween().tween_method(func(v: float) -> void: _look.set_shader_parameter("flash", v), 1.0, 0.0, 0.3)
+			strike(from, amount * 0.5)
 	health -= amount
 	camera.shake(3.0, 0.25)
 	Fx.burst(Fx.BLOOD, get_parent(), global_position + Vector2(0, -12))
@@ -348,7 +395,62 @@ func move_factor() -> float:
 
 func _update_stats() -> void:
 	_stats = Loot.total(equipped)
+	_powers = Loot.set_powers(equipped)
+	_update_look()
 	health = minf(health, max_health())
+
+
+## The build shows (GAME_SPEC §150): two pieces of a set tint the crest in its colour, the whole set makes it glitter.
+func _update_look() -> void:
+	var counts := Loot.set_counts(equipped)
+	_build = ""
+	for set_id: String in counts:
+		if counts[set_id] >= 2 and (_build == "" or counts[set_id] > counts[_build]):
+			_build = set_id
+	_look.set_shader_parameter("tint", 0.0 if _build == "" else 1.0)
+	_look.set_shader_parameter("shimmer", 0.0 if _build == "" else (1.0 if has_power(_build) else 0.25))
+	if _build != "":
+		_look.set_shader_parameter("crest_color", Loot.SET_COLORS[_build])
+
+
+## A point on the tips of the crest, in the world.
+func _crest_point() -> Vector2:
+	var tip: Vector2 = [Vector2(35.4, 3.0), Vector2(33.4, 7.0), Vector2(31.2, 9.4), Vector2(27.6, 12.0),
+		Vector2(23.6, 11.4), Vector2(19.6, 12.0), Vector2(15.4, 12.6)].pick_random()
+	return sprite.global_position + Vector2((tip.x - 24.0) * signf(sprite.scale.x), tip.y - 18.0) * absf(sprite.scale.y) / Art.SCALE
+
+
+## Skills and set powers can be seen (GAME_SPEC §150): sparkles on a full set, a pulsing frenzy, afterimages while charging.
+func _update_fx(delta: float) -> void:
+	_sparkle -= delta
+	if _build != "" and has_power(_build) and _sparkle <= 0.0:
+		_sparkle = randf_range(0.15, 0.35)
+		SkillFx.sparkle(get_parent(), _crest_point(), Loot.SET_COLORS[_build])
+	if frenzy_left > 0.0:
+		sprite.self_modulate = Color.WHITE.lerp(Color(1.0, 0.5, 0.45), 0.5 + 0.5 * sin(Time.get_ticks_msec() / 70.0))
+		if _sparkle <= 0.0:
+			_sparkle = 0.12
+			SkillFx.sparkle(get_parent(), global_position + Vector2(randf_range(-9, 9), randf_range(-26, -8)), Fx.HURT)
+	else:
+		sprite.self_modulate = Color.WHITE
+	if _dash_left > 0.0:
+		_ghost -= delta
+		if _ghost <= 0.0:
+			_ghost = 0.035
+			SkillFx.afterimage(sprite, Color(1.0, 0.62, 0.32, 0.55))
+
+
+## Roar starts with a stomp: a hop, and the ground shakes where the dino lands.
+func _stomp() -> void:
+	var base := sprite.position.y
+	var tween := create_tween()
+	tween.tween_property(sprite, "position:y", base - 6.0, 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(sprite, "position:y", base, 0.07).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+	tween.tween_callback(func() -> void:
+		camera.shake(3.5, 0.3)
+		SkillFx.ring(get_parent(), global_position, 120.0, Color(1.0, 0.78, 0.42), 0.55)
+		SkillFx.ring(get_parent(), global_position, 70.0, Color(1.0, 0.9, 0.7), 0.4)
+		SkillFx.dust_ring(get_parent(), global_position, 12.0, 8))
 
 
 func _die() -> void:
@@ -394,13 +496,16 @@ func _physics_process(delta: float) -> void:
 	_update_needs(delta)
 	if dead:
 		return
+	_update_fx(delta)
 	for id: String in cooldowns:
 		cooldowns[id] = maxf(cooldowns[id] - delta, 0.0)
 	frenzy_left = maxf(frenzy_left - delta, 0.0)
 	_attack_cd -= delta
+	_full_warning -= delta
 	for drop: Node2D in get_tree().get_nodes_in_group("loot"):
 		if drop.global_position.distance_to(global_position) < PICKUP_RANGE and not drop.is_queued_for_deletion():
-			pick_up(drop)
+			if not pick_up(drop):
+				warn_bag_full()
 	if _dash_left > 0.0:
 		_dash(delta)
 		return
@@ -461,6 +566,7 @@ func _dash(delta: float) -> void:
 	for animal in _animals_near(global_position, 14.0):
 		if not animal in _dash_hit:
 			_dash_hit.append(animal)
+			SkillFx.ring(get_parent(), animal.global_position, 14.0, Color(1.0, 0.7, 0.4), 0.25)
 			strike(animal, damage() * (1.2 + 0.3 * talents.charge))
 	if _dash_left <= 0.0:
 		velocity = Vector2.ZERO
@@ -504,7 +610,14 @@ func _attack() -> void:
 	anim.update(sprite, prey.global_position - global_position, 0.0, 0.0)
 	anim.play("attack", 0.16)
 	var crit := randf() < crit_chance()
-	if strike(prey, damage() * (2.0 if crit else 1.0), crit):
+	var crit_hit := 3.0 if has_power("raptor") else 2.0
+	var at := prey.global_position + Vector2(0, -6)
+	var parent := get_parent()
+	var killed := strike(prey, damage() * (crit_hit if crit else 1.0), crit)
+	SkillFx.bite(parent, at, Fx.CRIT if crit else Fx.WHITE, 1.4 if crit else 1.0)
+	if crit and has_power("raptor"):
+		SkillFx.ring(parent, at + Vector2(0, 6), 16.0, Loot.SET_COLORS.raptor, 0.3)
+	if killed:
 		anim.then("eat", 0.5)
 		prey = null
 		moving = false

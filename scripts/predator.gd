@@ -123,7 +123,7 @@ func _bite() -> void:
 	anim.play("attack", 0.22)
 	Sound.play(get_parent(), "bite", global_position, -2.0, 0.8)
 	if victim == player:
-		player.take_damage(species.damage * power)
+		player.take_damage(species.damage * power, self)
 	else:
 		Fx.burst(Fx.BLOOD, get_parent(), victim.global_position + Vector2(0, -4))
 		victim.queue_free()

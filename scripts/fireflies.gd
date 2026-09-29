@@ -12,6 +12,7 @@ var _phase := PackedFloat32Array()
 var _time := 0.0
 
 @onready var _player: Node2D = get_tree().get_first_node_in_group("player")
+@onready var _weather: Weather = get_tree().get_first_node_in_group("weather")
 
 
 func _ready() -> void:
@@ -23,6 +24,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_time += delta
+	modulate.a = 1.0 - _weather.daylight # they only light up in the dark
 	var near := _player.global_position + Vector2(0, -12)
 	for i in count:
 		var vel := _vel[i].rotated(randf_range(-2.0, 2.0) * delta)

@@ -20,6 +20,11 @@ func set_facing(direction: float) -> void:
 	_turn = direction
 
 
+## A quick turn on the spot, e.g. for a tail sweep: from facing away back to the front.
+func spin() -> void:
+	_turn = -facing
+
+
 ## Plays "attack" or "eat" right away, dropping anything queued.
 func play(action: String, seconds: float) -> void:
 	_queue = [[action, seconds]]

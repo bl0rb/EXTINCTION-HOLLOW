@@ -1,8 +1,10 @@
 extends Node2D
 ## Combat overlay in world space, above the night darkness (GAME_SPEC §150):
-## health bars over wounded animals, item names under the cursor, floating combat text (see Fx.text).
+## health bars over wounded animals, items on the ground compared with what the dino wears, floating combat text (see Fx.text).
 
 const FONT := preload("res://assets/fonts/silkscreen-latin-400-normal.woff2")
+
+@onready var player: Player = get_tree().get_first_node_in_group("player")
 
 
 func _process(delta: float) -> void:
@@ -31,7 +33,37 @@ func _draw() -> void:
 			var height := animal.sprite.get_rect().size.y * absf(animal.sprite.scale.y)
 			draw_string(FONT, (animal.sprite.global_position - Vector2(60, height / 2.0 + 8.0)).round(), animal.title, HORIZONTAL_ALIGNMENT_CENTER, 120, 8,
 				Fx.CRIT if animal.rank == 1 else Fx.HURT)
+	# every item on the ground shows at a glance whether it beats what is worn; the one under the cursor tells by how much
 	var mouse := get_global_mouse_position()
+	var hovered: Node2D
 	for drop: Node2D in get_tree().get_nodes_in_group("loot"):
+		Loot.draw_arrow(self, drop.global_position + Vector2(7, -15), Loot.verdict(drop.item, player.equipped[drop.item.slot]))
 		if drop.global_position.distance_to(mouse) < 12.0:
-			draw_string(FONT, (drop.global_position + Vector2(-60, -16)).round(), drop.item.name, HORIZONTAL_ALIGNMENT_CENTER, 120, 8, Loot.COLORS[drop.item.rarity])
+			hovered = drop
+	if hovered:
+		_item_label(hovered)
+
+
+## The item's name and what wearing it would change against the worn item.
+func _item_label(drop: Node2D) -> void:
+	var item: Dictionary = drop.item
+	var worn: Dictionary = player.equipped[item.slot]
+	var lines := [[item.name, Loot.COLORS[item.rarity]]]
+	if item.has("set"):
+		lines.append([Loot.SETS[item.set].name, Loot.COLORS[Loot.SET]])
+	if worn.is_empty():
+		lines.append(["NEW " + Loot.SLOT_NAMES[item.slot].to_upper(), Loot.BETTER])
+	else:
+		var diff := Loot.compare(item, worn)
+		for id: String in diff:
+			if diff[id] != 0:
+				lines.append([Loot.change_text(id, diff[id]), Loot.BETTER if diff[id] > 0 else Loot.WORSE])
+	if player.bag.size() >= Player.BAG_SIZE:
+		lines.append(["BAG FULL", Fx.HURT])
+	var width := 0.0
+	for line: Array in lines:
+		width = maxf(width, FONT.get_string_size(line[0], HORIZONTAL_ALIGNMENT_LEFT, -1, 8).x)
+	var top := (drop.global_position + Vector2(0, -18 - 9 * lines.size())).round()
+	draw_rect(Rect2(top + Vector2(-width / 2.0 - 3.0, -1), Vector2(width + 6.0, 9 * lines.size() + 3)).abs(), Color(0.02, 0.02, 0.03, 0.75))
+	for i in lines.size():
+		draw_string(FONT, top + Vector2(-60, 8 + 9 * i), lines[i][0], HORIZONTAL_ALIGNMENT_CENTER, 120, 8, lines[i][1])

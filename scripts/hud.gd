@@ -20,7 +20,7 @@ const ICONS := {
 
 const SKILL_ICONS := preload("res://assets/talents.png")
 
-var menu: PanelContainer
+var menu: Control ## the cave's upgrade tree
 var warning: Label
 var inventory: Control
 var skill_tree: Control
@@ -31,8 +31,6 @@ var flash: ColorRect
 var fade: ColorRect ## black, for going into and out of dungeons
 var end_screen: Control
 var _narration_tween: Tween
-var _title: Label
-var _rows := {} ## "player:health" -> [level label, buy button]
 
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 @onready var cave: Cave = get_tree().get_first_node_in_group("cave")
@@ -243,7 +241,7 @@ func _draw_skill_bar() -> void:
 		var def: Dictionary = Talents.DEFS[id]
 		var rect := Rect2(x0 + i * 22, 330, 20, 20)
 		var learned: bool = player.talents[id] > 0
-		var affordable: bool = player.stamina >= def.stamina * (1.0 - 0.08 * player.talents.vigor)
+		var affordable: bool = player.stamina >= player.skill_cost(id)
 		draw_rect(rect, PANEL)
 		draw_texture_rect_region(SKILL_ICONS, Rect2(rect.position + Vector2(2, 2), Vector2(16, 16)), Rect2(ids.find(id) * 32, 0, 32, 32),
 			Color.WHITE if learned and affordable else Color(0.35, 0.35, 0.35))
@@ -283,63 +281,14 @@ func _text(pos: Vector2, text: String, color: Color) -> void:
 
 
 func _build_menu() -> void:
-	menu = PanelContainer.new()
-	menu.visible = false
+	menu = Control.new()
+	menu.set_script(load("res://scripts/cave_panel.gd"))
+	menu.position = Vector2(640 - 202, 76)
 	add_child(menu)
-	menu.position = Vector2(640 - 196, 76)
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 1)
-	menu.add_child(box)
-	_title = Label.new()
-	box.add_child(_title)
-	for section in [["DINO", "player", Upgrades.PLAYER], ["CAVE", "cave", Upgrades.CAVE]]:
-		var head := Label.new()
-		head.text = section[0]
-		head.add_theme_color_override("font_color", AMBER)
-		box.add_child(head)
-		for id: String in section[2]:
-			var row := HBoxContainer.new()
-			box.add_child(row)
-			var label := Label.new()
-			label.text = section[2][id].name
-			label.tooltip_text = section[2][id].info
-			label.mouse_filter = MOUSE_FILTER_PASS
-			label.custom_minimum_size.x = 78
-			row.add_child(label)
-			var level := Label.new()
-			level.custom_minimum_size.x = 28
-			row.add_child(level)
-			var button := Button.new()
-			button.custom_minimum_size.x = 56
-			button.focus_mode = FOCUS_NONE
-			button.tooltip_text = section[2][id].info
-			button.pressed.connect(_buy.bind(section[1], id))
-			row.add_child(button)
-			_rows["%s:%s" % [section[1], id]] = [level, button]
 
 
 func _open_menu() -> void:
-	_refresh()
 	menu.show()
-
-
-func _buy(owner_id: String, id: String) -> void:
-	var bought := player.buy_upgrade(id) if owner_id == "player" else cave.buy_upgrade(id, player)
-	if bought:
-		SaveGame.store(player, cave)
-	_refresh()
-
-
-func _refresh() -> void:
-	_title.text = "THE CAVE  -  %d XP   SHELTER %d/%d" % [player.banked_xp, cave.shelter(), Story.SHELTER_NEEDED]
-	for key: String in _rows:
-		var is_player := key.begins_with("player:")
-		var id := key.get_slice(":", 1)
-		var level: int = player.upgrades[id] if is_player else cave.levels[id]
-		var top: int = Upgrades.PLAYER[id].max if is_player else cave.upgrade_max(id)
-		_rows[key][0].text = "%d/%d" % [level, top]
-		_rows[key][1].text = "MAX" if level >= top else "+  %d XP" % (player.upgrade_cost(id) if is_player else cave.upgrade_cost(id))
-		_rows[key][1].disabled = not (player.can_upgrade(id) if is_player else cave.can_upgrade(id, player.banked_xp))
 
 
 func _make_theme() -> Theme:
