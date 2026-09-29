@@ -105,7 +105,8 @@ func _process(delta: float) -> void:
 		phase = now
 		_pace_disasters()
 		chapter_started.emit(phase)
-	# the meteor lights the world orange-red in the last phases
+	# the days pass with the age (GAME_SPEC §142); the meteor lights the world orange-red in the last phases
+	weather.time_of_day = fmod(time / Weather.DAY_LENGTH + 0.3, 1.0)
 	weather.meteor_glow = clampf((progress() - 0.55) / 0.45, 0.0, 1.0) * 0.8
 	if warning():
 		_final_minutes(delta)
