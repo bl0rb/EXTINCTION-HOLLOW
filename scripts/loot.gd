@@ -15,6 +15,9 @@ const SETS := {
 	"ankylo": {"name": "Ankylo's Bulwark", "prefix": "Ankylo's", "two": {"armor": 8, "health": 25}, "power": "biters take half back"},
 	"elder": {"name": "Elder's Wisdom", "prefix": "Elder's", "two": {"xp": 15, "speed": 8}, "power": "skills faster, cheaper"},
 }
+const SET_COLORS := { ## the crest glows in the colour of the build worn
+	"tyrant": Color(1.0, 0.32, 0.26), "raptor": Color(1.0, 0.8, 0.3), "ankylo": Color(0.62, 0.76, 1.0), "elder": Color(0.4, 1.0, 0.78),
+}
 const SET_CHANCE := 0.04 ## share of ordinary drops that are set pieces
 const ELITE_SET_CHANCE := 0.3 ## share of an elite's or boss's extra drops
 const BETTER := Color(0.45, 0.92, 0.4) ## an item beats what is worn

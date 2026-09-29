@@ -4806,6 +4806,9 @@ Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diab
 | Ankylo's Bulwark | +8 % Rüstung, +25 Leben | wer den Dino beißt, bekommt die Hälfte zurück |
 | Elder's Wisdom | +15 % XP, +8 Tempo | Skills laden 40 % schneller und kosten 25 % weniger |
 
+  Ein Build ist zu sehen: Bei zwei Teilen eines Sets leuchtet der Stachelkamm des Dinos in der Farbe des Sets (Tyrant rot, Raptor gold, Ankylo stahlblau, Elder türkis), beim ganzen Set glitzert er und sprüht Funken. Auch die Kräfte zeigen sich: Heilung mit grünen Funken, Stacheln, die aufblitzen und zurückstechen, goldene Krit-Ringe und ein Ring bei jedem Skill.
+- **Sichtbare Angriffe** (bewusst zurückhaltender als bei Hades): Bisse zeigen zuschnappende Zahnreihen, beim Schwanzschlag dreht sich der Dino und zieht einen Bogen mit Staub um sich, Brüllen beginnt mit einem Stampfer und Schockwellen, der Ansturm hinterlässt Nachbilder, die Raserei lässt den Dino rot pulsieren.
+
   Set-Teile fallen selten bei normalen Tieren (4 %), öfter bei Elite-Tieren (30 % ihrer Extra-Beute); der Boss lässt immer eines fallen. Tooltip und Inventar zeigen, wie viele Teile getragen werden und welche Boni aktiv sind.
 
 ### Milestone 8b – ARPG-Kern
