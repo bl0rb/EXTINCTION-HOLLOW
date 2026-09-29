@@ -41,8 +41,8 @@ func _ready() -> void:
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(sub)
 	slots = VBoxContainer.new()
-	slots.position = Vector2(170, 82)
-	slots.size = Vector2(300, 0)
+	slots.position = Vector2(150, 82)
+	slots.size = Vector2(340, 0)
 	slots.add_theme_constant_override("separation", 4)
 	add_child(slots)
 	_build_wizard()
@@ -63,8 +63,9 @@ func refresh() -> void:
 		slots.add_child(_slot_row(i))
 
 
-func play(index: int) -> void:
+func play(index: int, mode := "standard") -> void:
 	SaveGame.slot = index
+	SaveGame.mode = mode
 	get_tree().change_scene_to_file(GAME)
 
 
@@ -78,13 +79,13 @@ func open_wizard(index: int) -> void:
 	name_field.select_all()
 
 
-## Creates the dino in its slot and starts playing.
-func start() -> void:
+## Creates the dino in its slot and starts playing in a mode.
+func start(mode := "standard") -> void:
 	var dino_name := name_field.text.strip_edges()
 	if dino_name == "":
 		dino_name = NAMES.pick_random()
 	SaveGame.create(_new_slot, dino_name, _color)
-	play(_new_slot)
+	play(_new_slot, mode)
 
 
 func delete(index: int) -> void:
@@ -100,7 +101,7 @@ func delete(index: int) -> void:
 func _slot_row(index: int) -> PanelContainer:
 	var info := SaveGame.summary(index)
 	var row := PanelContainer.new()
-	row.custom_minimum_size = Vector2(300, 44)
+	row.custom_minimum_size = Vector2(340, 44)
 	var box := HBoxContainer.new()
 	box.add_theme_constant_override("separation", 6)
 	row.add_child(box)
@@ -117,13 +118,17 @@ func _slot_row(index: int) -> PanelContainer:
 	else:
 		text.add_child(_label(str(info.name).to_upper(), 8, AMBER))
 		text.add_child(_label("LV %d   CAVE %d   AGE %s" % [info.level, info.cave, ["I", "II", "III", "IV", "V"][info.phase]], 8, TEXT))
-		text.add_child(_label(_date(info.played), 8, DIM))
-	var action := Button.new()
-	action.text = "NEW" if info.is_empty() else "PLAY"
-	action.custom_minimum_size = Vector2(46, 18)
-	action.size_flags_vertical = SIZE_SHRINK_CENTER
-	action.pressed.connect(open_wizard.bind(index) if info.is_empty() else play.bind(index))
-	box.add_child(action)
+		text.add_child(_label(_date(info.played) + ("   BEST WAVE %d" % info.best if info.best > 0 else ""), 8, DIM))
+	# a dino plays the standard game or survival with the same level, skills and items
+	var actions := VBoxContainer.new()
+	actions.add_theme_constant_override("separation", 2)
+	actions.size_flags_vertical = SIZE_SHRINK_CENTER
+	box.add_child(actions)
+	if info.is_empty():
+		actions.add_child(_button("NEW", open_wizard.bind(index)))
+	else:
+		actions.add_child(_button("STANDARD", play.bind(index, "standard")))
+		actions.add_child(_button("SURVIVAL", play.bind(index, "survival")))
 	if not info.is_empty():
 		var remove := Button.new()
 		remove.text = "SURE?" if _confirm == index else "X"
@@ -137,8 +142,8 @@ func _slot_row(index: int) -> PanelContainer:
 
 func _build_wizard() -> void:
 	wizard = PanelContainer.new()
-	wizard.position = Vector2(170, 82)
-	wizard.custom_minimum_size = Vector2(300, 0)
+	wizard.position = Vector2(150, 82)
+	wizard.custom_minimum_size = Vector2(340, 0)
 	wizard.hide()
 	add_child(wizard)
 	var box := VBoxContainer.new()
@@ -160,7 +165,7 @@ func _build_wizard() -> void:
 	name_field = LineEdit.new()
 	name_field.max_length = 14
 	name_field.size_flags_horizontal = SIZE_EXPAND_FILL
-	name_field.text_submitted.connect(func(_text: String) -> void: start())
+	name_field.text_submitted.connect(func(_text: String) -> void: start("standard"))
 	name_row.add_child(name_field)
 	var dice := Button.new()
 	dice.text = "?"
@@ -193,11 +198,9 @@ func _build_wizard() -> void:
 		wizard.hide()
 		slots.show())
 	buttons.add_child(back)
-	var go := Button.new()
-	go.text = "HATCH"
-	go.custom_minimum_size = Vector2(56, 0)
-	go.pressed.connect(start)
-	buttons.add_child(go)
+	buttons.add_child(_label("3  PLAY", 8, DIM))
+	buttons.add_child(_button("STANDARD", start.bind("standard")))
+	buttons.add_child(_button("SURVIVAL", start.bind("survival")))
 
 
 func _pick_color(index: int) -> void:
@@ -228,6 +231,14 @@ func _dino_icon(color: int, box_size: Vector2) -> TextureRect:
 	Player.paint(look, color)
 	icon.material = look
 	return icon
+
+
+func _button(words: String, action: Callable) -> Button:
+	var button := Button.new()
+	button.text = words
+	button.custom_minimum_size = Vector2(64, 16)
+	button.pressed.connect(action)
+	return button
 
 
 func _label(words: String, font_size: int, color: Color) -> Label:

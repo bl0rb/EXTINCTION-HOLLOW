@@ -52,6 +52,10 @@ func _ready() -> void:
 	time = SaveGame.read("story", "time", 0.0)
 	found = SaveGame.read("story", "found", {})
 	phase = phase_at(time)
+	if SaveGame.mode == "survival": # no age and no meteor: waves of monsters instead
+		set_process(false)
+		get_parent().add_child.call_deferred(Survival.new())
+		return
 	_pace_disasters()
 	_hum = Sound.loop(self, "meteor")
 	# the opening words of the age, once the HUD is listening

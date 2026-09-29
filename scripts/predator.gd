@@ -37,12 +37,16 @@ func _can_hunt(animal) -> bool:
 	if not is_instance_valid(animal):
 		return false
 	if animal == player:
+		if relentless:
+			return not player.dead
 		# the cave is a safe place
 		return not player.dead and (player.get_size() < get_size() or _provoked > 0.0 or hostile) and not cave.overlaps_body(player)
 	return animal is Prey and not animal is Fish and animal.get_size() < get_size()
 
 
 func _find_victim() -> Node2D:
+	if relentless:
+		return null if player.dead else player
 	var best: Node2D = null
 	var best_dist := species.vision_radius
 	var candidates := get_tree().get_nodes_in_group("prey")
@@ -81,7 +85,7 @@ func _physics_process(delta: float) -> void:
 			eyes.modulate = EYES_HUNTING
 			if victim == player:
 				_roar()
-	elif not _can_hunt(victim) or global_position.distance_to(victim.global_position) > species.vision_radius * 1.7:
+	elif not _can_hunt(victim) or (global_position.distance_to(victim.global_position) > species.vision_radius * 1.7 and not relentless):
 		_rest()
 
 	var speed := species.speed

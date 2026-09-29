@@ -4,6 +4,7 @@ extends CharacterBody2D
 
 signal leveled_up
 signal respawned
+signal died ## only when it does not come back (survival)
 
 const PICK_TOLERANCE := 8.0 ## extra pixels so small animals are easy to click
 const SIZE_SCALE := 0.15 ## sprite growth per size upgrade
@@ -60,6 +61,7 @@ var _sparkle := 0.0
 var _ghost := 0.0
 var _look := ShaderMaterial.new() ## paints the body, tints and makes the crest glitter
 var dino_name := "Dino" ## chosen when the save was created
+var respawns := true ## false in survival: a death ends the run
 var color_index := 0 ## one of COLORS
 
 var target := Vector2.ZERO
@@ -484,7 +486,7 @@ func _die() -> void:
 	tween.tween_property(sprite, "modulate", Color(0.5, 0.08, 0.06), 0.3)
 	tween.parallel().tween_property(sprite, "scale:y", 0.35 * sprite.scale.y, 0.5)
 	tween.tween_property(sprite, "modulate:a", 0.0, 1.0).set_delay(0.6)
-	tween.tween_callback(_respawn)
+	tween.tween_callback(_respawn if respawns else died.emit)
 
 
 func _respawn() -> void:

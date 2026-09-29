@@ -22,6 +22,7 @@ const SKILL_ICONS := preload("res://assets/talents.png")
 
 var menu: Control ## the cave's upgrade tree
 var pause_menu: PanelContainer ## Esc: resume or switch to another save
+var _end_click: Callable ## what a click on the end screen does
 var warning: Label
 var inventory: Control
 var skill_tree: Control
@@ -40,6 +41,7 @@ var _narration_tween: Tween
 
 func _ready() -> void:
 	add_to_group("hud")
+	process_mode = Node.PROCESS_MODE_ALWAYS # the HUD stays usable while the game is paused
 	mouse_filter = MOUSE_FILTER_IGNORE
 	theme = UiTheme.make()
 	automap = Control.new()
@@ -95,16 +97,25 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if end_screen.visible:
+		return
 	if event.is_action_pressed("ui_cancel"):
-		if inventory.visible or skill_tree.visible: # Esc closes open panels first
+		if pause_menu.visible:
+			resume()
+		elif inventory.visible or skill_tree.visible: # Esc closes open panels first
 			inventory.hide()
 			skill_tree.hide()
+			_sync_pause()
 		else:
 			open_pause_menu()
+	elif pause_menu.visible:
+		return
 	elif event.is_action_pressed("inventory"):
 		inventory.visible = not inventory.visible
+		_sync_pause()
 	elif event.is_action_pressed("talents"):
 		skill_tree.visible = not skill_tree.visible
+		_sync_pause()
 	elif event.is_action_pressed("map"):
 		automap.toggle()
 	elif event.is_action_pressed("fullscreen"):
@@ -154,11 +165,20 @@ func _on_impact() -> void:
 
 
 func _on_ended(survived: bool) -> void:
+	show_end("SURVIVED" if survived else "EXTINCT", Fx.GOLD if survived else Fx.HURT,
+		"The dust settles after a long, cold age.\nThe hollow endured, and so did you." if survived
+			else "The hollow was not deep enough.\nThe cave collapses, and the age ends.",
+		"click to begin a new age", func() -> void: (get_tree().get_first_node_in_group("story") as Story).new_age())
+
+
+## The end of an age or of a survival run: a title, a few words, and what a click does.
+func show_end(title_text: String, color: Color, text: String, hint: String, on_click: Callable) -> void:
 	var title: Label = end_screen.get_node("Title")
-	title.text = "SURVIVED" if survived else "EXTINCT"
-	title.label_settings.font_color = Fx.GOLD if survived else Fx.HURT
-	end_screen.get_node("Text").text = "The dust settles after a long, cold age.\nThe hollow endured, and so did you." if survived \
-		else "The hollow was not deep enough.\nThe cave collapses, and the age ends."
+	title.text = title_text
+	title.label_settings.font_color = color
+	end_screen.get_node("Text").text = text
+	end_screen.get_node("Hint").text = hint
+	_end_click = on_click
 	end_screen.show()
 
 
@@ -180,11 +200,10 @@ func _build_end_screen() -> void:
 		label.size.y = 40
 		remove_child(label)
 		end_screen.add_child(label)
-	end_screen.get_node("Hint").text = "click to begin a new age"
 	end_screen.get_node("Hint").label_settings.font_color = DIM
 	end_screen.gui_input.connect(func(event: InputEvent) -> void:
-		if event is InputEventMouseButton and event.pressed:
-			(get_tree().get_first_node_in_group("story") as Story).new_age())
+		if event is InputEventMouseButton and event.pressed and _end_click.is_valid():
+			_end_click.call())
 
 
 ## Disaster warnings (GAME_SPEC §138): the text drifts in, lingers and fades away.
@@ -208,12 +227,23 @@ func _draw() -> void:
 	_bar(11, "health", player.health / player.max_health(), Color(0.74, 0.18, 0.16), ceilf(player.health))
 	_bar(21, "stamina", player.stamina / player.max_stamina, Color(0.8, 0.74, 0.26), ceilf(player.stamina))
 	_bar(31, "hunger", player.hunger / player.max_hunger, Color(0.8, 0.46, 0.2), ceilf(player.hunger))
-	_icon(Vector2(11, 42), "carried")
-	_text(Vector2(21, 48), str(player.carried_xp), AMBER)
-	_icon(Vector2(62, 42), "banked")
-	_text(Vector2(72, 48), str(player.banked_xp), TEXT)
+	var run := get_tree().get_first_node_in_group("survival") as Survival
+	if run: # survival: the wave instead of the XP for the cave
+		_text(Vector2(11, 48), "WAVE %d" % run.wave, AMBER)
+		_text(Vector2(62, 48), "KILLS %d" % run.kills, TEXT)
+		var banner := "NEXT WAVE IN %d" % ceili(run.break_left) if run.break_left > 0.0 else "WAVE %d  -  %d LEFT" % [run.wave, run.left()]
+		if not run.over:
+			draw_string(FONT, Vector2(0, 16), banner, HORIZONTAL_ALIGNMENT_CENTER, 640, FONT_SIZE, AMBER)
+	else:
+		_icon(Vector2(11, 42), "carried")
+		_text(Vector2(21, 48), str(player.carried_xp), AMBER)
+		_icon(Vector2(62, 42), "banked")
+		_text(Vector2(72, 48), str(player.banked_xp), TEXT)
 	_text(Vector2(11, 61), "SIZE %d" % player.get_size(), DIM)
-	_text(Vector2(62, 61), "CAVE LV %d" % cave.levels.level, DIM)
+	if run:
+		_text(Vector2(62, 61), "BEST %d" % maxi(run.best, run.wave), DIM)
+	else:
+		_text(Vector2(62, 61), "CAVE LV %d" % cave.levels.level, DIM)
 	if weather:
 		_text(Vector2(11, 73), weather.look.name, DIM)
 		var temp_color := COLD if player.temperature < 5.0 else (HOT if player.temperature > 32.0 else DIM)
@@ -303,14 +333,22 @@ func _open_menu() -> void:
 ## The game pauses; the dino can go on or make way for another save (GAME_SPEC §55).
 func open_pause_menu() -> void:
 	var in_cave := cave.overlaps_body(player)
-	pause_menu.get_node("Box/Hint").text = "your dino is safe in the cave" if in_cave else "progress since the last cave visit is lost"
+	var hint := "your dino is safe in the cave" if in_cave else "progress since the last cave visit is lost"
+	if SaveGame.mode == "survival":
+		hint = "progress since the last cleared wave is lost"
+	pause_menu.get_node("Box/Hint").text = hint
 	pause_menu.show()
 	get_tree().paused = true
 
 
 func resume() -> void:
 	pause_menu.hide()
-	get_tree().paused = false
+	_sync_pause()
+
+
+## The game waits while the inventory, the skill tree or the Esc menu is open.
+func _sync_pause() -> void:
+	get_tree().paused = pause_menu.visible or inventory.visible or skill_tree.visible
 
 
 ## Back to the start screen; inside the cave the game is saved first.
@@ -323,7 +361,6 @@ func switch_save() -> void:
 
 func _build_pause_menu() -> void:
 	pause_menu = PanelContainer.new()
-	pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
 	pause_menu.hide()
 	add_child(pause_menu)
 	var box := VBoxContainer.new()
@@ -345,6 +382,3 @@ func _build_pause_menu() -> void:
 	hint.add_theme_color_override("font_color", DIM)
 	box.add_child(hint)
 	pause_menu.position = Vector2(320 - 90, 130)
-	var closer := Node.new()
-	closer.set_script(load("res://scripts/pause_closer.gd"))
-	pause_menu.add_child(closer)

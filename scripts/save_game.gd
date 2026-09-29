@@ -7,6 +7,7 @@ const SLOTS := 5
 const LEGACY := "user://savegame.cfg" ## the single save of earlier versions, moved into the first slot
 
 static var slot := 0 ## the slot being played
+static var mode := "standard" ## "standard" or "survival" (GAME_SPEC §154)
 
 
 static func path(index := -1) -> String:
@@ -52,6 +53,7 @@ static func summary(index: int) -> Dictionary:
 		"cave": cave.get("level", 1),
 		"phase": Story.phase_at(file.get_value("story", "time", 0.0)),
 		"played": file.get_value("profile", "played", 0.0),
+		"best": file.get_value("survival", "best", 0),
 	}
 
 
@@ -67,6 +69,14 @@ static func migrate() -> void:
 	file.set_value("profile", "played", Time.get_unix_time_from_system())
 	if file.save(path(0)) == OK:
 		DirAccess.remove_absolute(LEGACY)
+
+
+## Writes a single value into the current slot.
+static func write(section: String, key: String, value: Variant) -> void:
+	var file := ConfigFile.new()
+	file.load(path())
+	file.set_value(section, key, value)
+	file.save(path())
 
 
 static func store(player: Player, cave: Cave) -> void:
