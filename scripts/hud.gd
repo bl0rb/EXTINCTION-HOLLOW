@@ -241,7 +241,7 @@ func _draw_skill_bar() -> void:
 		var def: Dictionary = Talents.DEFS[id]
 		var rect := Rect2(x0 + i * 22, 330, 20, 20)
 		var learned: bool = player.talents[id] > 0
-		var affordable: bool = player.stamina >= def.stamina * (1.0 - 0.08 * player.talents.vigor)
+		var affordable: bool = player.stamina >= player.skill_cost(id)
 		draw_rect(rect, PANEL)
 		draw_texture_rect_region(SKILL_ICONS, Rect2(rect.position + Vector2(2, 2), Vector2(16, 16)), Rect2(ids.find(id) * 32, 0, 32, 32),
 			Color.WHITE if learned and affordable else Color(0.35, 0.35, 0.35))

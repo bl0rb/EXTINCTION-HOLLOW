@@ -4797,6 +4797,16 @@ Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diab
 - **Skills auf den Tasten 1–4:** Schwanzschlag (Flächenschaden), Brüllen (verscheucht alles in der Nähe), Ansturm (rammt Richtung Mauszeiger), Raserei (schnelle, heilende Bisse). Skills kosten Ausdauer und haben einen Cooldown.
 - **Level und Skillbaum:** Jede XP zählt auch für das Charakter-Level (wird nie verloren). Jedes Level bringt +5 Leben und einen Talentpunkt. Drei Stufen im Skillbaum (ab Level 1, 3 und 6) mit Skills und passiven Talenten (Schaden, Rüstung, Crit, Ausdauer). Taste K. Der Skillbaum hat drei Äste, die mit Fäden verbunden sind: Ein Talent öffnet sich erst, wenn eines der Talente gelernt ist, aus denen es wächst (Schwanzschlag → Ansturm, Scharfe Zähne → Instinkt, Dicke Haut → Brüllen, Ansturm oder Instinkt → Raserei, Brüllen → Vitalität).
 - **Loot und Ausrüstung:** Getötete Tiere lassen Trophäen fallen – Zähne, Klauen, Haut, Bernstein – in vier Seltenheiten (Common, Magic, Rare, Legendary) mit zufälligen Werten. Je größer das Tier, desto öfter und besser. Aufheben durch Drüberlaufen, Inventar mit 4 Slots und 12 Taschenplätzen (Taste I). Unnötige Items lassen sich gegen XP zerlegen. Ein grüner oder roter Pfeil an Items am Boden und in der Tasche zeigt, ob sie besser oder schlechter sind als das getragene Item; Tooltip und Mauszeiger über einem Item listen jede Änderung der Werte. Ist die Tasche voll, bleibt das Item liegen und „BAG FULL“ erscheint.
+- **Sets für Builds:** Set-Teile (türkis) gehören zu einem von vier Sets mit je einem Teil pro Slot. Zwei getragene Teile geben Bonuswerte, alle vier eine besondere Kraft:
+
+| Set | 2 Teile | 4 Teile |
+|---|---|---|
+| Tyrant's Might | +4 Schaden, +20 Leben | jede Tötung heilt 15 % Leben |
+| Raptor's Cunning | +6 % kritische Treffer, +12 % Bisstempo | kritische Treffer beißen dreifach statt doppelt |
+| Ankylo's Bulwark | +8 % Rüstung, +25 Leben | wer den Dino beißt, bekommt die Hälfte zurück |
+| Elder's Wisdom | +15 % XP, +8 Tempo | Skills laden 40 % schneller und kosten 25 % weniger |
+
+  Set-Teile fallen selten bei normalen Tieren (4 %), öfter bei Elite-Tieren (30 % ihrer Extra-Beute); der Boss lässt immer eines fallen. Tooltip und Inventar zeigen, wie viele Teile getragen werden und welche Boni aktiv sind.
 
 ### Milestone 8b – ARPG-Kern
 

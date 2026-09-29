@@ -1,12 +1,22 @@
 class_name Loot
 ## Items (GAME_SPEC §150): trophies the dino wears as mutations - teeth, claws, hide and amber - in four rarities.
-## Bigger animals drop more often and better items.
+## Bigger animals drop more often and better items. Set pieces make builds: worn together they grant extra power.
 
 const SLOTS := ["teeth", "claws", "hide", "amber"]
 const SLOT_NAMES := {"teeth": "Teeth", "claws": "Claws", "hide": "Hide", "amber": "Amber"}
-const RARITY_NAMES := ["Common", "Magic", "Rare", "Legendary"]
-const COLORS := [Color(0.8, 0.78, 0.72), Color(0.45, 0.62, 1.0), Color(1.0, 0.86, 0.3), Color(1.0, 0.52, 0.12)]
-const VALUE := [2, 5, 12, 30] ## XP for salvaging an item
+const RARITY_NAMES := ["Common", "Magic", "Rare", "Legendary", "Set"]
+const COLORS := [Color(0.8, 0.78, 0.72), Color(0.45, 0.62, 1.0), Color(1.0, 0.86, 0.3), Color(1.0, 0.52, 0.12), Color(0.3, 0.95, 0.72)]
+const VALUE := [2, 5, 12, 30, 20] ## XP for salvaging an item
+const SET := 4 ## the rarity of set pieces
+## Builds: four pieces each, one per slot. Two worn pieces add stats, all four a special power.
+const SETS := {
+	"tyrant": {"name": "Tyrant's Might", "prefix": "Tyrant's", "two": {"damage": 4, "health": 20}, "power": "kills heal 15% health"},
+	"raptor": {"name": "Raptor's Cunning", "prefix": "Raptor's", "two": {"crit": 6, "attack_speed": 12}, "power": "crits bite 3x as hard"},
+	"ankylo": {"name": "Ankylo's Bulwark", "prefix": "Ankylo's", "two": {"armor": 8, "health": 25}, "power": "biters take half back"},
+	"elder": {"name": "Elder's Wisdom", "prefix": "Elder's", "two": {"xp": 15, "speed": 8}, "power": "skills faster, cheaper"},
+}
+const SET_CHANCE := 0.04 ## share of ordinary drops that are set pieces
+const ELITE_SET_CHANCE := 0.3 ## share of an elite's or boss's extra drops
 const BETTER := Color(0.45, 0.92, 0.4) ## an item beats what is worn
 const WORSE := Color(1.0, 0.35, 0.3)
 const BASES := {
@@ -54,18 +64,70 @@ static func roll(level: int, rarity := -1, min_rarity := 0) -> Dictionary:
 	return {"slot": slot, "rarity": rarity, "name": title, "level": level, "stats": stats}
 
 
+## A piece of a set (random set and slot unless given): its slot's own stat, one more, and the set's name.
+static func roll_set(level: int, set_id := "", slot := "") -> Dictionary:
+	if set_id == "":
+		set_id = SETS.keys().pick_random()
+	if slot == "":
+		slot = SLOTS.pick_random()
+	var main: String = MAIN[slot]
+	var power := (1.0 + 0.5 * (level - 1)) * 1.15
+	var stats := {main: _roll_stat(main, power)}
+	var other: String = STATS.keys().filter(func(s: String) -> bool: return s != main).pick_random()
+	stats[other] = _roll_stat(other, power)
+	var title := "%s %s" % [SETS[set_id].prefix, BASES[slot][mini(level - 1, 2)]]
+	return {"slot": slot, "rarity": SET, "name": title, "level": level, "stats": stats, "set": set_id}
+
+
 static func _roll_stat(id: String, power: float) -> int:
 	return maxi(1, roundi(randf_range(STATS[id][0], STATS[id][1]) * power))
 
 
-## Sum of all stats of the worn items.
+## Sum of all stats of the worn items, with the bonus of every set worn twice or more.
 static func total(equipped: Dictionary) -> Dictionary:
 	var sum := {}
 	for slot: String in equipped:
 		var stats: Dictionary = equipped[slot].get("stats", {})
 		for id: String in stats:
 			sum[id] = sum.get(id, 0.0) + stats[id]
+	var counts := set_counts(equipped)
+	for set_id: String in counts:
+		if counts[set_id] >= 2:
+			for id: String in SETS[set_id].two:
+				sum[id] = sum.get(id, 0.0) + SETS[set_id].two[id]
 	return sum
+
+
+## How many pieces of each set are worn: set id -> count.
+static func set_counts(equipped: Dictionary) -> Dictionary:
+	var counts := {}
+	for slot: String in equipped:
+		var set_id: String = equipped[slot].get("set", "")
+		if set_id != "":
+			counts[set_id] = counts.get(set_id, 0) + 1
+	return counts
+
+
+## The sets whose special power is active: all four pieces worn.
+static func set_powers(equipped: Dictionary) -> Array:
+	var counts := set_counts(equipped)
+	return counts.keys().filter(func(set_id: String) -> bool: return counts[set_id] >= 4)
+
+
+## Lines about an item's set for tooltips: [text, active] pairs.
+static func describe_set(item: Dictionary, equipped: Dictionary) -> Array:
+	var set_id: String = item.get("set", "")
+	if set_id == "":
+		return []
+	var info: Dictionary = SETS[set_id]
+	var count: int = set_counts(equipped).get(set_id, 0)
+	var lines := [["%s %d/4" % [info.name, count], true]]
+	var prefix := "2: "
+	for id: String in info.two:
+		lines.append([prefix + STAT_TEXT[id] % info.two[id], count >= 2])
+		prefix = "   "
+	lines.append(["4: " + info.power, count >= 4])
+	return lines
 
 
 ## How wearing an item would change the dino's stats against what it wears in that slot: stat id -> difference.
@@ -123,8 +185,12 @@ static func drop(parent: Node, pos: Vector2, size: int, extra := 0, min_rarity :
 	var drops := 1 if randf() < DROP_CHANCE[clampi(size, 0, 5)] else 0
 	if size >= 4 and randf() < 0.5:
 		drops += 1
+	var level := clampi(size, 1, 5)
 	for i in drops + extra:
-		spawn(parent, pos + Vector2(randf_range(-14, 14), randf_range(-8, 8)), roll(clampi(size, 1, 5), -1, min_rarity))
+		var set_piece := randf() < (ELITE_SET_CHANCE if i >= drops else SET_CHANCE)
+		spawn(parent, pos + Vector2(randf_range(-14, 14), randf_range(-8, 8)), roll_set(level) if set_piece else roll(level, -1, min_rarity))
+	if extra >= 3: # a boss always leaves a set piece
+		spawn(parent, pos + Vector2(randf_range(-14, 14), randf_range(-8, 8)), roll_set(level))
 
 
 static func spawn(parent: Node, pos: Vector2, item: Dictionary) -> Node2D:

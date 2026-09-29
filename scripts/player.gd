@@ -48,6 +48,7 @@ var temperature := 24.0
 var frenzy_left := 0.0
 var _burn_flash := 0.0
 var _stats := {}
+var _powers: Array = [] ## sets worn complete
 
 var target := Vector2.ZERO
 var moving := false
@@ -143,6 +144,16 @@ func armor() -> float:
 	return minf(0.04 * talents.hide + stat("armor") / 100.0, 0.75)
 
 
+## Stamina a skill costs: Vigor and the Elder's set make skills cheaper.
+func skill_cost(id: String) -> float:
+	return Talents.DEFS[id].stamina * (1.0 - 0.08 * talents.vigor) * (0.75 if has_power("elder") else 1.0)
+
+
+## A set's special power (GAME_SPEC §150): all four pieces are worn.
+func has_power(set_id: String) -> bool:
+	return _powers.has(set_id)
+
+
 func life_on_hit() -> float:
 	return stat("life_hit") + (2.0 + 2.0 * talents.frenzy if frenzy_left > 0.0 else 0.0)
 
@@ -224,11 +235,11 @@ func learn(id: String) -> bool:
 ## Skills on the keys 1-4 (GAME_SPEC §150); they cost stamina and have a cooldown.
 func use_skill(id: String, aim: Vector2) -> bool:
 	var def: Dictionary = Talents.DEFS[id]
-	var cost: float = def.stamina * (1.0 - 0.08 * talents.vigor)
+	var cost := skill_cost(id)
 	if dead or talents[id] == 0 or cooldowns[id] > 0.0 or stamina < cost or _dash_left > 0.0:
 		return false
 	stamina -= cost
-	cooldowns[id] = def.cooldown
+	cooldowns[id] = def.cooldown * (0.6 if has_power("elder") else 1.0)
 	var rank: int = talents[id]
 	match id:
 		"sweep":
@@ -270,6 +281,11 @@ func strike(animal: Animal, amount: float, crit := false) -> bool:
 			Fx.hit_stop(get_tree(), 0.04)
 		return false
 	Fx.hit_stop(get_tree(), 0.06 if rank == 0 else 0.2)
+	if has_power("tyrant") and not dead: # every kill feeds the tyrant
+		var healed := minf(0.15 * max_health(), max_health() - health)
+		health += healed
+		if healed >= 1.0:
+			Fx.text(self, global_position + Vector2(0, -30), "+%d" % roundi(healed), Loot.BETTER)
 	var xp: int = species.xp * [1, 3, 8][rank]
 	carried_xp += xp
 	gain_xp(xp)
@@ -320,10 +336,12 @@ func salvage(index: int) -> void:
 	bag.remove_at(index)
 
 
-func take_damage(amount: float) -> void:
+func take_damage(amount: float, from: Animal = null) -> void:
 	if dead:
 		return
 	amount *= 1.0 - armor()
+	if from and is_instance_valid(from) and has_power("ankylo"): # the spiked hide bites back
+		strike(from, amount * 0.5)
 	health -= amount
 	camera.shake(3.0, 0.25)
 	Fx.burst(Fx.BLOOD, get_parent(), global_position + Vector2(0, -12))
@@ -357,6 +375,7 @@ func move_factor() -> float:
 
 func _update_stats() -> void:
 	_stats = Loot.total(equipped)
+	_powers = Loot.set_powers(equipped)
 	health = minf(health, max_health())
 
 
@@ -515,7 +534,8 @@ func _attack() -> void:
 	anim.update(sprite, prey.global_position - global_position, 0.0, 0.0)
 	anim.play("attack", 0.16)
 	var crit := randf() < crit_chance()
-	if strike(prey, damage() * (2.0 if crit else 1.0), crit):
+	var crit_hit := 3.0 if has_power("raptor") else 2.0
+	if strike(prey, damage() * (crit_hit if crit else 1.0), crit):
 		anim.then("eat", 0.5)
 		prey = null
 		moving = false

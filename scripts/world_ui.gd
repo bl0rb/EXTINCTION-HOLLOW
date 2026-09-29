@@ -49,6 +49,8 @@ func _item_label(drop: Node2D) -> void:
 	var item: Dictionary = drop.item
 	var worn: Dictionary = player.equipped[item.slot]
 	var lines := [[item.name, Loot.COLORS[item.rarity]]]
+	if item.has("set"):
+		lines.append([Loot.SETS[item.set].name, Loot.COLORS[Loot.SET]])
 	if worn.is_empty():
 		lines.append(["NEW " + Loot.SLOT_NAMES[item.slot].to_upper(), Loot.BETTER])
 	else:

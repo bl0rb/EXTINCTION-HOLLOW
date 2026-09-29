@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 	if state == State.FLEE and species.damage > 0.0 and _threat == player and _cooldown <= 0.0 \
 			and global_position.distance_to(player.global_position) < species.attack_range + radius:
 		_cooldown = species.attack_interval
-		player.take_damage(species.damage * power)
+		player.take_damage(species.damage * power, self)
 
 	var speed := species.speed
 	if state == State.FLEE:

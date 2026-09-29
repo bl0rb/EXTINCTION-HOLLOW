@@ -17,7 +17,7 @@ var _hover := -1 ## 0-3 worn slots, from 4 on the bag
 
 
 func _ready() -> void:
-	size = Vector2(152, 136)
+	size = Vector2(152, 148)
 	mouse_filter = MOUSE_FILTER_STOP
 	visible = false
 
@@ -94,6 +94,12 @@ func _draw() -> void:
 			_text(rect.position + Vector2(-4, 30), Loot.SLOT_NAMES[Loot.SLOTS[i]].to_upper(), DIM)
 	_text(Vector2(8, 118), "DMG %d   CRIT %d%%" % [roundi(player.damage()), roundi(player.crit_chance() * 100.0)], TEXT)
 	_text(Vector2(8, 130), "ARMOR %d%%   HP %d" % [roundi(player.armor() * 100.0), roundi(player.max_health())], TEXT)
+	# the builds being worn
+	var counts := Loot.set_counts(player.equipped)
+	var sets := PackedStringArray()
+	for set_id: String in counts:
+		sets.append("%s %d/4" % [set_id.to_upper(), counts[set_id]])
+	_text(Vector2(8, 142), "SET " + "  ".join(sets) if not sets.is_empty() else "NO SET WORN", Loot.COLORS[Loot.SET] if not sets.is_empty() else DIM)
 	var hovered := _item(_hover)
 	if not hovered.is_empty():
 		_tooltip(hovered, _hover < 4)
@@ -118,6 +124,10 @@ func _tooltip(item: Dictionary, worn: bool) -> void:
 				if diff[id] != 0:
 					lines.append(Loot.change_text(id, diff[id]))
 					colors.append(Loot.BETTER if diff[id] > 0 else Loot.WORSE)
+	# a set piece tells which build it belongs to and what the set grants
+	for line: Array in Loot.describe_set(item, player.equipped):
+		lines.append(line[0])
+		colors.append(Loot.COLORS[Loot.SET] if line[1] else DIM)
 	var box := Rect2(size.x + 4, cell_rect(_hover).position.y, 156, 38 + 11 * lines.size())
 	box.position.y = minf(box.position.y, get_viewport_rect().size.y - global_position.y - box.size.y - 4.0)
 	draw_rect(box, Color(0.02, 0.02, 0.03, 0.95))
