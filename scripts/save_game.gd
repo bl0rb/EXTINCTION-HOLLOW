@@ -79,7 +79,8 @@ static func write(section: String, key: String, value: Variant) -> void:
 	file.save(path())
 
 
-static func store(player: Player, cave: Cave) -> void:
+## Saves the game; character_only keeps the world, the age and the cave of the standard game untouched (survival, multiplayer).
+static func store(player: Player, cave: Cave, character_only := false) -> void:
 	DirAccess.make_dir_recursive_absolute(DIR)
 	var file := ConfigFile.new()
 	file.load(path()) # keeps what is not written here
@@ -92,6 +93,9 @@ static func store(player: Player, cave: Cave) -> void:
 	file.set_value("player", "talents", player.talents)
 	file.set_value("player", "bag", player.bag)
 	file.set_value("player", "equipped", player.equipped)
+	if character_only:
+		file.save(path())
+		return
 	file.set_value("cave", "levels", cave.levels)
 	var world := player.get_tree().get_first_node_in_group("world_map") as World
 	if world:

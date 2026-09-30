@@ -1753,6 +1753,8 @@ Das gesamte Spiel arbeitet auf ihn hin.
 
 # 67. Zukünftiger Multiplayer
 
+> **Ersetzt durch §155:** Die Multiplayer-Ideen in §67–§97 (eigene Höhlen im Mehrspieler-Standardspiel, Territorien, Online-Sessions, dedizierte Server, Steam) sind verworfen. Umgesetzt ist nur der lokale Multiplayer im Heimnetz mit den Modi Versus und Survival.
+
 Multiplayer ist **nicht Teil des MVP**, soll aber bei grundlegenden Architekturentscheidungen berücksichtigt werden.
 
 Ziel ist, dass später mehrere Spieler gleichzeitig in derselben Welt existieren können.
@@ -4887,7 +4889,7 @@ Extinction Hollow wird ein **Hybrid aus Survival und Action-RPG** (Vorbild: Diab
 | 9 | Extinction | Erledigt |
 | 10 | Polish | In Arbeit: Audio erledigt (T094–T099); offen sind T100, T101 und T105–T110 |
 
-Die Multiplayer-Tasks (§96, MP001–MP030) bleiben „Geplant“ und gehören nicht zum aktuellen Plan.
+Die Multiplayer-Tasks (§96, MP001–MP030) sind durch den lokalen Multiplayer in §155 ersetzt.
 
 ## 152.2 Über den ursprünglichen Plan hinaus
 
@@ -4948,8 +4950,34 @@ Jedes Tier ist etwas größer oder kleiner und leicht anders gefärbt. In Dungeo
 
 - Jeder Dino (Speicherstand) kann zwei Modi spielen, auf dem Startbildschirm und am Ende des Wizards wählbar: **Standard** (das Spiel mit Höhle, Zeitalter und Meteor) und **Survival**.
 - **Survival:** Dieselbe Welt, aber ohne Höhle, ohne Zeitalter und ohne Meteor; die Tiere der Welt sind verschwunden. Monster strömen in **Wellen** vom Bildrand heran und greifen den Dino unabhängig von der Größe an – auch kleine Beutetiere beißen hier.
-  - Jede Welle bringt mehr Monster (5 + 2 je Welle, höchstens 40), größere Arten kommen später dazu (Raptoren ab Welle 2, Protos ab 3, Ankylos ab 5, Allosaurier ab 7). Ab Welle 3 gibt es Elite-Tiere, jede fünfte Welle führt ein **Alpha** an. Die Monster werden mit jeder Welle zäher und beißen härter.
+  - Jede Welle bringt mehr Monster (5 + 2 je Welle, höchstens 40), größere Arten kommen später dazu (Raptoren ab Welle 2, Protos ab 3, Ankylos ab 5, Allosaurier ab 7). Ab Welle 3 gibt es Elite-Tiere, jede fünfte Welle kommt ein **Ultraboss** (siehe §155.1). Die Monster werden mit jeder Welle zäher und beißen härter.
   - Zwischen den Wellen: 8 Sekunden Pause, etwas Leben, volle Ausdauer, etwas Futter; danach wird gespeichert.
   - Level, Talente, Skills, Items und Sets sind dieselben wie im Standard-Spiel (gleiche Build- und Skill-Mechanik); erspielte XP und Beute bleiben dem Dino erhalten. Getragene XP gibt es nicht, weil keine Höhle da ist.
   - Stirbt der Dino, endet der Lauf: Welle, besiegte Monster und beste Welle werden angezeigt, ein Klick startet neu. Die beste Welle steht im Startbildschirm.
 - Inventar und Skillbaum pausieren das Spiel, solange sie offen sind (wie das Esc-Menü).
+
+---
+
+# 155. Lokaler Multiplayer
+
+- **Das Einzelspieler-Spiel bleibt unverändert** (Standard und Survival). Dazu kommt ein Multiplayer im **lokalen Netzwerk** mit **bis zu 8 Spielern**; jeder spielt an seinem eigenen Rechner mit seiner eigenen Maus.
+- **Lobby** (Startbildschirm → LAN MULTIPLAYER): Jeder bringt einen seiner Dinos mit (Speicherstand). Ein Spieler wählt **HOST A GAME** und wird damit zum Server; das Spiel zeigt ihm die Adresse(n) im Netzwerk (Port 7777, änderbar). Die anderen geben diese Adresse ein und treten bei. Die Lobby zeigt alle Spieler mit Farbe, Name und Level; der Host wählt den Modus und startet die Runde für alle.
+- Alle spielen in derselben, zufällig erzeugten Welt (gleicher Seed). Höhle, Zeitalter, Meteor, Katastrophen, Dungeons und die normalen Tiere gibt es im Multiplayer nicht; das Wetter bleibt klar, die Tageszeit gibt der Host vor.
+- Level, Talente, Items und Sets sind die des mitgebrachten Dinos; Fortschritt wird am Ende einer Welle bzw. Runde im eigenen Speicherstand gesichert (nur der Dino, nicht Welt oder Höhle).
+- **Inventar, Skillbaum und Esc-Menü pausieren im Multiplayer nicht**; das Esc-Menü bietet LEAVE GAME.
+- Die anderen Dinos tragen ihren Namen über dem Kopf; eine Liste unter der Karte zeigt alle Spieler (Farbe, Name, Level bzw. Kills, DOWN).
+
+## 155.1 Survival (gemeinsam)
+- Wie der Einzelspieler-Survival, aber gemeinsam: Die Monster strömen um die Dinos herum heran und greifen jeweils den nächsten Dino an.
+- **Jede fünfte Welle kommt ein ULTRABOSS**: ein riesiger Allosaurus mit eigener Lebensleiste, dessen Leben mit der Zahl der Spieler wächst. Alle 6 Sekunden stampft er: erst ein roter Warnring, dann eine Schockwelle, die jeden Dino in der Nähe trifft. Alle 15 Sekunden ruft er drei Raptoren zu Hilfe. (Auch im Einzelspieler-Survival ersetzt der Ultraboss das bisherige Alpha.)
+- Wer fällt, ist **DOWN** und steht nach der Welle bei einem noch stehenden Dino wieder auf. Fallen alle, endet die Runde.
+- Wer ein Monster erlegt, bekommt XP, Futter und Beute; alle anderen bekommen die Hälfte der XP.
+
+## 155.2 Versus
+- Die Dinos kämpfen gegeneinander; Bisse und Skills treffen andere Dinos (mit 60 % Schaden, damit Kämpfe dauern). Set-Kräfte wirken auch hier (z. B. Ankylo-Stacheln).
+- Ein gefallener Dino kommt nach 3 Sekunden an einer freien Stelle zurück, 2,5 Sekunden unverwundbar. Jede Tötung bringt XP und wird angesagt.
+- Wer zuerst **10 Kills** hat oder nach **5 Minuten** die meisten, gewinnt; der Host bringt danach alle zurück in die Lobby.
+
+## 155.3 Technik
+- Godot-Multiplayer über ENet (UDP). Der Host rechnet die Monster und entscheidet über Treffer an ihnen; jeder Spieler steuert seinen eigenen Dino und entscheidet über Treffer an ihm selbst. Positionen werden 15–20-mal pro Sekunde übertragen, Ereignisse (Treffer, Kills, Wellen, Stampfer) zuverlässig.
+- Im Browser ist der Multiplayer nicht möglich (Browser können kein UDP und nicht hosten); er läuft in den Desktop-Versionen.

@@ -52,6 +52,10 @@ func _ready() -> void:
 	time = SaveGame.read("story", "time", 0.0)
 	found = SaveGame.read("story", "found", {})
 	phase = phase_at(time)
+	if Net.in_game: # a multiplayer round: versus or survival together (GAME_SPEC §155)
+		set_process(false)
+		get_parent().add_child.call_deferred(NetGame.new())
+		return
 	if SaveGame.mode == "survival": # no age and no meteor: waves of monsters instead
 		set_process(false)
 		get_parent().add_child.call_deferred(Survival.new())

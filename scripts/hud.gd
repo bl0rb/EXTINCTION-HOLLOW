@@ -228,12 +228,23 @@ func _draw() -> void:
 	_bar(21, "stamina", player.stamina / player.max_stamina, Color(0.8, 0.74, 0.26), ceilf(player.stamina))
 	_bar(31, "hunger", player.hunger / player.max_hunger, Color(0.8, 0.46, 0.2), ceilf(player.hunger))
 	var run := get_tree().get_first_node_in_group("survival") as Survival
+	var versus := get_tree().get_first_node_in_group("versus") as Versus
+	if Net.in_game:
+		_draw_roster(versus)
 	if run: # survival: the wave instead of the XP for the cave
 		_text(Vector2(11, 48), "WAVE %d" % run.wave, AMBER)
 		_text(Vector2(62, 48), "KILLS %d" % run.kills, TEXT)
 		var banner := "NEXT WAVE IN %d" % ceili(run.break_left) if run.break_left > 0.0 else "WAVE %d  -  %d LEFT" % [run.wave, run.left()]
 		if not run.over:
 			draw_string(FONT, Vector2(0, 16), banner, HORIZONTAL_ALIGNMENT_CENTER, 640, FONT_SIZE, AMBER)
+		if is_instance_valid(run.boss):
+			_draw_boss_bar(run.boss, true)
+	elif versus:
+		_text(Vector2(11, 48), "KILLS %d" % versus.scores.get(Net.my_id(), 0), AMBER)
+		if not versus.over:
+			var t := maxi(ceili(versus.time_left), 0)
+			draw_string(FONT, Vector2(0, 16), "VERSUS  -  %d:%02d  -  FIRST TO %d" % [t / 60, t % 60, Versus.KILLS_TO_WIN],
+				HORIZONTAL_ALIGNMENT_CENTER, 640, FONT_SIZE, AMBER)
 	else:
 		_icon(Vector2(11, 42), "carried")
 		_text(Vector2(21, 48), str(player.carried_xp), AMBER)
@@ -262,8 +273,24 @@ func _draw() -> void:
 
 
 ## A dungeon boss in the fight gets a big health bar at the top of the screen.
-func _draw_boss_bar(boss) -> void: # untyped: the boss may have been freed
-	if not is_instance_valid(boss) or (boss.bar_time <= 0.0 and boss.global_position.distance_to(player.global_position) > 160.0):
+## The players of a multiplayer round under the map: colour, name, level, and kills or whether they are down.
+func _draw_roster(versus: Versus) -> void:
+	var rows := [[Net.my_id(), player.dino_name, player.dead]]
+	for dino in get_tree().get_nodes_in_group("remote_dinos"):
+		rows.append([dino.peer_id, dino.dino_name, dino.dead])
+	for i in rows.size():
+		var info: Dictionary = Net.players.get(rows[i][0], {})
+		var y := 80.0 + 10.0 * i
+		draw_rect(Rect2(536, y - 6, 5, 5), Player.COLORS[clampi(info.get("color", 0), 0, Player.COLORS.size() - 1)].color)
+		var tail := "DOWN" if rows[i][2] else "LV %d" % info.get("level", 1)
+		if versus:
+			tail = "%d" % versus.scores.get(rows[i][0], 0)
+		_text(Vector2(544, y), str(rows[i][1]).to_upper().left(10), TEXT if rows[i][0] != Net.my_id() else AMBER)
+		draw_string(FONT, Vector2(560, y), tail, HORIZONTAL_ALIGNMENT_RIGHT, 72, FONT_SIZE, Fx.HURT if rows[i][2] else DIM)
+
+
+func _draw_boss_bar(boss, always := false) -> void: # untyped: the boss may have been freed
+	if not is_instance_valid(boss) or (not always and boss.bar_time <= 0.0 and boss.global_position.distance_to(player.global_position) > 160.0):
 		return
 	draw_string(FONT, Vector2(0, 30), boss.title, HORIZONTAL_ALIGNMENT_CENTER, 640, 8, Fx.HURT)
 	draw_rect(Rect2(220, 34, 200, 5), Color(0, 0, 0, 0.7))
@@ -336,9 +363,11 @@ func open_pause_menu() -> void:
 	var hint := "your dino is safe in the cave" if in_cave else "progress since the last cave visit is lost"
 	if SaveGame.mode == "survival":
 		hint = "progress since the last cleared wave is lost"
+	if Net.in_game:
+		hint = "the game goes on for the others"
 	pause_menu.get_node("Box/Hint").text = hint
 	pause_menu.show()
-	get_tree().paused = true
+	_sync_pause()
 
 
 func resume() -> void:
@@ -346,9 +375,9 @@ func resume() -> void:
 	_sync_pause()
 
 
-## The game waits while the inventory, the skill tree or the Esc menu is open.
+## The game waits while the inventory, the skill tree or the Esc menu is open - but not in a multiplayer game.
 func _sync_pause() -> void:
-	get_tree().paused = pause_menu.visible or inventory.visible or skill_tree.visible
+	get_tree().paused = not Net.active and (pause_menu.visible or inventory.visible or skill_tree.visible)
 
 
 ## Back to the start screen; inside the cave the game is saved first.
@@ -371,7 +400,8 @@ func _build_pause_menu() -> void:
 	title.text = "PAUSED  -  " + player.dino_name.to_upper()
 	title.add_theme_color_override("font_color", AMBER)
 	box.add_child(title)
-	for entry in [["RESUME", resume], ["SWITCH SAVE", switch_save]]:
+	var leave := ["LEAVE GAME", func() -> void: Net.leave()] if Net.in_game else ["SWITCH SAVE", switch_save]
+	for entry in [["RESUME", resume], leave]:
 		var button := Button.new()
 		button.text = entry[0]
 		button.custom_minimum_size = Vector2(150, 16)

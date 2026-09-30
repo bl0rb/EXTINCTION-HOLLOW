@@ -94,7 +94,7 @@ func _ready() -> void:
 	add_to_group("world_map")
 	main = get_parent()
 	actors = main.get_node("Actors")
-	seed_value = SaveGame.read("world", "seed", 0)
+	seed_value = Net.world_seed if Net.in_game else SaveGame.read("world", "seed", 0)
 	params = CLASSIC.duplicate(true) if seed_value == 0 else roll(seed_value)
 	Biomes.configure(params)
 	_paint_ground()

@@ -62,6 +62,8 @@ var _ghost := 0.0
 var _look := ShaderMaterial.new() ## paints the body, tints and makes the crest glitter
 var dino_name := "Dino" ## chosen when the save was created
 var respawns := true ## false in survival: a death ends the run
+var guard := 0.0 ## seconds nothing can hurt the dino, e.g. right after coming back in versus
+var last_attacker := 0 ## the player who bit last (versus)
 var color_index := 0 ## one of COLORS
 
 var target := Vector2.ZERO
@@ -86,6 +88,7 @@ var _dash_hit: Array = []
 
 
 func _ready() -> void:
+	add_to_group("dinos")
 	_look.shader = load("res://shaders/hero.gdshader")
 	sprite.material = _look
 	dino_name = SaveGame.read("profile", "name", "Dino")
@@ -290,6 +293,7 @@ func use_skill(id: String, aim: Vector2) -> bool:
 			Fx.text(self, global_position + Vector2(0, -34), "FRENZY", Fx.HURT, 16)
 	if has_power("elder"): # the elder's wisdom answers every skill
 		SkillFx.ring(get_parent(), global_position, 26.0, Loot.SET_COLORS.elder, 0.4)
+	Net.send("fx", [id, global_position, anim.facing]) # the others see the skill too
 	return true
 
 
@@ -303,10 +307,20 @@ func strike(animal: Animal, amount: float, crit := false) -> bool:
 	var size := animal.get_size()
 	var rank := animal.rank
 	if not animal.hit(amount, self, crit):
-		if crit:
+		if crit and not Net.active:
 			Fx.hit_stop(get_tree(), 0.04)
 		return false
-	Fx.hit_stop(get_tree(), 0.06 if rank == 0 else 0.2)
+	if not Net.active: # a hit stop would slow the game for everyone
+		Fx.hit_stop(get_tree(), 0.06 if rank == 0 else 0.2)
+	reward_kill(species, pos, size, rank)
+	return true
+
+
+## What a kill brings: XP, food and loot; in a multiplayer game the others get a share of the XP.
+func reward_kill(species: Species, pos: Vector2, size: int, rank: int, share := 1.0) -> void:
+	if share < 1.0:
+		gain_xp(roundi(species.xp * [1, 3, 8, 20][rank] * share))
+		return
 	if has_power("tyrant") and not dead: # every kill feeds the tyrant
 		var healed := minf(0.15 * max_health(), max_health() - health)
 		health += healed
@@ -314,12 +328,11 @@ func strike(animal: Animal, amount: float, crit := false) -> bool:
 			Fx.text(self, global_position + Vector2(0, -30), "+%d" % roundi(healed), Loot.BETTER)
 			for i in 4:
 				SkillFx.sparkle(get_parent(), global_position + Vector2(randf_range(-10, 10), randf_range(-26, -4)), Loot.BETTER)
-	var xp: int = species.xp * [1, 3, 8][rank]
+	var xp: int = species.xp * [1, 3, 8, 20][rank]
 	carried_xp += xp
 	gain_xp(xp)
 	hunger = minf(hunger + species.food, max_hunger)
-	Loot.drop(get_parent(), pos, size + rank, [0, 1, 3][rank], [0, 1, 2][rank])
-	return true
+	Loot.drop(get_parent(), pos, size + mini(rank, 2), [0, 1, 3, 5][rank], [0, 1, 2, 3][rank])
 
 
 ## Tells the player that nothing more fits into the bag, at most every two seconds.
@@ -365,7 +378,7 @@ func salvage(index: int) -> void:
 
 
 func take_damage(amount: float, from: Animal = null) -> void:
-	if dead:
+	if dead or guard > 0.0:
 		return
 	amount *= 1.0 - armor()
 	if from and is_instance_valid(from):
@@ -489,6 +502,24 @@ func _die() -> void:
 	tween.tween_callback(_respawn if respawns else died.emit)
 
 
+## Back on its feet somewhere else (multiplayer: after a wave or a moment in versus).
+func revive(at: Vector2, protection := 0.0) -> void:
+	global_position = at
+	camera.reset_smoothing()
+	health = max_health()
+	stamina = max_stamina
+	sprite.modulate = Color.WHITE
+	_apply_size()
+	dead = false
+	guard = protection
+
+
+## What the others need to show this dino (multiplayer): where it is, how it looks and how it fares.
+func net_state() -> Array:
+	return [global_position, sprite.frame, sprite.scale.x / absf(sprite.scale.y), get_size(), health, max_health(), dead,
+		_build, has_power(_build) if _build != "" else false, guard > 0.0]
+
+
 func _respawn() -> void:
 	# the cave is the spawn point
 	global_position = (get_tree().get_first_node_in_group("cave") as Cave).global_position
@@ -516,6 +547,7 @@ func _physics_process(delta: float) -> void:
 	if dead:
 		return
 	_update_fx(delta)
+	guard = maxf(guard - delta, 0.0)
 	for id: String in cooldowns:
 		cooldowns[id] = maxf(cooldowns[id] - delta, 0.0)
 	frenzy_left = maxf(frenzy_left - delta, 0.0)
@@ -634,6 +666,7 @@ func _attack() -> void:
 	var parent := get_parent()
 	var killed := strike(prey, damage() * (crit_hit if crit else 1.0), crit)
 	SkillFx.bite(parent, at, Fx.CRIT if crit else Fx.WHITE, 1.4 if crit else 1.0)
+	Net.send("fx", ["bite", at, 1.0 if crit else 0.0])
 	if crit and has_power("raptor"):
 		SkillFx.ring(parent, at + Vector2(0, 6), 16.0, Loot.SET_COLORS.raptor, 0.3)
 	if killed:
