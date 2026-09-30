@@ -14,6 +14,8 @@ var rank := 0 ## 0 normal, 1 elite, 2 boss: more XP and better loot (GAME_SPEC �
 var title := "" ## shown above elites and bosses
 var hostile := false ## dungeon beasts go for the dino whatever its size
 var relentless := false ## survival monsters come straight for the dino from anywhere and bite (GAME_SPEC §154)
+var puppet := false ## a client's copy in a multiplayer game (GAME_SPEC §155): the host moves it and decides about bites
+var net_id := 0 ## names the monster across the network
 var _panic_from := Vector2.ZERO
 var _panic_left := 0.0
 
@@ -29,6 +31,11 @@ func _enter_tree() -> void:
 
 ## Takes a bite (GAME_SPEC §150): shows the damage, flashes and dies at zero health. Returns true on death.
 func hit(amount: float, from: Node2D, crit := false) -> bool:
+	if puppet: # the host decides; the bite shows right away
+		bar_time = 4.0
+		Fx.number(self, sprite.global_position + Vector2(0, -10), amount, Fx.WHITE, crit)
+		Net.send("hit", [net_id, amount, crit], 1)
+		return false
 	health -= amount
 	bar_time = 4.0
 	if not self is Fish: # fish stay silent
@@ -41,6 +48,26 @@ func hit(amount: float, from: Node2D, crit := false) -> bool:
 		return true
 	_hurt(from)
 	return false
+
+
+## The nearest living dino: the player's own, or another player's in a multiplayer game.
+func _nearest_dino() -> Node2D:
+	var best: Node2D = null
+	var best_dist := INF
+	for dino: Node2D in get_tree().get_nodes_in_group("dinos"):
+		var dist := global_position.distance_to(dino.global_position)
+		if not dino.dead and dist < best_dist:
+			best = dino
+			best_dist = dist
+	return best
+
+
+## Bites a dino: our own is hurt right here, another player's through the network.
+func _bite_dino(dino: Node2D, amount: float) -> void:
+	if dino is Player:
+		dino.take_damage(amount, self)
+	else:
+		Net.send("hurt", [amount, net_id], dino.peer_id)
 
 
 ## A wounded animal runs for it; predators fight back instead.

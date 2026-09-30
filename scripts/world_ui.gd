@@ -33,6 +33,11 @@ func _draw() -> void:
 			var height := animal.sprite.get_rect().size.y * absf(animal.sprite.scale.y)
 			draw_string(FONT, (animal.sprite.global_position - Vector2(60, height / 2.0 + 8.0)).round(), animal.title, HORIZONTAL_ALIGNMENT_CENTER, 120, 8,
 				Fx.CRIT if animal.rank == 1 else Fx.HURT)
+	# the other players' dinos carry their names (multiplayer)
+	for dino in get_tree().get_nodes_in_group("remote_dinos"):
+		var top: float = dino.sprite.global_position.y - 24.0 * absf(dino.sprite.scale.y) / Art.SCALE
+		draw_string(FONT, Vector2(dino.global_position.x - 60, top).round(), "DOWN" if dino.dead else dino.dino_name.to_upper(),
+			HORIZONTAL_ALIGNMENT_CENTER, 120, 8, Fx.HURT if dino.dead else Color(0.95, 0.93, 0.88))
 	# every item on the ground shows at a glance whether it beats what is worn; the one under the cursor tells by how much
 	var mouse := get_global_mouse_position()
 	var hovered: Node2D

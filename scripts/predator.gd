@@ -36,6 +36,8 @@ func _rest(duration := 1.0) -> void:
 func _can_hunt(animal) -> bool:
 	if not is_instance_valid(animal):
 		return false
+	if relentless:
+		return animal.is_in_group("dinos") and not animal.dead
 	if animal == player:
 		if relentless:
 			return not player.dead
@@ -46,7 +48,7 @@ func _can_hunt(animal) -> bool:
 
 func _find_victim() -> Node2D:
 	if relentless:
-		return null if player.dead else player
+		return _nearest_dino()
 	var best: Node2D = null
 	var best_dist := species.vision_radius
 	var candidates := get_tree().get_nodes_in_group("prey")
@@ -61,7 +63,9 @@ func _find_victim() -> Node2D:
 
 func _hurt(_from: Node2D) -> void:
 	_provoked = 6.0
-	victim = player
+	victim = _nearest_dino() if relentless else player
+	if victim == null:
+		return
 	_roar()
 	state = State.CHASE
 	eyes.modulate = EYES_HUNTING
@@ -78,6 +82,11 @@ func _physics_process(delta: float) -> void:
 		if state == State.CHASE:
 			_rest()
 		return
+	if relentless and state == State.CHASE: # always after the nearest dino
+		victim = _nearest_dino()
+		if victim == null:
+			_rest()
+			return
 	if state != State.CHASE:
 		victim = _find_victim()
 		if victim:
@@ -126,8 +135,8 @@ func _roar() -> void:
 func _bite() -> void:
 	anim.play("attack", 0.22)
 	Sound.play(get_parent(), "bite", global_position, -2.0, 0.8)
-	if victim == player:
-		player.take_damage(species.damage * power, self)
+	if victim.is_in_group("dinos"):
+		_bite_dino(victim, species.damage * power)
 	else:
 		Fx.burst(Fx.BLOOD, get_parent(), victim.global_position + Vector2(0, -4))
 		victim.queue_free()

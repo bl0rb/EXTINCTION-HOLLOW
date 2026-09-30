@@ -46,6 +46,10 @@ func _ready() -> void:
 	slots.add_theme_constant_override("separation", 4)
 	add_child(slots)
 	_build_wizard()
+	var lan := _button("LAN MULTIPLAYER", func() -> void: get_tree().change_scene_to_file(Net.LOBBY))
+	lan.position = Vector2(260, 328)
+	lan.custom_minimum_size = Vector2(120, 18)
+	add_child(lan)
 	refresh()
 
 
