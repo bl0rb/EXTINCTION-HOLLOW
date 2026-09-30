@@ -4,6 +4,7 @@ extends CharacterBody2D
 
 signal leveled_up
 signal respawned
+signal died ## only when it does not come back (survival)
 
 const PICK_TOLERANCE := 8.0 ## extra pixels so small animals are easy to click
 const SIZE_SCALE := 0.15 ## sprite growth per size upgrade
@@ -14,6 +15,12 @@ const ATTACK_INTERVAL := 0.6 ## seconds between bites
 const CRIT_CHANCE := 0.05
 const HEALTH_PER_LEVEL := 5.0
 const BAG_SIZE := 12
+const COLORS := [ ## primary colours for the dino, chosen when a save is created
+	{"name": "Rust", "color": Color(0.77, 0.4, 0.17)}, {"name": "Moss", "color": Color(0.36, 0.6, 0.25)},
+	{"name": "Ocean", "color": Color(0.2, 0.46, 0.76)}, {"name": "Violet", "color": Color(0.52, 0.3, 0.72)},
+	{"name": "Crimson", "color": Color(0.78, 0.18, 0.2)}, {"name": "Sand", "color": Color(0.8, 0.68, 0.44)},
+	{"name": "Slate", "color": Color(0.4, 0.44, 0.5)}, {"name": "Gold", "color": Color(0.92, 0.72, 0.2)},
+]
 const PICKUP_RANGE := 12.0 ## items are picked up by walking over them
 const DASH_SPEED := 360.0
 
@@ -52,7 +59,10 @@ var _powers: Array = [] ## sets worn complete
 var _build := "" ## the set worn most, shown on the crest
 var _sparkle := 0.0
 var _ghost := 0.0
-var _look := ShaderMaterial.new() ## tints and makes the crest glitter
+var _look := ShaderMaterial.new() ## paints the body, tints and makes the crest glitter
+var dino_name := "Dino" ## chosen when the save was created
+var respawns := true ## false in survival: a death ends the run
+var color_index := 0 ## one of COLORS
 
 var target := Vector2.ZERO
 var moving := false
@@ -78,6 +88,9 @@ var _dash_hit: Array = []
 func _ready() -> void:
 	_look.shader = load("res://shaders/hero.gdshader")
 	sprite.material = _look
+	dino_name = SaveGame.read("profile", "name", "Dino")
+	color_index = SaveGame.read("profile", "color", 0)
+	Player.paint(_look, color_index)
 	banked_xp = SaveGame.read("player", "banked_xp", 0)
 	total_xp = SaveGame.read("player", "total_xp", 0)
 	upgrades.merge(SaveGame.read("player", "upgrades", {}), true)
@@ -400,6 +413,12 @@ func _update_stats() -> void:
 	health = minf(health, max_health())
 
 
+## Paints the body of the hero sprite in one of the primary colours (the first is its own).
+static func paint(look: ShaderMaterial, index: int) -> void:
+	look.set_shader_parameter("recolor", 0.0 if index == 0 else 1.0)
+	look.set_shader_parameter("body_color", COLORS[clampi(index, 0, COLORS.size() - 1)].color)
+
+
 ## The build shows (GAME_SPEC §150): two pieces of a set tint the crest in its colour, the whole set makes it glitter.
 func _update_look() -> void:
 	var counts := Loot.set_counts(equipped)
@@ -467,7 +486,7 @@ func _die() -> void:
 	tween.tween_property(sprite, "modulate", Color(0.5, 0.08, 0.06), 0.3)
 	tween.parallel().tween_property(sprite, "scale:y", 0.35 * sprite.scale.y, 0.5)
 	tween.tween_property(sprite, "modulate:a", 0.0, 1.0).set_delay(0.6)
-	tween.tween_callback(_respawn)
+	tween.tween_callback(_respawn if respawns else died.emit)
 
 
 func _respawn() -> void:

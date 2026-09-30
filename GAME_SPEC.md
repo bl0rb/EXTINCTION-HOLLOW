@@ -1287,6 +1287,8 @@ Sound soll stark zur Atmosphäre beitragen.
 
 # 55. Speichersystem
 
+> **Umgesetzt:** Bis zu fünf Speicherstände liegen unter `user://savegames` (`slot_1.cfg` bis `slot_5.cfg`); der Spielstand früherer Versionen wandert beim ersten Start in Platz 1. Der Startbildschirm zeigt jeden Platz mit Name, Farbe, Level, Höhlenlevel, Zeitalter-Phase und letztem Spieldatum; Plätze lassen sich spielen, neu anlegen und (nach Rückfrage) löschen. Ein neuer Dino entsteht in einem kurzen Einrichtungs-Wizard: **Name** und **Primärfarbe** (Rost, Moos, Ozean, Violett, Karmin, Sand, Schiefer, Gold) mit Vorschau. Im Spiel pausiert **Esc** mit einem Menü zum Weiterspielen oder **Spielstand wechseln**; in der Höhle wird vorher gespeichert, draußen geht der Fortschritt seit dem letzten Höhlenbesuch verloren.
+
 Gespeichert werden:
 
 * Spieler-Upgrades,
@@ -4939,3 +4941,15 @@ Jedes Tier ist etwas größer oder kleiner und leicht anders gefärbt. In Dungeo
   - Ausbruch des Vulkans, weit hörbar
   - der Meteoreinschlag
 - Noch offen aus §54: Schritte, Wasser, Wind, Schnee, Feuer, Fressen, Höhle und Musik.
+
+---
+
+# 154. Spielmodi: Standard und Überleben
+
+- Jeder Dino (Speicherstand) kann zwei Modi spielen, auf dem Startbildschirm und am Ende des Wizards wählbar: **Standard** (das Spiel mit Höhle, Zeitalter und Meteor) und **Survival**.
+- **Survival:** Dieselbe Welt, aber ohne Höhle, ohne Zeitalter und ohne Meteor; die Tiere der Welt sind verschwunden. Monster strömen in **Wellen** vom Bildrand heran und greifen den Dino unabhängig von der Größe an – auch kleine Beutetiere beißen hier.
+  - Jede Welle bringt mehr Monster (5 + 2 je Welle, höchstens 40), größere Arten kommen später dazu (Raptoren ab Welle 2, Protos ab 3, Ankylos ab 5, Allosaurier ab 7). Ab Welle 3 gibt es Elite-Tiere, jede fünfte Welle führt ein **Alpha** an. Die Monster werden mit jeder Welle zäher und beißen härter.
+  - Zwischen den Wellen: 8 Sekunden Pause, etwas Leben, volle Ausdauer, etwas Futter; danach wird gespeichert.
+  - Level, Talente, Skills, Items und Sets sind dieselben wie im Standard-Spiel (gleiche Build- und Skill-Mechanik); erspielte XP und Beute bleiben dem Dino erhalten. Getragene XP gibt es nicht, weil keine Höhle da ist.
+  - Stirbt der Dino, endet der Lauf: Welle, besiegte Monster und beste Welle werden angezeigt, ein Klick startet neu. Die beste Welle steht im Startbildschirm.
+- Inventar und Skillbaum pausieren das Spiel, solange sie offen sind (wie das Esc-Menü).

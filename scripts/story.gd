@@ -52,6 +52,10 @@ func _ready() -> void:
 	time = SaveGame.read("story", "time", 0.0)
 	found = SaveGame.read("story", "found", {})
 	phase = phase_at(time)
+	if SaveGame.mode == "survival": # no age and no meteor: waves of monsters instead
+		set_process(false)
+		get_parent().add_child.call_deferred(Survival.new())
+		return
 	_pace_disasters()
 	_hum = Sound.loop(self, "meteor")
 	# the opening words of the age, once the HUD is listening
@@ -165,7 +169,7 @@ func _finish() -> void:
 ## Surviving keeps the cave; extinction costs it and everything that was banked.
 func new_age() -> void:
 	var file := ConfigFile.new()
-	file.load(SaveGame.PATH)
+	file.load(SaveGame.path())
 	file.set_value("story", "time", 0.0)
 	file.set_value("story", "found", {})
 	file.set_value("map", "explored", PackedByteArray())
@@ -174,5 +178,5 @@ func new_age() -> void:
 		file.set_value("cave", "levels", {})
 		file.set_value("player", "banked_xp", 0)
 		file.set_value("player", "upgrades", {})
-	file.save(SaveGame.PATH)
+	file.save(SaveGame.path())
 	get_tree().reload_current_scene()

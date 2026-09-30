@@ -42,6 +42,9 @@ func _physics_process(delta: float) -> void:
 	if _flee_in_panic(species.flee_speed, delta):
 		state = State.FLEE
 		return
+	if relentless:
+		_charge(delta)
+		return
 	var threat := _find_threat()
 	if threat:
 		_threat = threat
@@ -71,3 +74,22 @@ func _physics_process(delta: float) -> void:
 
 	if _walk(speed, delta) and state == State.WANDER:
 		_rest()
+
+
+## A survival monster (GAME_SPEC §154): even small prey runs at the dino and bites, whatever its size.
+func _charge(delta: float) -> void:
+	_cooldown -= delta
+	if player.dead:
+		_stand(delta)
+		return
+	target = player.global_position
+	if global_position.distance_to(target) <= radius + 10.0:
+		velocity = Vector2.ZERO
+		_animate(target - global_position, 0.0, delta)
+		if _cooldown <= 0.0:
+			_cooldown = species.attack_interval if species.attack_interval > 0.0 else 1.1
+			if sprite.hframes >= 10:
+				anim.play("attack", 0.2)
+			player.take_damage(maxf(species.damage, 3.0 + 3.0 * species.size) * power, self)
+		return
+	_walk(species.flee_speed * 0.85, delta)
