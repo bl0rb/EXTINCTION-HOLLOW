@@ -231,7 +231,7 @@ func gain_xp(amount: int) -> void:
 	total_xp += roundi(amount * (1.0 + stat("xp") / 100.0))
 	if level() > before:
 		health = max_health()
-		Fx.text(self, global_position + Vector2(0, -36), "LEVEL %d" % level(), Fx.GOLD, 16)
+		Fx.text(self, global_position + Vector2(0, -36), tr("LEVEL %d") % level(), Fx.GOLD, 16)
 		leveled_up.emit()
 
 

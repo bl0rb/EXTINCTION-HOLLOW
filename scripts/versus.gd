@@ -28,7 +28,7 @@ func _ready() -> void:
 	player.hunger_rate = 0.0 # nothing to eat here
 	for id: int in Net.players:
 		scores[id] = 0
-	hud.narrate("VERSUS", "First to %d kills wins." % KILLS_TO_WIN)
+	hud.narrate("VERSUS", tr("First to %d kills wins.") % KILLS_TO_WIN)
 
 
 func _process(delta: float) -> void:
@@ -63,7 +63,7 @@ func _on_died() -> void:
 func _frag(killer: int, victim: int) -> void:
 	if killer != 0 and killer != victim:
 		scores[killer] = scores.get(killer, 0) + 1
-		hud.show_warning("%s bit %s" % [name_of(killer).to_upper(), name_of(victim).to_upper()])
+		hud.show_warning(tr("%s bit %s") % [name_of(killer).to_upper(), name_of(victim).to_upper()])
 		if killer == Net.my_id():
 			player.gain_xp(15 + 5 * int(Net.players.get(victim, {}).get("level", 1)))
 			Fx.text(player, player.global_position + Vector2(0, -34), "KILL", Fx.GOLD, 16)
@@ -85,7 +85,7 @@ func _over(winner: int) -> void:
 	SaveGame.store(player, cave, true)
 	var won := winner == Net.my_id()
 	hud.show_end("VICTORY" if won else "DEFEAT", Fx.GOLD if won else Fx.HURT,
-		"%s wins with %d kills" % [name_of(winner), scores.get(winner, 0)],
+		tr("%s wins with %d kills") % [name_of(winner), scores.get(winner, 0)],
 		"click to go back to the lobby" if Net.is_host() else "the host starts the next round", func() -> void: Net.back_to_lobby())
 
 

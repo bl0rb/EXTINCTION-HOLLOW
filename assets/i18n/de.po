@@ -1,0 +1,760 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: de\n"
+
+msgid "CHOOSE YOUR DINO"
+msgstr "WÄHLE DEINEN DINO"
+
+msgid "SLOT %d  -  EMPTY"
+msgstr "PLATZ %d  -  LEER"
+
+msgid "a new dino hatches here"
+msgstr "hier schlüpft ein neuer Dino"
+
+msgid "LV %d   CAVE %d   AGE %s"
+msgstr "LV %d   HÖHLE %d   ZEITALTER %s"
+
+msgid "BEST WAVE %d"
+msgstr "BESTE WELLE %d"
+
+msgid "played %s"
+msgstr "gespielt %s"
+
+msgid "NEW"
+msgstr "NEU"
+
+msgid "SURVIVAL"
+msgstr "ÜBERLEBEN"
+
+msgid "SURE?"
+msgstr "SICHER?"
+
+msgid "delete this save"
+msgstr "diesen Spielstand löschen"
+
+msgid "A NEW DINO HATCHES"
+msgstr "EIN NEUER DINO SCHLÜPFT"
+
+msgid "2  PRIMARY COLOUR"
+msgstr "2  HAUPTFARBE"
+
+msgid "3  PLAY"
+msgstr "3  SPIELEN"
+
+msgid "BACK"
+msgstr "ZURÜCK"
+
+msgid "a random name"
+msgstr "ein zufälliger Name"
+
+msgid "OPTIONS"
+msgstr "OPTIONEN"
+
+msgid "LAN MULTIPLAYER"
+msgstr "LAN-MULTIPLAYER"
+
+msgid "Rust"
+msgstr "Rost"
+
+msgid "Moss"
+msgstr "Moos"
+
+msgid "Ocean"
+msgstr "Ozean"
+
+msgid "Violet"
+msgstr "Violett"
+
+msgid "Crimson"
+msgstr "Karmesin"
+
+msgid "Slate"
+msgstr "Schiefer"
+
+msgid "VOLUME"
+msgstr "LAUTSTÄRKE"
+
+msgid "AMBIENCE"
+msgstr "UMGEBUNG"
+
+msgid "EFFECTS"
+msgstr "EFFEKTE"
+
+msgid "FULLSCREEN"
+msgstr "VOLLBILD"
+
+msgid "SCREEN SHAKE"
+msgstr "WACKELN"
+
+msgid "LANGUAGE"
+msgstr "SPRACHE"
+
+msgid "ON"
+msgstr "AN"
+
+msgid "OFF"
+msgstr "AUS"
+
+msgid "SURVIVED"
+msgstr "ÜBERLEBT"
+
+msgid "EXTINCT"
+msgstr "AUSGESTORBEN"
+
+msgid "The dust settles after a long, cold age."
+msgstr "Nach einem langen, kalten Zeitalter legt sich der Staub."
+
+msgid "The hollow endured, and so did you."
+msgstr "Die Senke hat überdauert, und du mit ihr."
+
+msgid "The hollow was not deep enough."
+msgstr "Die Senke war nicht tief genug."
+
+msgid "The cave collapses, and the age ends."
+msgstr "Die Höhle stürzt ein, und das Zeitalter endet."
+
+msgid "click to begin a new age"
+msgstr "klicken für ein neues Zeitalter"
+
+msgid "WAVE %d"
+msgstr "WELLE %d"
+
+msgid "KILLS %d"
+msgstr "ERLEGT %d"
+
+msgid "NEXT WAVE IN %d"
+msgstr "NÄCHSTE WELLE IN %d"
+
+msgid "WAVE %d  -  %d LEFT"
+msgstr "WELLE %d  -  NOCH %d"
+
+msgid "VERSUS  -  %d:%02d  -  FIRST TO %d"
+msgstr "VERSUS  -  %d:%02d  -  ZIEL %d"
+
+msgid "SIZE %d"
+msgstr "GRÖSSE %d"
+
+msgid "BEST %d"
+msgstr "BESTE %d"
+
+msgid "CAVE LV %d"
+msgstr "HÖHLE LV %d"
+
+msgid "IMPACT  %d:%02d"
+msgstr "EINSCHLAG  %d:%02d"
+
+msgid "DOWN"
+msgstr "AM BODEN"
+
+msgid "PAUSED"
+msgstr "PAUSE"
+
+msgid "RESUME"
+msgstr "WEITER"
+
+msgid "LEAVE GAME"
+msgstr "SPIEL VERLASSEN"
+
+msgid "SWITCH SAVE"
+msgstr "SPIELSTAND WECHSELN"
+
+msgid "your dino is safe in the cave"
+msgstr "dein Dino ist in der Höhle sicher"
+
+msgid "progress since the last cave visit is lost"
+msgstr "Fortschritt seit dem letzten Höhlenbesuch geht verloren"
+
+msgid "progress since the last cleared wave is lost"
+msgstr "Fortschritt seit der letzten geschafften Welle geht verloren"
+
+msgid "the game goes on for the others"
+msgstr "für die anderen geht das Spiel weiter"
+
+msgid "CLEAR"
+msgstr "KLAR"
+
+msgid "RAIN"
+msgstr "REGEN"
+
+msgid "HEAVY RAIN"
+msgstr "STARKREGEN"
+
+msgid "SNOW"
+msgstr "SCHNEE"
+
+msgid "ASH"
+msgstr "ASCHE"
+
+msgid "JUNGLE"
+msgstr "DSCHUNGEL"
+
+msgid "RIVER"
+msgstr "FLUSS"
+
+msgid "SWAMP"
+msgstr "SUMPF"
+
+msgid "VOLCANO"
+msgstr "VULKAN"
+
+msgid "The mountain rumbles..."
+msgstr "Der Berg grollt ..."
+
+msgid "The ground begins to shake..."
+msgstr "Der Boden beginnt zu beben ..."
+
+msgid "I   THE HOLLOW"
+msgstr "I   DIE SENKE"
+
+msgid "The hollow is quiet. The herds graze, the rivers run. Nothing here remembers the sky."
+msgstr "Die Senke ist still. Die Herden grasen, die Flüsse fließen. Nichts hier erinnert sich an den Himmel."
+
+msgid "II   UNREST"
+msgstr "II   UNRUHE"
+
+msgid "The ground trembles. Far beyond the steppe, the mountain is waking."
+msgstr "Der Boden zittert. Weit hinter der Steppe erwacht der Berg."
+
+msgid "III   FIRE"
+msgstr "III   FEUER"
+
+msgid "Ash falls like snow. The herds run east, then west, then nowhere."
+msgstr "Asche fällt wie Schnee. Die Herden ziehen nach Osten, dann nach Westen, dann nirgendwohin."
+
+msgid "IV   OMENS"
+msgstr "IV   VORZEICHEN"
+
+msgid "A new star burns in the sky. Every night it is brighter."
+msgstr "Ein neuer Stern brennt am Himmel. Jede Nacht wird er heller."
+
+msgid "V   THE LAST DAYS"
+msgstr "V   DIE LETZTEN TAGE"
+
+msgid "The star has a tail now. Bring everything home. The hollow is all that is left."
+msgstr "Der Stern hat jetzt einen Schweif. Bring alles nach Hause. Die Senke ist alles, was bleibt."
+
+msgid "Bones older than the trees. They lie curled up, as if sleeping through something."
+msgstr "Knochen, älter als die Bäume. Sie liegen eingerollt, als hätten sie etwas verschlafen."
+
+msgid "Claw marks on the rock, thousands of them. Someone counted the days here."
+msgstr "Krallenspuren im Fels, Tausende. Jemand hat hier die Tage gezählt."
+
+msgid "A giant, stripped bare by the wind. Its skull still stares at the sky."
+msgstr "Ein Riese, vom Wind blank geschliffen. Sein Schädel starrt noch immer in den Himmel."
+
+msgid "Smooth stones laid in a ring. The river has not moved them in an age."
+msgstr "Glatte Steine, im Kreis gelegt. Der Fluss hat sie seit einem Zeitalter nicht bewegt."
+
+msgid "Tracks sink into the mud and never come out again."
+msgstr "Spuren versinken im Schlamm und kommen nie wieder heraus."
+
+msgid "Black glass, still warm. The mountain has done this before."
+msgstr "Schwarzes Glas, noch warm. Der Berg hat das schon einmal getan."
+
+msgid "Beasts frozen beneath the ice, their eyes still open. They were running."
+msgstr "Tiere, eingefroren unter dem Eis, die Augen noch offen. Sie waren auf der Flucht."
+
+msgid "Scratched into the wall: a burning star. Below it, one small shape inside a hollow."
+msgstr "In die Wand geritzt: ein brennender Stern. Darunter eine kleine Gestalt in einer Senke."
+
+msgid "RAPTOR DEN"
+msgstr "RAPTORENBAU"
+
+msgid "It smells of blood and old bones down here."
+msgstr "Hier unten riecht es nach Blut und alten Knochen."
+
+msgid "SUNKEN HOLLOW"
+msgstr "VERSUNKENE SENKE"
+
+msgid "Water drips in the dark. Something is breathing."
+msgstr "Wasser tropft im Dunkeln. Etwas atmet."
+
+msgid "EMBER DEEP"
+msgstr "GLUTTIEFE"
+
+msgid "The rock is warm. The mountain's heart beats below."
+msgstr "Der Fels ist warm. Darunter schlägt das Herz des Berges."
+
+msgid "FROST CRYPT"
+msgstr "FROSTGRUFT"
+
+msgid "Ice creaks in the walls. Old things sleep here."
+msgstr "Eis knarrt in den Wänden. Hier schlafen alte Dinge."
+
+msgid "CAVE TYRANT"
+msgstr "HÖHLENTYRANN"
+
+msgid "The tyrant falls. A way out opens."
+msgstr "Der Tyrann fällt. Ein Ausgang öffnet sich."
+
+msgid "No cave, no mercy. Hold out as long as you can."
+msgstr "Keine Höhle, keine Gnade. Halte durch, so lange du kannst."
+
+msgid "Together against the waves."
+msgstr "Gemeinsam gegen die Wellen."
+
+msgid "The ULTRABOSS is coming."
+msgstr "Der ULTRABOSS kommt."
+
+msgid "They are coming."
+msgstr "Sie kommen."
+
+msgid "WAVE %d CLEARED"
+msgstr "WELLE %d GESCHAFFT"
+
+msgid "Catch your breath."
+msgstr "Atme durch."
+
+msgid "YOU ARE DOWN"
+msgstr "DU BIST AM BODEN"
+
+msgid "Hold on - you get up when the wave is beaten."
+msgstr "Halte durch - du stehst auf, wenn die Welle geschlagen ist."
+
+msgid "Wave %d  -  %d monsters beaten"
+msgstr "Welle %d  -  %d Monster besiegt"
+
+msgid "Best wave: %d"
+msgstr "Beste Welle: %d"
+
+msgid "FALLEN"
+msgstr "GEFALLEN"
+
+msgid "click to go back to the lobby"
+msgstr "klicken, um zur Lobby zurückzukehren"
+
+msgid "the host starts the next round"
+msgstr "der Host startet die nächste Runde"
+
+msgid "click to try again"
+msgstr "klicken für einen neuen Versuch"
+
+msgid "First to %d kills wins."
+msgstr "Wer zuerst %d Dinos erlegt, gewinnt."
+
+msgid "%s bit %s"
+msgstr "%s hat %s gebissen"
+
+msgid "KILL"
+msgstr "ERLEGT"
+
+msgid "VICTORY"
+msgstr "SIEG"
+
+msgid "DEFEAT"
+msgstr "NIEDERLAGE"
+
+msgid "%s wins with %d kills"
+msgstr "%s gewinnt mit %d erlegten Dinos"
+
+msgid "ROAR"
+msgstr "BRÜLLEN"
+
+msgid "FRENZY"
+msgstr "RASEREI"
+
+msgid "BAG FULL"
+msgstr "TASCHE VOLL"
+
+msgid "INVENTORY"
+msgstr "INVENTAR"
+
+msgid "DMG %d   CRIT %d%%"
+msgstr "SCH %d   KRIT %d%%"
+
+msgid "ARMOR %d%%   HP %d"
+msgstr "RÜST %d%%   LP %d"
+
+msgid "NO SET WORN"
+msgstr "KEIN SET"
+
+msgid "TYRANT"
+msgstr "TYRANN"
+
+msgid "ELDER"
+msgstr "ÄLTESTER"
+
+msgid "nothing worn here yet"
+msgstr "hier wird noch nichts getragen"
+
+msgid "{rarity} {slot}"
+msgstr "{slot}, {rarity}"
+
+msgid "click: take off"
+msgstr "Klick: ablegen"
+
+msgid "click: wear  right: +%d XP"
+msgstr "Klick: tragen  rechts: +%d XP"
+
+msgid "bag full: salvage first"
+msgstr "Tasche voll: erst verwerten"
+
+msgid "Common"
+msgstr "gewöhnlich"
+
+msgid "Magic"
+msgstr "magisch"
+
+msgid "Rare"
+msgstr "selten"
+
+msgid "Legendary"
+msgstr "legendär"
+
+msgid "Teeth"
+msgstr "Zähne"
+
+msgid "Claws"
+msgstr "Klauen"
+
+msgid "Hide"
+msgstr "Haut"
+
+msgid "Amber"
+msgstr "Bernstein"
+
+msgid "NEW %s"
+msgstr "NEU: %s"
+
+msgid "Tooth"
+msgstr "Zahn"
+
+msgid "Fang"
+msgstr "Reißzahn"
+
+msgid "Sabre Tooth"
+msgstr "Säbelzahn"
+
+msgid "Claw"
+msgstr "Klaue"
+
+msgid "Talon"
+msgstr "Kralle"
+
+msgid "Sickle Claw"
+msgstr "Sichelkralle"
+
+msgid "Scales"
+msgstr "Schuppen"
+
+msgid "Plated Hide"
+msgstr "Plattenhaut"
+
+msgid "Amber Shard"
+msgstr "Bernsteinsplitter"
+
+msgid "Amber Heart"
+msgstr "Bernsteinherz"
+
+msgid "Savage %s"
+msgstr "%s der Wildheit"
+
+msgid "Keen %s"
+msgstr "%s der Schärfe"
+
+msgid "Swift %s"
+msgstr "%s der Schnelle"
+
+msgid "Hardy %s"
+msgstr "%s der Zähigkeit"
+
+msgid "Plated %s"
+msgstr "%s der Panzerung"
+
+msgid "Fleet %s"
+msgstr "%s der Flinkheit"
+
+msgid "Hungry %s"
+msgstr "%s des Hungers"
+
+msgid "Wise %s"
+msgstr "%s der Weisheit"
+
+msgid "Ancient %s"
+msgstr "%s der Urzeit"
+
+msgid "Tyrant's %s"
+msgstr "%s des Tyrannen"
+
+msgid "Raptor's %s"
+msgstr "%s des Raptors"
+
+msgid "Ankylo's %s"
+msgstr "%s des Ankylos"
+
+msgid "Elder's %s"
+msgstr "%s des Ältesten"
+
+msgid "Tyrant's Might"
+msgstr "Macht des Tyrannen"
+
+msgid "Raptor's Cunning"
+msgstr "List des Raptors"
+
+msgid "Ankylo's Bulwark"
+msgstr "Bollwerk des Ankylos"
+
+msgid "Elder's Wisdom"
+msgstr "Weisheit des Ältesten"
+
+msgid "kills heal 15% health"
+msgstr "Erlegen heilt 15% Leben"
+
+msgid "crits bite 3x as hard"
+msgstr "Krits beißen 3x so fest"
+
+msgid "biters take half back"
+msgstr "Beißer erleiden die Hälfte"
+
+msgid "skills faster, cheaper"
+msgstr "Skills schneller, billiger"
+
+msgid "+%d damage"
+msgstr "+%d Schaden"
+
+msgid "+%d%% critical hits"
+msgstr "+%d%% kritische Treffer"
+
+msgid "+%d%% bite speed"
+msgstr "+%d%% Bisstempo"
+
+msgid "+%d health"
+msgstr "+%d Leben"
+
+msgid "+%d%% armour"
+msgstr "+%d%% Rüstung"
+
+msgid "+%d speed"
+msgstr "+%d Tempo"
+
+msgid "+%d life per hit"
+msgstr "+%d Leben pro Treffer"
+
+msgid "THE CAVE"
+msgstr "DIE HÖHLE"
+
+msgid "SHELTER %d/%d"
+msgstr "SCHUTZ %d/%d"
+
+msgid "CAVE"
+msgstr "HÖHLE"
+
+msgid "level %s"
+msgstr "Stufe %s"
+
+msgid "cave level limits it"
+msgstr "durch Höhlenstufe begrenzt"
+
+msgid "fully grown"
+msgstr "voll ausgebaut"
+
+msgid "needs %s"
+msgstr "braucht %s"
+
+msgid "or"
+msgstr "oder"
+
+msgid "click to build"
+msgstr "klicken zum Bauen"
+
+msgid "not enough XP"
+msgstr "nicht genug XP"
+
+msgid "Health"
+msgstr "Leben"
+
+msgid "+20 max health"
+msgstr "+20 max. Leben"
+
+msgid "Speed"
+msgstr "Tempo"
+
+msgid "+8 walk, +12 sprint"
+msgstr "+8 Gehen, +12 Sprint"
+
+msgid "Bite"
+msgstr "Biss"
+
+msgid "+4 bite reach"
+msgstr "+4 Bissweite"
+
+msgid "Size"
+msgstr "Größe"
+
+msgid "+1 size class"
+msgstr "+1 Größenklasse"
+
+msgid "Cave Level"
+msgstr "Höhlenstufe"
+
+msgid "bigger cave, higher limits"
+msgstr "größere Höhle, höhere Grenzen"
+
+msgid "Strength"
+msgstr "Stärke"
+
+msgid "sturdier walls"
+msgstr "festere Wände"
+
+msgid "Depth"
+msgstr "Tiefe"
+
+msgid "deeper shelter"
+msgstr "tieferer Schutz"
+
+msgid "Heat Resist."
+msgstr "Hitzeschutz"
+
+msgid "fire and lava"
+msgstr "Feuer und Lava"
+
+msgid "Quake Resist."
+msgstr "Bebenschutz"
+
+msgid "earthquakes"
+msgstr "Erdbeben"
+
+msgid "Cold Resist."
+msgstr "Kälteschutz"
+
+msgid "snow and frost"
+msgstr "Schnee und Frost"
+
+msgid "POINTS %d"
+msgstr "PUNKTE %d"
+
+msgid "rank %d/%d"
+msgstr "Rang %d/%d"
+
+msgid "key %d  %d stamina  %ds"
+msgstr "Taste %d  %d Ausdauer  %ds"
+
+msgid "needs level %d"
+msgstr "braucht Level %d"
+
+msgid "click to learn"
+msgstr "klicken zum Lernen"
+
+msgid "Tail Sweep"
+msgstr "Schwanzschlag"
+
+msgid "hits everything around you"
+msgstr "trifft alles um dich herum"
+
+msgid "Sharp Teeth"
+msgstr "Scharfe Zähne"
+
+msgid "+10% damage"
+msgstr "+10% Schaden"
+
+msgid "Thick Hide"
+msgstr "Dicke Haut"
+
+msgid "-4% damage taken"
+msgstr "-4% erlittener Schaden"
+
+msgid "Roar"
+msgstr "Brüllen"
+
+msgid "scares everything nearby away"
+msgstr "verscheucht alles in der Nähe"
+
+msgid "Charge"
+msgstr "Ansturm"
+
+msgid "rams through all in its way"
+msgstr "rammt alles im Weg"
+
+msgid "Instinct"
+msgstr "Instinkt"
+
+msgid "+3% critical hits"
+msgstr "+3% kritische Treffer"
+
+msgid "Frenzy"
+msgstr "Raserei"
+
+msgid "fast bites that heal"
+msgstr "schnelle Bisse, die heilen"
+
+msgid "Vigor"
+msgstr "Vitalität"
+
+msgid "+20% stamina, cheaper skills"
+msgstr "+20% Ausdauer, billigere Skills"
+
+msgid "CONNECTING ..."
+msgstr "VERBINDE ..."
+
+msgid "CANCEL"
+msgstr "ABBRECHEN"
+
+msgid "YOUR DINO"
+msgstr "DEIN DINO"
+
+msgid "hatch a dino on the start screen first"
+msgstr "lass zuerst auf dem Startbildschirm einen Dino schlüpfen"
+
+msgid "HOST A GAME"
+msgstr "SPIEL HOSTEN"
+
+msgid "OR JOIN A HOST IN YOUR NETWORK"
+msgstr "ODER EINEM HOST IM NETZWERK BEITRETEN"
+
+msgid "JOIN"
+msgstr "BEITRETEN"
+
+msgid "PLAYERS  %d/%d"
+msgstr "SPIELER  %d/%d"
+
+msgid "(YOU)"
+msgstr "(DU)"
+
+msgid "MODE"
+msgstr "MODUS"
+
+msgid "OTHERS JOIN AT  %s"
+msgstr "ADRESSE FÜR ANDERE  %s"
+
+msgid "your IP"
+msgstr "deine IP"
+
+msgid "the host starts the round"
+msgstr "der Host startet die Runde"
+
+msgid "VERSUS: the dinos fight each other"
+msgstr "VERSUS: die Dinos kämpfen gegeneinander"
+
+msgid "SURVIVAL: waves together, an ultraboss every fifth wave"
+msgstr "ÜBERLEBEN: gemeinsam gegen Wellen, alle fünf Wellen ein Ultraboss"
+
+msgid "LEAVE"
+msgstr "VERLASSEN"
+
+msgid "port %d is busy"
+msgstr "Port %d ist belegt"
+
+msgid "hosting on port %d"
+msgstr "Host auf Port %d"
+
+msgid "cannot reach %s"
+msgstr "%s ist nicht erreichbar"
+
+msgid "connecting to %s ..."
+msgstr "verbinde mit %s ..."
+
+msgid "connected"
+msgstr "verbunden"
+
+msgid "could not reach the host"
+msgstr "Host nicht erreichbar"
+
+msgid "the game is full"
+msgstr "das Spiel ist voll"
+
+msgid "a round is running"
+msgstr "eine Runde läuft gerade"
+
+msgid "MAP"
+msgstr "KARTE"

@@ -54,12 +54,12 @@ static func host(port := PORT) -> Error:
 	var peer := ENetMultiplayerPeer.new()
 	var err := peer.create_server(port, MAX_PLAYERS - 1)
 	if err != OK:
-		hub().status.emit("port %d is busy" % port)
+		hub().status.emit(TranslationServer.translate("port %d is busy") % port)
 		return err
 	hub()._open(peer)
 	players = {1: profile}
 	hub().roster_changed.emit()
-	hub().status.emit("hosting on port %d" % port)
+	hub().status.emit(TranslationServer.translate("hosting on port %d") % port)
 	return OK
 
 
@@ -67,10 +67,10 @@ static func join(address: String, port := PORT) -> Error:
 	var peer := ENetMultiplayerPeer.new()
 	var err := peer.create_client(address, port)
 	if err != OK:
-		hub().status.emit("cannot reach %s" % address)
+		hub().status.emit(TranslationServer.translate("cannot reach %s") % address)
 		return err
 	hub()._open(peer)
-	hub().status.emit("connecting to %s ..." % address)
+	hub().status.emit(TranslationServer.translate("connecting to %s ...") % address)
 	return OK
 
 

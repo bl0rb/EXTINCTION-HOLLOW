@@ -13,6 +13,7 @@ static func play(parent: Node, sound: String, at: Vector2, volume_db := 0.0, pit
 	player.volume_db = volume_db
 	player.pitch_scale = pitch * randf_range(0.92, 1.08)
 	player.max_distance = reach
+	player.bus = &"Effects"
 	parent.add_child(player)
 	player.global_position = at
 	player.play()
@@ -27,6 +28,7 @@ static func loop(parent: Node, sound: String, player: Node = null) -> Node:
 	if player == null:
 		player = AudioStreamPlayer.new()
 	player.stream = stream
+	player.bus = &"Ambience"
 	player.volume_linear = 0.0
 	player.autoplay = true
 	player.stream_paused = true

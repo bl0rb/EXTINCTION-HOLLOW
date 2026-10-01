@@ -74,9 +74,9 @@ func _gui_input(event: InputEvent) -> void:
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), PANEL)
 	draw_rect(Rect2(Vector2(0.5, 0.5), size - Vector2.ONE), BORDER, false, 1.0)
-	_text(Vector2(8, 12), "INVENTORY", Fx.GOLD)
+	_text(Vector2(8, 12), tr("INVENTORY"), Fx.GOLD)
 	var full := player.bag.size() >= Player.BAG_SIZE
-	_text(Vector2(80, 12), "BAG FULL" if full else "%d/%d" % [player.bag.size(), Player.BAG_SIZE], Fx.HURT if full else DIM)
+	_text(Vector2(80, 12), tr("BAG FULL") if full else "%d/%d" % [player.bag.size(), Player.BAG_SIZE], Fx.HURT if full else DIM)
 	_text(Vector2(122, 12), "[I]", DIM)
 	for i in 4 + Player.BAG_SIZE:
 		var rect := cell_rect(i)
@@ -92,14 +92,14 @@ func _draw() -> void:
 			draw_texture_rect_region(ICONS, Rect2(rect.position + Vector2(4, 4), Vector2(12, 12)), Rect2(i * 24, 0, 24, 24), Color(1, 1, 1, 0.15))
 		if i < 4:
 			_text(rect.position + Vector2(-4, 30), Loot.SLOT_NAMES[Loot.SLOTS[i]].to_upper(), DIM)
-	_text(Vector2(8, 118), "DMG %d   CRIT %d%%" % [roundi(player.damage()), roundi(player.crit_chance() * 100.0)], TEXT)
-	_text(Vector2(8, 130), "ARMOR %d%%   HP %d" % [roundi(player.armor() * 100.0), roundi(player.max_health())], TEXT)
+	_text(Vector2(8, 118), tr("DMG %d   CRIT %d%%") % [roundi(player.damage()), roundi(player.crit_chance() * 100.0)], TEXT)
+	_text(Vector2(8, 130), tr("ARMOR %d%%   HP %d") % [roundi(player.armor() * 100.0), roundi(player.max_health())], TEXT)
 	# the builds being worn
 	var counts := Loot.set_counts(player.equipped)
 	var sets := PackedStringArray()
 	for set_id: String in counts:
-		sets.append("%s %d/4" % [set_id.to_upper(), counts[set_id]])
-	_text(Vector2(8, 142), "SET " + "  ".join(sets) if not sets.is_empty() else "NO SET WORN", Loot.COLORS[Loot.SET] if not sets.is_empty() else DIM)
+		sets.append("%s %d/4" % [tr(set_id.to_upper()), counts[set_id]])
+	_text(Vector2(8, 142), tr("SET") + " " + "  ".join(sets) if not sets.is_empty() else tr("NO SET WORN"), Loot.COLORS[Loot.SET] if not sets.is_empty() else DIM)
 	var hovered := _item(_hover)
 	if not hovered.is_empty():
 		_tooltip(hovered, _hover < 4)
@@ -114,10 +114,10 @@ func _tooltip(item: Dictionary, worn: bool) -> void:
 	if not worn:
 		var current: Dictionary = player.equipped[item.slot]
 		if current.is_empty():
-			lines.append("nothing worn here yet")
+			lines.append(tr("nothing worn here yet"))
 			colors.append(Loot.BETTER)
 		else:
-			lines.append("vs " + current.name + ":")
+			lines.append(tr("vs %s:") % Loot.item_name(current))
 			colors.append(DIM)
 			var diff := Loot.compare(item, current)
 			for id: String in diff:
@@ -132,13 +132,13 @@ func _tooltip(item: Dictionary, worn: bool) -> void:
 	box.position.y = minf(box.position.y, get_viewport_rect().size.y - global_position.y - box.size.y - 4.0)
 	draw_rect(box, Color(0.02, 0.02, 0.03, 0.95))
 	draw_rect(Rect2(box.position + Vector2(0.5, 0.5), box.size - Vector2.ONE), Loot.COLORS[item.rarity], false, 1.0)
-	_text(box.position + Vector2(5, 11), item.name, Loot.COLORS[item.rarity])
-	_text(box.position + Vector2(5, 22), "%s %s" % [Loot.RARITY_NAMES[item.rarity], Loot.SLOT_NAMES[item.slot]], DIM)
+	_text(box.position + Vector2(5, 11), Loot.item_name(item), Loot.COLORS[item.rarity])
+	_text(box.position + Vector2(5, 22), tr("{rarity} {slot}").format({"rarity": tr(Loot.RARITY_NAMES[item.rarity]), "slot": tr(Loot.SLOT_NAMES[item.slot])}), DIM)
 	for j in lines.size():
 		_text(box.position + Vector2(5, 34 + 11 * j), lines[j], colors[j])
-	var hint := "click: take off" if worn else "click: wear  right: +%d XP" % Loot.VALUE[item.rarity]
+	var hint := tr("click: take off") if worn else tr("click: wear  right: +%d XP") % Loot.VALUE[item.rarity]
 	if worn and player.bag.size() >= Player.BAG_SIZE:
-		hint = "bag full: salvage first"
+		hint = tr("bag full: salvage first")
 	_text(box.position + Vector2(5, box.size.y - 4), hint, DIM)
 
 

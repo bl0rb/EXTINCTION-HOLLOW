@@ -21,7 +21,8 @@ const ICONS := {
 const SKILL_ICONS := preload("res://assets/talents.png")
 
 var menu: Control ## the cave's upgrade tree
-var pause_menu: PanelContainer ## Esc: resume or switch to another save
+var pause_menu: PanelContainer ## Esc: resume, options, or switch to another save
+var options: OptionsPanel
 var _end_click: Callable ## what a click on the end screen does
 var warning: Label
 var inventory: Control
@@ -100,7 +101,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if end_screen.visible:
 		return
 	if event.is_action_pressed("ui_cancel"):
-		if pause_menu.visible:
+		if options.visible:
+			options.close()
+		elif pause_menu.visible:
 			resume()
 		elif inventory.visible or skill_tree.visible: # Esc closes open panels first
 			inventory.hide()
@@ -108,7 +111,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_sync_pause()
 		else:
 			open_pause_menu()
-	elif pause_menu.visible:
+	elif pause_menu.visible or options.visible:
 		return
 	elif event.is_action_pressed("inventory"):
 		inventory.visible = not inventory.visible
@@ -119,8 +122,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("map"):
 		automap.toggle()
 	elif event.is_action_pressed("fullscreen"):
-		var window := get_window()
-		window.mode = Window.MODE_WINDOWED if window.mode == Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
+		Settings.fullscreen = not Settings.fullscreen
+		Settings.save()
 
 
 func _story_label(font_size: int, color: Color, y: float) -> Label:
@@ -166,8 +169,8 @@ func _on_impact() -> void:
 
 func _on_ended(survived: bool) -> void:
 	show_end("SURVIVED" if survived else "EXTINCT", Fx.GOLD if survived else Fx.HURT,
-		"The dust settles after a long, cold age.\nThe hollow endured, and so did you." if survived
-			else "The hollow was not deep enough.\nThe cave collapses, and the age ends.",
+		tr("The dust settles after a long, cold age.") + "\n" + tr("The hollow endured, and so did you.") if survived
+			else tr("The hollow was not deep enough.") + "\n" + tr("The cave collapses, and the age ends."),
 		"click to begin a new age", func() -> void: (get_tree().get_first_node_in_group("story") as Story).new_age())
 
 
@@ -232,31 +235,31 @@ func _draw() -> void:
 	if Net.in_game:
 		_draw_roster(versus)
 	if run: # survival: the wave instead of the XP for the cave
-		_text(Vector2(11, 48), "WAVE %d" % run.wave, AMBER)
-		_text(Vector2(62, 48), "KILLS %d" % run.kills, TEXT)
-		var banner := "NEXT WAVE IN %d" % ceili(run.break_left) if run.break_left > 0.0 else "WAVE %d  -  %d LEFT" % [run.wave, run.left()]
+		_text(Vector2(11, 48), tr("WAVE %d") % run.wave, AMBER)
+		_text(Vector2(62, 48), tr("KILLS %d") % run.kills, TEXT)
+		var banner := tr("NEXT WAVE IN %d") % ceili(run.break_left) if run.break_left > 0.0 else tr("WAVE %d  -  %d LEFT") % [run.wave, run.left()]
 		if not run.over:
 			draw_string(FONT, Vector2(0, 16), banner, HORIZONTAL_ALIGNMENT_CENTER, 640, FONT_SIZE, AMBER)
 		if is_instance_valid(run.boss):
 			_draw_boss_bar(run.boss, true)
 	elif versus:
-		_text(Vector2(11, 48), "KILLS %d" % versus.scores.get(Net.my_id(), 0), AMBER)
+		_text(Vector2(11, 48), tr("KILLS %d") % versus.scores.get(Net.my_id(), 0), AMBER)
 		if not versus.over:
 			var t := maxi(ceili(versus.time_left), 0)
-			draw_string(FONT, Vector2(0, 16), "VERSUS  -  %d:%02d  -  FIRST TO %d" % [t / 60, t % 60, Versus.KILLS_TO_WIN],
+			draw_string(FONT, Vector2(0, 16), tr("VERSUS  -  %d:%02d  -  FIRST TO %d") % [t / 60, t % 60, Versus.KILLS_TO_WIN],
 				HORIZONTAL_ALIGNMENT_CENTER, 640, FONT_SIZE, AMBER)
 	else:
 		_icon(Vector2(11, 42), "carried")
 		_text(Vector2(21, 48), str(player.carried_xp), AMBER)
 		_icon(Vector2(62, 42), "banked")
 		_text(Vector2(72, 48), str(player.banked_xp), TEXT)
-	_text(Vector2(11, 61), "SIZE %d" % player.get_size(), DIM)
+	_text(Vector2(11, 61), tr("SIZE %d") % player.get_size(), DIM)
 	if run:
-		_text(Vector2(62, 61), "BEST %d" % maxi(run.best, run.wave), DIM)
+		_text(Vector2(62, 61), tr("BEST %d") % maxi(run.best, run.wave), DIM)
 	else:
-		_text(Vector2(62, 61), "CAVE LV %d" % cave.levels.level, DIM)
+		_text(Vector2(62, 61), tr("CAVE LV %d") % cave.levels.level, DIM)
 	if weather:
-		_text(Vector2(11, 73), weather.look.name, DIM)
+		_text(Vector2(11, 73), tr(weather.look.name), DIM)
 		var temp_color := COLD if player.temperature < 5.0 else (HOT if player.temperature > 32.0 else DIM)
 		_text(Vector2(84, 73), "%d°" % roundi(player.temperature), temp_color)
 	var dungeons := get_tree().get_first_node_in_group("dungeons") as Dungeons
@@ -264,12 +267,12 @@ func _draw() -> void:
 	if dungeons and dungeons.inside():
 		place = Dungeon.THEMES[dungeons.current.theme].name
 		_draw_boss_bar(dungeons.current.boss)
-	_text(Vector2(11, 85), place, TEXT)
+	_text(Vector2(11, 85), tr(place), TEXT)
 	_draw_skill_bar()
 	var story := get_tree().get_first_node_in_group("story") as Story
 	if story and story.warning() and int(Time.get_ticks_msec() / 400) % 3 != 0:
 		var left := ceili(story.time_left())
-		draw_string(FONT, Vector2(0, 22), "IMPACT  %d:%02d" % [left / 60, left % 60], HORIZONTAL_ALIGNMENT_CENTER, 640, 16, Fx.HURT)
+		draw_string(FONT, Vector2(0, 22), tr("IMPACT  %d:%02d") % [left / 60, left % 60], HORIZONTAL_ALIGNMENT_CENTER, 640, 16, Fx.HURT)
 
 
 ## A dungeon boss in the fight gets a big health bar at the top of the screen.
@@ -282,7 +285,7 @@ func _draw_roster(versus: Versus) -> void:
 		var info: Dictionary = Net.players.get(rows[i][0], {})
 		var y := 80.0 + 10.0 * i
 		draw_rect(Rect2(536, y - 6, 5, 5), Player.COLORS[clampi(info.get("color", 0), 0, Player.COLORS.size() - 1)].color)
-		var tail := "DOWN" if rows[i][2] else "LV %d" % info.get("level", 1)
+		var tail := tr("DOWN") if rows[i][2] else tr("LV %d") % info.get("level", 1)
 		if versus:
 			tail = "%d" % versus.scores.get(rows[i][0], 0)
 		_text(Vector2(544, y), str(rows[i][1]).to_upper().left(10), TEXT if rows[i][0] != Net.my_id() else AMBER)
@@ -292,7 +295,7 @@ func _draw_roster(versus: Versus) -> void:
 func _draw_boss_bar(boss, always := false) -> void: # untyped: the boss may have been freed
 	if not is_instance_valid(boss) or (not always and boss.bar_time <= 0.0 and boss.global_position.distance_to(player.global_position) > 160.0):
 		return
-	draw_string(FONT, Vector2(0, 30), boss.title, HORIZONTAL_ALIGNMENT_CENTER, 640, 8, Fx.HURT)
+	draw_string(FONT, Vector2(0, 30), tr(boss.title), HORIZONTAL_ALIGNMENT_CENTER, 640, 8, Fx.HURT)
 	draw_rect(Rect2(220, 34, 200, 5), Color(0, 0, 0, 0.7))
 	draw_rect(Rect2(221, 35, roundf(198 * boss.health / boss.max_health), 3), Color(0.8, 0.16, 0.12))
 
@@ -317,7 +320,7 @@ func _draw_skill_bar() -> void:
 		_text(rect.position + Vector2(1, 7), str(i + 1), TEXT if learned else DIM)
 	var level := player.level()
 	draw_string(FONT, Vector2(x0 - 146, 344), player.dino_name.to_upper(), HORIZONTAL_ALIGNMENT_RIGHT, 108, FONT_SIZE, TEXT)
-	_text(Vector2(x0 - 34, 344), "LV %d" % level, AMBER)
+	_text(Vector2(x0 - 34, 344), tr("LV %d") % level, AMBER)
 	var from := Talents.xp_for(level)
 	var ratio := 1.0 if level >= Talents.MAX_LEVEL else float(player.total_xp - from) / (Talents.xp_for(level + 1) - from)
 	draw_rect(Rect2(x0, 353, 86, 2), Color(0, 0, 0, 0.6))
@@ -366,6 +369,7 @@ func open_pause_menu() -> void:
 	if Net.in_game:
 		hint = "the game goes on for the others"
 	pause_menu.get_node("Box/Hint").text = hint
+	pause_menu.get_node("Box/Title").text = tr("PAUSED") + "  -  " + player.dino_name.to_upper()
 	pause_menu.show()
 	_sync_pause()
 
@@ -377,7 +381,7 @@ func resume() -> void:
 
 ## The game waits while the inventory, the skill tree or the Esc menu is open - but not in a multiplayer game.
 func _sync_pause() -> void:
-	get_tree().paused = not Net.active and (pause_menu.visible or inventory.visible or skill_tree.visible)
+	get_tree().paused = not Net.active and (pause_menu.visible or options.visible or inventory.visible or skill_tree.visible)
 
 
 ## Back to the start screen; inside the cave the game is saved first.
@@ -397,11 +401,14 @@ func _build_pause_menu() -> void:
 	box.add_theme_constant_override("separation", 5)
 	pause_menu.add_child(box)
 	var title := Label.new()
-	title.text = "PAUSED  -  " + player.dino_name.to_upper()
+	title.name = "Title"
 	title.add_theme_color_override("font_color", AMBER)
 	box.add_child(title)
 	var leave := ["LEAVE GAME", func() -> void: Net.leave()] if Net.in_game else ["SWITCH SAVE", switch_save]
-	for entry in [["RESUME", resume], leave]:
+	var open_options := func() -> void:
+		pause_menu.hide()
+		options.show()
+	for entry in [["RESUME", resume], ["OPTIONS", open_options], leave]:
 		var button := Button.new()
 		button.text = entry[0]
 		button.custom_minimum_size = Vector2(150, 16)
@@ -412,3 +419,8 @@ func _build_pause_menu() -> void:
 	hint.add_theme_color_override("font_color", DIM)
 	box.add_child(hint)
 	pause_menu.position = Vector2(320 - 90, 130)
+	options = OptionsPanel.new()
+	options.position = Vector2(320 - 120, 110)
+	options.hide()
+	options.closed.connect(open_pause_menu)
+	add_child(options)

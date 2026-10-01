@@ -99,12 +99,12 @@ func _gui_input(event: InputEvent) -> void:
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), PANEL)
 	draw_rect(Rect2(Vector2(0.5, 0.5), size - Vector2.ONE), BORDER, false, 1.0)
-	_text(Vector2(8, 12), "THE CAVE", Fx.GOLD)
+	_text(Vector2(8, 12), tr("THE CAVE"), Fx.GOLD)
 	_text(Vector2(70, 12), "%d XP" % player.banked_xp, Fx.GOLD if player.banked_xp > 0 else DIM)
 	var shelter := cave.shelter()
-	_text(Vector2(120, 12), "SHELTER %d/%d" % [shelter, Story.SHELTER_NEEDED], TEXT if shelter >= Story.SHELTER_NEEDED else DIM)
+	_text(Vector2(120, 12), tr("SHELTER %d/%d") % [shelter, Story.SHELTER_NEEDED], TEXT if shelter >= Story.SHELTER_NEEDED else DIM)
 	_text(Vector2(8, 26), "DINO", DIM)
-	_text(Vector2(83, 26), "CAVE", DIM)
+	_text(Vector2(83, 26), tr("CAVE"), DIM)
 	# threads first, from below each node's level to the top of the next
 	for key: String in LAYOUT:
 		var owner_id := key.get_slice(":", 0)
@@ -132,21 +132,21 @@ func _tooltip(key: String) -> void:
 	var id := key.get_slice(":", 1)
 	var def: Dictionary = _defs(key)[id]
 	var levels: Dictionary = player.upgrades if key.begins_with("player:") else cave.levels
-	var lines := PackedStringArray([def.info, "level " + level_text(key)])
+	var lines := PackedStringArray([tr(def.info), tr("level %s") % level_text(key)])
 	if _level(key) >= _top(key):
-		lines.append("cave level limits it" if key.begins_with("cave:") and id != "level" and _level(key) < Upgrades.CAVE.level.max else "fully grown")
+		lines.append(tr("cave level limits it") if key.begins_with("cave:") and id != "level" and _level(key) < Upgrades.CAVE.level.max else tr("fully grown"))
 	else:
 		lines.append("%d XP" % _cost(key))
 		if not Upgrades.rooted(_defs(key), id, levels):
-			lines.append("needs " + " or ".join(PackedStringArray(def.needs.map(func(parent: String) -> String: return _defs(key)[parent].name))))
+			lines.append(tr("needs %s") % (" %s " % tr("or")).join(PackedStringArray(def.needs.map(func(parent: String) -> String: return tr(_defs(key)[parent].name)))))
 		elif _can_buy(key):
-			lines.append("click to build")
+			lines.append(tr("click to build"))
 		else:
-			lines.append("not enough XP")
+			lines.append(tr("not enough XP"))
 	var box := Rect2(-142, cell_rect(key).position.y, 138, 16 + 11 * lines.size())
 	draw_rect(box, Color(0.02, 0.02, 0.03, 0.95))
 	draw_rect(Rect2(box.position + Vector2(0.5, 0.5), box.size - Vector2.ONE), BORDER, false, 1.0)
-	_text(box.position + Vector2(5, 11), def.name, Fx.GOLD)
+	_text(box.position + Vector2(5, 11), tr(def.name), Fx.GOLD)
 	for j in lines.size():
 		_text(box.position + Vector2(5, 22 + 11 * j), lines[j], TEXT if j < 2 else DIM)
 

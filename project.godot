@@ -12,7 +12,9 @@ config_version=5
 
 config/name="Extinction Hollow"
 run/main_scene="res://scenes/title.tscn"
+config/version="1.0.0"
 config/features=PackedStringArray("4.7")
+config/icon="res://icon.png"
 
 [autoload]
 
@@ -97,6 +99,7 @@ map={
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
 2d/snap/snap_2d_transforms_to_pixel=true
 
 [shader_globals]
@@ -105,3 +108,7 @@ wind={
 "type": "float",
 "value": 1.0
 }
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://assets/i18n/de.po")
