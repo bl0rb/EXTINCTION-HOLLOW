@@ -31,12 +31,12 @@ func _draw() -> void:
 	for animal: Animal in _animals():
 		if animal.title != "" and animal.global_position.distance_to(get_viewport().get_camera_2d().get_screen_center_position()) < 400.0:
 			var height := animal.sprite.get_rect().size.y * absf(animal.sprite.scale.y)
-			draw_string(FONT, (animal.sprite.global_position - Vector2(60, height / 2.0 + 8.0)).round(), animal.title, HORIZONTAL_ALIGNMENT_CENTER, 120, 8,
+			draw_string(FONT, (animal.sprite.global_position - Vector2(60, height / 2.0 + 8.0)).round(), tr(animal.title), HORIZONTAL_ALIGNMENT_CENTER, 120, 8,
 				Fx.CRIT if animal.rank == 1 else Fx.HURT)
 	# the other players' dinos carry their names (multiplayer)
 	for dino in get_tree().get_nodes_in_group("remote_dinos"):
 		var top: float = dino.sprite.global_position.y - 24.0 * absf(dino.sprite.scale.y) / Art.SCALE
-		draw_string(FONT, Vector2(dino.global_position.x - 60, top).round(), "DOWN" if dino.dead else dino.dino_name.to_upper(),
+		draw_string(FONT, Vector2(dino.global_position.x - 60, top).round(), tr("DOWN") if dino.dead else dino.dino_name.to_upper(),
 			HORIZONTAL_ALIGNMENT_CENTER, 120, 8, Fx.HURT if dino.dead else Color(0.95, 0.93, 0.88))
 	# every item on the ground shows at a glance whether it beats what is worn; the one under the cursor tells by how much
 	var mouse := get_global_mouse_position()
@@ -53,18 +53,18 @@ func _draw() -> void:
 func _item_label(drop: Node2D) -> void:
 	var item: Dictionary = drop.item
 	var worn: Dictionary = player.equipped[item.slot]
-	var lines := [[item.name, Loot.COLORS[item.rarity]]]
+	var lines := [[Loot.item_name(item), Loot.COLORS[item.rarity]]]
 	if item.has("set"):
-		lines.append([Loot.SETS[item.set].name, Loot.COLORS[Loot.SET]])
+		lines.append([tr(Loot.SETS[item.set].name), Loot.COLORS[Loot.SET]])
 	if worn.is_empty():
-		lines.append(["NEW " + Loot.SLOT_NAMES[item.slot].to_upper(), Loot.BETTER])
+		lines.append([tr("NEW %s") % tr(Loot.SLOT_NAMES[item.slot]).to_upper(), Loot.BETTER])
 	else:
 		var diff := Loot.compare(item, worn)
 		for id: String in diff:
 			if diff[id] != 0:
 				lines.append([Loot.change_text(id, diff[id]), Loot.BETTER if diff[id] > 0 else Loot.WORSE])
 	if player.bag.size() >= Player.BAG_SIZE:
-		lines.append(["BAG FULL", Fx.HURT])
+		lines.append([tr("BAG FULL"), Fx.HURT])
 	var width := 0.0
 	for line: Array in lines:
 		width = maxf(width, FONT.get_string_size(line[0], HORIZONTAL_ALIGNMENT_LEFT, -1, 8).x)

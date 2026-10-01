@@ -4981,3 +4981,42 @@ Jedes Tier ist etwas größer oder kleiner und leicht anders gefärbt. In Dungeo
 ## 155.3 Technik
 - Godot-Multiplayer über ENet (UDP). Der Host rechnet die Monster und entscheidet über Treffer an ihnen; jeder Spieler steuert seinen eigenen Dino und entscheidet über Treffer an ihm selbst. Positionen werden 15–20-mal pro Sekunde übertragen, Ereignisse (Treffer, Kills, Wellen, Stampfer) zuverlässig.
 - Im Browser ist der Multiplayer nicht möglich (Browser können kein UDP und nicht hosten); er läuft in den Desktop-Versionen.
+
+---
+
+# 156. Optionen
+
+- Erreichbar über **OPTIONS** auf dem Startbildschirm und im Esc-Menü (pausiert im Einzelspieler wie das Esc-Menü).
+- **Lautstärke** in drei Reglern: gesamt, **Umgebung** (Regen, Dschungel, Vulkan, Meteor; Bus „Ambience“) und **Effekte** (Bisse, Brüllen, Einschläge; Bus „Effects“). Musik gibt es noch nicht.
+- **Vollbild** an/aus (auch per Taste); im Fenster wählt das Spiel das größte ganzzahlige Vielfache von 640×360, das auf den Bildschirm passt, und zentriert es.
+- **Bildschirmwackeln** an/aus (Erdbeben, Stampfer, Einschlag).
+- **Sprache** Deutsch/Englisch (siehe §157).
+- Alles gilt sofort und wird für alle Speicherstände in `user://settings.cfg` gesichert.
+
+# 157. Sprachen
+
+- Englisch ist die Quellsprache; Deutsch kommt aus `assets/i18n/de.po` (Schlüssel = englischer Text).
+- Ohne Auswahl folgt das Spiel der Systemsprache (Deutsch auf deutschen Systemen, sonst Englisch); in den Optionen lässt sie sich umschalten.
+- Item-Namen werden beim Anzeigen aus ihren Teilen gebaut, der gespeicherte Name bleibt Englisch. Im Deutschen werden Präfixe zu Anhängen („Savage Fang“ → „Reißzahn der Wildheit“), damit keine Adjektivendungen nötig sind.
+- Neue Texte im Code laufen über `tr()` (bzw. `TranslationServer.translate` in statischen Klassen); reine Schlüssel in Labels und Buttons übersetzt Godot selbst.
+
+# 158. Store-Material für GOG
+
+- Ordner `store/`: Key Art 3840×2160 und 1920×1080 (mit und ohne Logo), dieselbe Key Art als vier Ebenen (Hintergrund, Meteor, Dino, Logo) zum Zusammensetzen als .psd, Logo mit transparentem Hintergrund, Hintergrund 1600×670, Kachel 342×482, Icon 112×112 und sieben Screenshots in 1920×1080.
+- Store-Texte (Deutsch/Englisch) und Systemanforderungen in `store/README.md`.
+- Offen: Trailer (mit GOG-Logo am Ende), Preisliste, Altersfreigaben, Notarisierung für den Mac.
+
+# 159. Ideen für später
+
+| ID | Idee | Notiz |
+|---|---|---|
+| I01 | Gamepad-Steuerung | Laufen mit dem Stick, Skills auf Tasten, Menüs per Steuerkreuz; wichtig für Steam Deck |
+| I02 | Einführung | kurze Hinweise in den ersten Minuten: Klick-Laufen, Fressen, Skills, Höhle |
+| I03 | Test auf echten Rechnern | Windows, Mac, Multiplayer mit 3–8 Spielern im echten Netzwerk |
+| I04 | Bosse mit Angriffsmustern | angekündigte Angriffe wie Stampfwelle, Feuerregen, Rufe nach Hilfe; je Dungeon ein eigener Boss |
+| I05 | Mehr Loot-Tiefe | legendäre Items mit eigenen Effekten, Crafting aus Knochen und Bernstein |
+| I06 | Klares Spielende | der Meteor-Einschlag als Finale (§126) mit Abspann und Statistik |
+| I07 | Errungenschaften | auf Wunsch mit GOG-Galaxy-SDK |
+| I08 | Treffer-Feedback | kurzer Hit-Stop, Musik, die im Kampf anzieht |
+| I09 | Balancing | Schwierigkeitskurve und Spieldauer bis zum Ende durchrechnen und anpassen |
+| I10 | Musik | ruhige Stücke je Biom, Kampfmusik, Thema für den Einschlag |

@@ -166,7 +166,7 @@ func _start_wave() -> void:
 
 
 func _announce_wave(number: int) -> void:
-	hud.narrate("WAVE %d" % number, "The ULTRABOSS is coming." if number % 5 == 0 else "They are coming.")
+	hud.narrate(tr("WAVE %d") % number, "The ULTRABOSS is coming." if number % 5 == 0 else "They are coming.")
 
 
 func _clear_wave() -> void:
@@ -190,7 +190,7 @@ func _breather(number: int) -> void:
 	player.hunger = minf(player.hunger + 30.0, player.max_hunger)
 	player.carried_xp = 0 # there is no cave to bring it to; the XP already counts for the level
 	_save()
-	hud.narrate("WAVE %d CLEARED" % number, "Catch your breath.")
+	hud.narrate(tr("WAVE %d CLEARED") % number, "Catch your breath.")
 
 
 func _spawn(kind: String, rank: int, at: Vector2) -> Animal:
@@ -371,7 +371,7 @@ func _end_run() -> void:
 	over = true
 	player.carried_xp = 0
 	_save()
-	var text := "Wave %d  -  %d monsters beaten\nBest wave: %d" % [wave, kills, best]
+	var text := tr("Wave %d  -  %d monsters beaten") % [wave, kills] + "\n" + tr("Best wave: %d") % best
 	if Net.active:
 		hud.show_end("FALLEN", Fx.HURT, text, "click to go back to the lobby" if Net.is_host() else "the host starts the next round",
 			func() -> void: Net.back_to_lobby())

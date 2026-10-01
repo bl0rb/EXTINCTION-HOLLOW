@@ -61,7 +61,7 @@ func _gui_input(event: InputEvent) -> void:
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), PANEL)
 	draw_rect(Rect2(Vector2(0.5, 0.5), size - Vector2.ONE), BORDER, false, 1.0)
-	_text(Vector2(8, 12), "SKILLS  LV %d" % player.level(), Fx.GOLD)
+	_text(Vector2(8, 12), tr("SKILLS  LV %d") % player.level(), Fx.GOLD)
 	_text(Vector2(122, 12), "[K]", DIM)
 	var ids: Array = Talents.DEFS.keys()
 	for id: String in Talents.DEFS:
@@ -78,26 +78,26 @@ func _draw() -> void:
 		draw_texture_rect_region(ICONS, Rect2(rect.position + Vector2(2, 2), Vector2(16, 16)), Rect2(ids.find(id) * 32, 0, 32, 32), tint)
 		_text(rect.position + Vector2(23, 14), "%d/%d" % [rank, Talents.MAX_RANK] if open else "LV%d" % Talents.TIER_LEVEL[Talents.DEFS[id].tier], TEXT if rank > 0 else DIM)
 	var points := player.talent_points()
-	_text(Vector2(8, 128), "POINTS %d" % points, Fx.GOLD if points > 0 else DIM)
+	_text(Vector2(8, 128), tr("POINTS %d") % points, Fx.GOLD if points > 0 else DIM)
 	if _hover != "":
 		_tooltip(_hover)
 
 
 func _tooltip(id: String) -> void:
 	var def: Dictionary = Talents.DEFS[id]
-	var lines := PackedStringArray([def.info, "rank %d/%d" % [player.talents[id], Talents.MAX_RANK]])
+	var lines := PackedStringArray([tr(def.info), tr("rank %d/%d") % [player.talents[id], Talents.MAX_RANK]])
 	if def.has("cooldown"):
-		lines.append("key %d  %d stamina  %ds" % [Talents.SKILLS.find(id) + 1, roundi(def.stamina), roundi(def.cooldown)])
+		lines.append(tr("key %d  %d stamina  %ds") % [Talents.SKILLS.find(id) + 1, roundi(def.stamina), roundi(def.cooldown)])
 	if not Talents.rooted(id, player.talents):
-		lines.append("needs " + " or ".join(PackedStringArray(def.needs.map(func(parent: String) -> String: return Talents.DEFS[parent].name))))
+		lines.append(tr("needs %s") % (" %s " % tr("or")).join(PackedStringArray(def.needs.map(func(parent: String) -> String: return tr(Talents.DEFS[parent].name)))))
 	if player.level() < Talents.TIER_LEVEL[def.tier]:
-		lines.append("needs level %d" % Talents.TIER_LEVEL[def.tier])
+		lines.append(tr("needs level %d") % Talents.TIER_LEVEL[def.tier])
 	elif player.can_learn(id):
-		lines.append("click to learn")
+		lines.append(tr("click to learn"))
 	var box := Rect2(-140, cell_rect(id).position.y, 136, 16 + 11 * lines.size())
 	draw_rect(box, Color(0.02, 0.02, 0.03, 0.95))
 	draw_rect(Rect2(box.position + Vector2(0.5, 0.5), box.size - Vector2.ONE), BORDER, false, 1.0)
-	_text(box.position + Vector2(5, 11), def.name, Fx.GOLD)
+	_text(box.position + Vector2(5, 11), tr(def.name), Fx.GOLD)
 	for j in lines.size():
 		_text(box.position + Vector2(5, 22 + 11 * j), lines[j], TEXT if j < 2 else DIM)
 

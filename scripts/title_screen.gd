@@ -12,6 +12,8 @@ const TEXT := Color(0.86, 0.83, 0.75)
 
 var slots: VBoxContainer
 var wizard: PanelContainer
+var options: OptionsPanel
+var buttons: HBoxContainer ## options and LAN multiplayer under the slots
 var name_field: LineEdit
 var color_name: Label
 var _new_slot := -1
@@ -23,6 +25,7 @@ var _time := 0.0
 
 
 func _ready() -> void:
+	Settings.ensure()
 	theme = UiTheme.make()
 	set_anchors_preset(PRESET_FULL_RECT)
 	SaveGame.migrate()
@@ -46,10 +49,22 @@ func _ready() -> void:
 	slots.add_theme_constant_override("separation", 4)
 	add_child(slots)
 	_build_wizard()
-	var lan := _button("LAN MULTIPLAYER", func() -> void: get_tree().change_scene_to_file(Net.LOBBY))
-	lan.position = Vector2(260, 328)
-	lan.custom_minimum_size = Vector2(120, 18)
-	add_child(lan)
+	options = OptionsPanel.new()
+	options.position = Vector2(200, 82)
+	options.hide()
+	options.closed.connect(func() -> void:
+		slots.show()
+		buttons.show()
+		refresh()) # the rows speak the chosen language now
+	add_child(options)
+	buttons = HBoxContainer.new()
+	buttons.position = Vector2(196, 328)
+	buttons.add_theme_constant_override("separation", 8)
+	add_child(buttons)
+	for entry: Array in [["OPTIONS", open_options], ["LAN MULTIPLAYER", func() -> void: get_tree().change_scene_to_file(Net.LOBBY)]]:
+		var button := _button(entry[0], entry[1])
+		button.custom_minimum_size = Vector2(120, 18)
+		buttons.add_child(button)
 	refresh()
 
 
@@ -71,6 +86,13 @@ func play(index: int, mode := "standard") -> void:
 	SaveGame.slot = index
 	SaveGame.mode = mode
 	get_tree().change_scene_to_file(GAME)
+
+
+func open_options() -> void:
+	slots.hide()
+	wizard.hide()
+	buttons.hide()
+	options.show()
 
 
 func open_wizard(index: int) -> void:
@@ -117,12 +139,12 @@ func _slot_row(index: int) -> PanelContainer:
 	text.size_flags_horizontal = SIZE_EXPAND_FILL
 	box.add_child(text)
 	if info.is_empty():
-		text.add_child(_label("SLOT %d  -  EMPTY" % (index + 1), 8, DIM))
+		text.add_child(_label(tr("SLOT %d  -  EMPTY") % (index + 1), 8, DIM))
 		text.add_child(_label("a new dino hatches here", 8, DIM))
 	else:
 		text.add_child(_label(str(info.name).to_upper(), 8, AMBER))
-		text.add_child(_label("LV %d   CAVE %d   AGE %s" % [info.level, info.cave, ["I", "II", "III", "IV", "V"][info.phase]], 8, TEXT))
-		text.add_child(_label(_date(info.played) + ("   BEST WAVE %d" % info.best if info.best > 0 else ""), 8, DIM))
+		text.add_child(_label(tr("LV %d   CAVE %d   AGE %s") % [info.level, info.cave, ["I", "II", "III", "IV", "V"][info.phase]], 8, TEXT))
+		text.add_child(_label(_date(info.played) + ("   " + tr("BEST WAVE %d") % info.best if info.best > 0 else ""), 8, DIM))
 	# a dino plays the standard game or survival with the same level, skills and items
 	var actions := VBoxContainer.new()
 	actions.add_theme_constant_override("separation", 2)
@@ -210,7 +232,7 @@ func _build_wizard() -> void:
 func _pick_color(index: int) -> void:
 	_color = index
 	Player.paint(_preview.material, index)
-	color_name.text = Player.COLORS[index].name.to_upper()
+	color_name.text = tr(Player.COLORS[index].name).to_upper()
 	for i in _swatches.size():
 		for look in ["normal", "hover", "pressed"]:
 			var box := StyleBoxFlat.new()
@@ -257,4 +279,4 @@ func _date(unix: float) -> String:
 	if unix <= 0.0:
 		return ""
 	var local := int(unix) + int(Time.get_time_zone_from_system().get("bias", 0)) * 60
-	return "played " + Time.get_datetime_string_from_unix_time(local, true).left(16)
+	return tr("played %s") % Time.get_datetime_string_from_unix_time(local, true).left(16)

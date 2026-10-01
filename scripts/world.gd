@@ -91,6 +91,7 @@ class Spacing:
 
 
 func _ready() -> void:
+	Settings.ensure()
 	add_to_group("world_map")
 	main = get_parent()
 	actors = main.get_node("Actors")

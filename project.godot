@@ -108,3 +108,7 @@ wind={
 "type": "float",
 "value": 1.0
 }
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://assets/i18n/de.po")

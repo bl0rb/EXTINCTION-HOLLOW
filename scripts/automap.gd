@@ -97,7 +97,7 @@ func _draw() -> void:
 		var origin := ((Vector2(640, 360) - size_px) / 2.0).round()
 		draw_rect(Rect2(origin - Vector2(6, 16), size_px + Vector2(12, 22)), Color(0.02, 0.02, 0.03, 0.92))
 		draw_rect(Rect2(origin - Vector2(5.5, 15.5), size_px + Vector2(11, 21)), BORDER, false, 1.0)
-		draw_string(FONT, origin + Vector2(0, -6), "MAP", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Fx.GOLD)
+		draw_string(FONT, origin + Vector2(0, -6), tr("MAP"), HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Fx.GOLD)
 		draw_string(FONT, origin + Vector2(size_px.x - 18, -6), "[M]", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, DIM)
 		draw_texture_rect(_texture, Rect2(origin, size_px), false)
 		_markers(origin, scale, Vector2.ZERO, Rect2(origin, size_px))

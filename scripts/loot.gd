@@ -82,6 +82,18 @@ static func roll_set(level: int, set_id := "", slot := "") -> Dictionary:
 	return {"slot": slot, "rarity": SET, "name": title, "level": level, "stats": stats, "set": set_id}
 
 
+## An item's name in the language in use, built from its parts: the stored name stays English (GAME_SPEC §157).
+static func item_name(item: Dictionary) -> String:
+	var base := TranslationServer.translate(BASES[item.slot][mini(item.level - 1, 2)])
+	if item.get("set", "") != "":
+		return TranslationServer.translate(SETS[item.set].prefix + " %s") % base
+	if item.rarity == 3:
+		return TranslationServer.translate("Ancient %s") % base
+	if item.rarity > 0 and item.stats.size() > 1:
+		return TranslationServer.translate(PREFIX[item.stats.keys()[1]] + " %s") % base
+	return base
+
+
 static func _roll_stat(id: String, power: float) -> int:
 	return maxi(1, roundi(randf_range(STATS[id][0], STATS[id][1]) * power))
 
@@ -124,12 +136,12 @@ static func describe_set(item: Dictionary, equipped: Dictionary) -> Array:
 		return []
 	var info: Dictionary = SETS[set_id]
 	var count: int = set_counts(equipped).get(set_id, 0)
-	var lines := [["%s %d/4" % [info.name, count], true]]
+	var lines := [["%s %d/4" % [TranslationServer.translate(info.name), count], true]]
 	var prefix := "2: "
 	for id: String in info.two:
-		lines.append([prefix + STAT_TEXT[id] % info.two[id], count >= 2])
+		lines.append([prefix + TranslationServer.translate(STAT_TEXT[id]) % info.two[id], count >= 2])
 		prefix = "   "
-	lines.append(["4: " + info.power, count >= 4])
+	lines.append(["4: " + TranslationServer.translate(info.power), count >= 4])
 	return lines
 
 
@@ -159,7 +171,7 @@ static func verdict(item: Dictionary, worn: Dictionary) -> int:
 
 ## One stat change as text, e.g. "+3 damage" or "-2% armour".
 static func change_text(id: String, amount: int) -> String:
-	return ("-" if amount < 0 else "+") + (STAT_TEXT[id] % absi(amount)).substr(1)
+	return ("-" if amount < 0 else "+") + (TranslationServer.translate(STAT_TEXT[id]) % absi(amount)).substr(1)
 
 
 ## A small pixel arrow: green and up for a better item, red and down for a worse one, nothing for about the same.
@@ -178,7 +190,7 @@ static func draw_arrow(canvas: CanvasItem, at: Vector2, direction: int) -> void:
 static func describe(item: Dictionary) -> PackedStringArray:
 	var lines := PackedStringArray()
 	for id: String in item.stats:
-		lines.append(STAT_TEXT[id] % item.stats[id])
+		lines.append(TranslationServer.translate(STAT_TEXT[id]) % item.stats[id])
 	return lines
 
 

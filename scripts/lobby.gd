@@ -15,6 +15,7 @@ var _slots: Array[int] = [] ## save slots in the order of the dino choice
 
 
 func _ready() -> void:
+	Settings.ensure()
 	theme = UiTheme.make()
 	set_anchors_preset(PRESET_FULL_RECT)
 	var back := ColorRect.new()
@@ -89,7 +90,7 @@ func _build_setup() -> void:
 	dino_choice = OptionButton.new()
 	for slot in _slots:
 		var info := SaveGame.summary(slot)
-		dino_choice.add_item("%s   LV %d" % [str(info.name).to_upper(), info.level])
+		dino_choice.add_item("%s   %s" % [str(info.name).to_upper(), tr("LV %d") % info.level])
 	dino_choice.select(maxi(_slots.find(SaveGame.slot), 0))
 	_panel.add_child(dino_choice)
 	_panel.add_child(_label("PORT", 8, DIM))
@@ -110,7 +111,7 @@ func _build_setup() -> void:
 
 
 func _build_session() -> void:
-	_panel.add_child(_label("PLAYERS  %d/%d" % [Net.players.size(), Net.MAX_PLAYERS], 8, DIM))
+	_panel.add_child(_label(tr("PLAYERS  %d/%d") % [Net.players.size(), Net.MAX_PLAYERS], 8, DIM))
 	var ids: Array = Net.players.keys()
 	ids.sort()
 	for id: int in ids:
@@ -121,8 +122,8 @@ func _build_session() -> void:
 		swatch.size_flags_vertical = SIZE_SHRINK_CENTER
 		swatch.color = Player.COLORS[clampi(info.get("color", 0), 0, Player.COLORS.size() - 1)].color
 		row.add_child(swatch)
-		row.add_child(_label("%s   LV %d%s%s" % [str(info.get("name", "?")).to_upper(), info.get("level", 1), "   HOST" if id == 1 else "",
-			"   (YOU)" if id == Net.my_id() else ""], 8, AMBER if id == Net.my_id() else TEXT))
+		row.add_child(_label("%s   %s%s%s" % [str(info.get("name", "?")).to_upper(), tr("LV %d") % info.get("level", 1), "   " + tr("HOST") if id == 1 else "",
+			"   " + tr("(YOU)") if id == Net.my_id() else ""], 8, AMBER if id == Net.my_id() else TEXT))
 		_panel.add_child(row)
 	_panel.add_child(_label("MODE", 8, DIM))
 	if Net.is_host():
@@ -135,7 +136,7 @@ func _build_session() -> void:
 			modes.add_child(button)
 		_panel.add_child(modes)
 		var addresses := Net.local_addresses()
-		_panel.add_child(_label("OTHERS JOIN AT  %s" % (", ".join(addresses) if not addresses.is_empty() else "your IP"), 8, TEXT))
+		_panel.add_child(_label(tr("OTHERS JOIN AT  %s") % (", ".join(addresses) if not addresses.is_empty() else tr("your IP")), 8, TEXT))
 		_panel.add_child(_button("START", func() -> void: Net.start_game()))
 	else:
 		_panel.add_child(_label(Net.mode.to_upper(), 8, TEXT))

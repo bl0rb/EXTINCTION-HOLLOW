@@ -12,6 +12,8 @@ var _shake_time := 0.0
 
 
 func shake(strength: float, duration: float) -> void:
+	if not Settings.shake: # the options can calm the screen (GAME_SPEC §156)
+		return
 	_shake = strength
 	_shake_time = duration
 
