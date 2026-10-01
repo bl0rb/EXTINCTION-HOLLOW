@@ -1,5 +1,5 @@
 # Builds the Windows exe and the macOS dmg (universal: Apple Silicon and Intel).
-# The files appear as downloads under Actions > Export > the run > Artifacts.
+# The files appear under Actions > Export > the run > Artifacts, and on main also as a GitHub release v<version>.
 name: Export
 
 on:
@@ -19,8 +19,10 @@ env:
 jobs:
   export:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to publish the release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Godot, export templates and genisoimage
         run: |
@@ -50,14 +52,31 @@ jobs:
           ln -s /Applications dmg/Applications
           genisoimage -quiet -V "Extinction Hollow" -D -R -l -no-pad -o build/macos/ExtinctionHollow.dmg dmg
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: ExtinctionHollow-Windows
           path: build/windows/ExtinctionHollow.exe
           retention-days: 30
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: ExtinctionHollow-macOS
           path: build/macos/ExtinctionHollow.dmg
           retention-days: 30
+
+      - name: Publish release
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(sed -n 's/^config\/version="\(.*\)"/\1/p' project.godot)
+          tag="v$version"
+          cp build/windows/ExtinctionHollow.exe "ExtinctionHollow-$version-windows.exe"
+          cp build/macos/ExtinctionHollow.dmg "ExtinctionHollow-$version-macos.dmg"
+          files="ExtinctionHollow-$version-windows.exe ExtinctionHollow-$version-macos.dmg"
+          if gh release view "$tag" > /dev/null 2>&1; then
+            gh release upload "$tag" $files --clobber
+          else
+            gh release create "$tag" $files --target "$GITHUB_SHA" --title "Extinction Hollow $version" \
+              --notes "Windows (64 bit) and macOS (Apple Silicon and Intel)."
+          fi
