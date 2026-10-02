@@ -1,0 +1,118 @@
+{
+  "summary": {
+    "transcript_files": 1,
+    "first_activity_utc": "2026-09-27T10:12:06.747Z",
+    "last_activity_utc": "2026-10-02T05:21:18.921Z",
+    "model_requests": 910,
+    "user_prompts": 52,
+    "context_compactions": 6,
+    "tool_calls": 1087,
+    "tokens": {
+      "input_tokens": 1824,
+      "output_tokens": 1529734,
+      "cache_creation_input_tokens": 6537303,
+      "cache_read_input_tokens": 333207175
+    },
+    "tokens_total": 341276036,
+    "active_days": 6,
+    "active_hours": 28,
+    "commits_on_main": 51,
+    "merged_pull_requests": 12,
+    "models": {
+      "claude-opus-5-5": 910
+    },
+    "top_tools": {
+      "Bash": 643,
+      "Read": 172,
+      "Edit": 84,
+      "Write": 37,
+      "TaskUpdate": 22,
+      "ToolSearch": 17,
+      "TaskCreate": 14,
+      "mcp__github__merge_pull_request": 13,
+      "mcp__Claude_Docs__create": 13,
+      "SendUserFile": 12
+    }
+  },
+  "daily": {
+    "2026-09-27": {
+      "requests": 327,
+      "tool_calls": 347,
+      "input_tokens": 656,
+      "output_tokens": 610009,
+      "cache_creation_input_tokens": 1079075,
+      "cache_read_input_tokens": 119051102
+    },
+    "2026-09-28": {
+      "requests": 236,
+      "tool_calls": 347,
+      "input_tokens": 474,
+      "output_tokens": 439957,
+      "cache_creation_input_tokens": 924098,
+      "cache_read_input_tokens": 88329164
+    },
+    "2026-09-29": {
+      "requests": 165,
+      "tool_calls": 176,
+      "input_tokens": 330,
+      "output_tokens": 234092,
+      "cache_creation_input_tokens": 1853297,
+      "cache_read_input_tokens": 60636512
+    },
+    "2026-09-30": {
+      "requests": 93,
+      "tool_calls": 122,
+      "input_tokens": 186,
+      "output_tokens": 128404,
+      "cache_creation_input_tokens": 2070349,
+      "cache_read_input_tokens": 45905944
+    },
+    "2026-10-01": {
+      "requests": 87,
+      "tool_calls": 93,
+      "input_tokens": 174,
+      "output_tokens": 113245,
+      "cache_creation_input_tokens": 372849,
+      "cache_read_input_tokens": 18968706
+    },
+    "2026-10-02": {
+      "requests": 2,
+      "tool_calls": 2,
+      "input_tokens": 4,
+      "output_tokens": 4027,
+      "cache_creation_input_tokens": 237635,
+      "cache_read_input_tokens": 315747
+    }
+  },
+  "tools": {
+    "Bash": 643,
+    "ToolSearch": 17,
+    "mcp__github__list_issues": 1,
+    "mcp__github__list_pull_requests": 1,
+    "mcp__github__get_file_contents": 1,
+    "AskUserQuestion": 6,
+    "mcp__Claude_Code_Remote__read_documentation": 1,
+    "Read": 172,
+    "Edit": 84,
+    "Write": 37,
+    "SendUserFile": 12,
+    "mcp__github__pull_request_read": 1,
+    "mcp__github__create_pull_request": 11,
+    "mcp__github__merge_pull_request": 13,
+    "Grep": 9,
+    "Glob": 1,
+    "Agent": 1,
+    "WebSearch": 4,
+    "TaskCreate": 14,
+    "TaskUpdate": 22,
+    "Skill": 1,
+    "mcp__Claude_Docs__batch": 1,
+    "Artifact": 2,
+    "mcp__Claude_Docs__guide": 5,
+    "mcp__Claude_Docs__update": 11,
+    "mcp__Claude_Docs__create": 13,
+    "mcp__Claude_Docs__read": 1,
+    "WebFetch": 1,
+    "mcp__github__actions_list": 1
+  }
+}
